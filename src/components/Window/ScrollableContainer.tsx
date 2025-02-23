@@ -14,18 +14,18 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const horizontalTrackRef = useRef<HTMLDivElement>(null);
   const verticalTrackRef = useRef<HTMLDivElement>(null);
-  const [isDraggingThumb, setIsDraggingThumb] = useState(false);
-  const [dragType, setDragType] = useState<'vertical' | 'horizontal' | null>(
-    null
-  );
-  const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
-    verticalThumbPosition: 0,
-    horizontalThumbPosition: 0,
-  });
   const [trackDimensions, setTrackDimensions] = useState<TrackDimensions>({
     width: 0,
     height: 0,
   });
+  const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
+    verticalThumbPosition: 0,
+    horizontalThumbPosition: 0,
+  });
+  const [isDraggingThumb, setIsDraggingThumb] = useState(false);
+  const [dragType, setDragType] = useState<'vertical' | 'horizontal' | null>(
+    null
+  );
 
   useEffect(() => {
     const updateTrackDimensions = () => {
@@ -41,6 +41,67 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     window.addEventListener('resize', updateTrackDimensions);
     return () => window.removeEventListener('resize', updateTrackDimensions);
   }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDraggingThumb || !dragType) return;
+
+      if (dragType === 'vertical') {
+        const content = contentRef.current;
+        if (!content) return;
+
+        const trackRect = content.getBoundingClientRect();
+        const trackHeight = trackRect.height - 32;
+        const thumbPosition = Math.max(
+          0,
+          Math.min(e.clientY - trackRect.top - 16, trackHeight)
+        );
+        const scrollRatio = thumbPosition / trackHeight;
+        const scrollPos =
+          scrollRatio * (content.scrollHeight - content.clientHeight);
+
+        content.scrollTop = scrollPos;
+        setScrollInfo((prev) => ({
+          ...prev,
+          verticalThumbPosition: thumbPosition,
+        }));
+      } else {
+        const content = contentRef.current;
+        if (!content) return;
+
+        const trackRect = content.getBoundingClientRect();
+        const trackWidth = trackRect.width - 32;
+        const thumbPosition = Math.max(
+          0,
+          Math.min(e.clientX - trackRect.left - 16, trackWidth)
+        );
+        const scrollRatio = thumbPosition / trackWidth;
+        const scrollPos =
+          scrollRatio * (content.scrollWidth - content.clientWidth);
+
+        content.scrollLeft = scrollPos;
+        setScrollInfo((prev) => ({
+          ...prev,
+          horizontalThumbPosition: thumbPosition,
+        }));
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingThumb(false);
+      setDragType(null);
+    };
+
+    if (isDraggingThumb) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDraggingThumb, dragType]);
 
   const handleArrowClick = (direction: 'up' | 'down' | 'left' | 'right') => {
     const content = contentRef.current;
@@ -68,6 +129,28 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         );
         break;
     }
+
+    const maxVerticalScroll = content.scrollHeight - content.clientHeight;
+    const maxHorizontalScroll = content.scrollWidth - content.clientWidth;
+
+    const verticalRatio =
+      maxVerticalScroll > 0 ? content.scrollTop / maxVerticalScroll : 0;
+    const horizontalRatio =
+      maxHorizontalScroll > 0 ? content.scrollLeft / maxHorizontalScroll : 0;
+
+    const maxHorizontalThumbPosition = Math.max(0, trackDimensions.width - 16);
+    const maxVerticalThumbPosition = Math.max(0, trackDimensions.height - 16);
+
+    setScrollInfo({
+      verticalThumbPosition: Math.min(
+        verticalRatio * maxVerticalThumbPosition,
+        maxVerticalThumbPosition
+      ),
+      horizontalThumbPosition: Math.min(
+        horizontalRatio * maxHorizontalThumbPosition,
+        maxHorizontalThumbPosition
+      ),
+    });
   };
 
   return (
@@ -78,23 +161,27 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
       <div className='absolute inset-0 overflow-hidden'>
         <div
           ref={contentRef}
-          className='absolute inset-0 overflow-auto bg-white'
+          className={`absolute inset-0 overflow-auto ${
+            type === 'about' ? 'bg-white' : 'bg-[#E6E6E6]'
+          }`}
           style={{ zIndex: 1 }}
           onScroll={() => {
             const content = contentRef.current;
-            if (!content) return;
+            if (content) {
+              const verticalRatio =
+                content.scrollTop /
+                (content.scrollHeight - content.clientHeight);
+              const horizontalRatio =
+                content.scrollLeft /
+                (content.scrollWidth - content.clientWidth);
+              const trackHeight = content.clientHeight - 32;
+              const trackWidth = content.clientWidth - 32;
 
-            const verticalRatio =
-              content.scrollTop / (content.scrollHeight - content.clientHeight);
-            const horizontalRatio =
-              content.scrollLeft / (content.scrollWidth - content.clientWidth);
-            const trackHeight = content.clientHeight - 32;
-            const trackWidth = content.clientWidth - 32;
-
-            setScrollInfo({
-              verticalThumbPosition: verticalRatio * trackHeight,
-              horizontalThumbPosition: horizontalRatio * trackWidth,
-            });
+              setScrollInfo({
+                verticalThumbPosition: verticalRatio * trackHeight,
+                horizontalThumbPosition: horizontalRatio * trackWidth,
+              });
+            }
           }}
         >
           <div className='relative min-h-full min-w-[400px]'>{children}</div>
@@ -104,6 +191,20 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         <div
           className='absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]'
           style={{ zIndex: 2 }}
+          onMouseDown={(e) => {
+            setIsDraggingThumb(true);
+            setDragType('vertical');
+            const trackRect = e.currentTarget.getBoundingClientRect();
+            const trackHeight = trackRect.height - 32;
+            const thumbPosition = Math.max(
+              0,
+              Math.min(e.clientY - trackRect.top - 16, trackHeight)
+            );
+            setScrollInfo((prev) => ({
+              ...prev,
+              verticalThumbPosition: thumbPosition,
+            }));
+          }}
         >
           <button
             className='absolute top-0 right-0 w-4 h-4 bg-[#E6E6E6] border-l border-b border-[#999999] flex items-center justify-center'
@@ -159,6 +260,20 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         <div
           className='absolute left-0 bottom-0 right-4 h-4 bg-[#E6E6E6] border-t border-[#999999]'
           style={{ zIndex: 2 }}
+          onMouseDown={(e) => {
+            setIsDraggingThumb(true);
+            setDragType('horizontal');
+            const trackRect = e.currentTarget.getBoundingClientRect();
+            const maxScroll = trackDimensions.width - 16;
+            const thumbPosition = Math.max(
+              0,
+              Math.min(e.clientX - trackRect.left - 16, maxScroll)
+            );
+            setScrollInfo((prev) => ({
+              ...prev,
+              horizontalThumbPosition: thumbPosition,
+            }));
+          }}
         >
           <button
             className='absolute left-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-r border-t border-[#999999] flex items-center justify-center'
