@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MenuBar from './components/MenuBar/MenuBar';
 import Window from './components/Window/Window';
 import DesktopIcon from './components/DesktopIcon/DesktopIcon';
+import { MENU_BAR_HEIGHT } from './components/Window/Window';
 import './App.css';
 
 interface Position {
@@ -43,11 +44,9 @@ const App: React.FC = () => {
   };
 
   const openFolder = (folderId: string, title: string) => {
-    // Check if window already exists
     const existingWindow = windows.find((w) => w.id === folderId);
 
     if (existingWindow) {
-      // If window exists but is closed, open it
       if (!existingWindow.isOpen) {
         setWindows(
           windows.map((win) =>
@@ -56,13 +55,13 @@ const App: React.FC = () => {
         );
       }
     } else {
-      // Create new window
+      // Calculate new window position with offset from top-left
       const newWindow: WindowState = {
         id: folderId,
         title,
         type: 'folder',
         isOpen: true,
-        position: { x: 60, y: 60 }, // Offset from existing windows
+        position: { x: 60, y: 40 }, // Consistent with menu bar height
       };
       setWindows([...windows, newWindow]);
     }
@@ -76,7 +75,7 @@ const App: React.FC = () => {
           <div className='space-y-3'>
             <div className='flex items-center gap-4'>
               <img
-                src='/icons/computer.png'
+                src='/icons/drive-harddisk.png'
                 alt='Computer Icon'
                 className='w-16 h-16'
               />
@@ -105,32 +104,38 @@ const App: React.FC = () => {
     <div className='h-screen w-screen bg-[#666666] overflow-hidden'>
       <MenuBar />
 
-      {/* Desktop Icons */}
-      <div className='absolute top-8 left-8'>
-        <DesktopIcon
-          name='Macintosh HD'
-          icon='/icons/disk.png'
-          onDoubleClick={() => openFolder('macHD', 'Macintosh HD')}
-        />
-      </div>
+      {/* Desktop Area - Add padding-top to account for menu bar */}
+      <div className='absolute inset-0 pt-5'>
+        {/* Desktop Icons */}
+        <div className='absolute top-2 right-2'>
+          <DesktopIcon
+            name='Macintosh HD'
+            icon='/icons/drive-harddisk.png'
+            onDoubleClick={() => openFolder('macHD', 'Macintosh HD')}
+          />
+        </div>
 
-      {/* Windows */}
-      <div className='pt-5 px-2'>
-        {windows.map(
-          (window) =>
-            window.isOpen && (
-              <Window
-                key={window.id}
-                title={window.title}
-                position={window.position}
-                onClose={() => handleCloseWindow(window.id)}
-                isFocused={focusedWindowId === window.id}
-                onFocus={() => handleWindowFocus(window.id)}
-              >
-                {renderWindowContent(window)}
-              </Window>
-            )
-        )}
+        {/* Windows Container */}
+        <div className='absolute inset-0'>
+          {windows.map(
+            (window) =>
+              window.isOpen && (
+                <Window
+                  key={window.id}
+                  title={window.title}
+                  position={{
+                    x: window.position.x,
+                    y: Math.max(window.position.y, MENU_BAR_HEIGHT), // Ensure windows start below menu bar
+                  }}
+                  onClose={() => handleCloseWindow(window.id)}
+                  isFocused={focusedWindowId === window.id}
+                  onFocus={() => handleWindowFocus(window.id)}
+                >
+                  {renderWindowContent(window)}
+                </Window>
+              )
+          )}
+        </div>
       </div>
     </div>
   );

@@ -17,3 +17,28 @@
     @apply select-none;
   }
 }
+
+/* Add these styles for react-resizable */
+.react-resizable {
+  position: relative;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  bottom: 0;
+  right: 0;
+  background: transparent;
+  cursor: se-resize;
+}
+
+/* Hide resize handle when window is not focused */
+.react-resizable-handle {
+  display: none;
+}
+
+/* Show resize handle only when window is focused */
+.window-focused .react-resizable-handle {
+  display: block;
+}
