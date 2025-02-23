@@ -2,9 +2,9 @@ import React from 'react';
 
 const MenuBar: React.FC = () => {
   return (
-    <div className='fixed top-0 left-0 right-0 h-5 bg-white border-b border-black flex items-center px-1 z-50'>
+    <div className='fixed top-0 left-0 right-0 z-50 flex items-center h-5 px-1 bg-white border-b border-black'>
       <div className='relative group'>
-        <div className='w-[13px] h-[13px] mr-4'>
+        <div className='w-[13px] h-[13px] mr-2 ml-3'>
           <img
             src='/icons/apple.png'
             alt='Apple Logo'

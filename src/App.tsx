@@ -24,6 +24,23 @@ interface WindowState {
   diskSpace?: string;
 }
 
+interface IconPosition {
+  id: string;
+  x: number;
+  y: number;
+}
+
+const ICON_WIDTH = 96;
+const ICON_SPACING = 16;
+const FOLDER_PADDING = 8;
+
+export const Z_INDEX = {
+  DESKTOP_ICON: 1,
+  SELECTED_ICON: 2,
+  DRAGGING_ICON: 3,
+  WINDOW_MIN: 10, // Windows will start from this value
+};
+
 const App: React.FC = () => {
   const [windows, setWindows] = useState<WindowState[]>([
     {
@@ -36,8 +53,11 @@ const App: React.FC = () => {
     },
   ]);
   const [focusedWindowId, setFocusedWindowId] = useState<string>('about');
-  const [topZIndex, setTopZIndex] = useState(1);
+  const [topZIndex, setTopZIndex] = useState(Z_INDEX.WINDOW_MIN);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [iconPositions, setIconPositions] = useState<IconPosition[]>([
+    { id: rootFolder.id, x: window.innerWidth - 120, y: 20 }, // Initial position for root folder
+  ]);
 
   const handleCloseWindow = (id: string): void => {
     setWindows(
@@ -50,7 +70,7 @@ const App: React.FC = () => {
 
   const handleWindowFocus = (id: string): void => {
     setFocusedWindowId(id);
-    const newZIndex = topZIndex + 1;
+    const newZIndex = Math.max(topZIndex, Z_INDEX.WINDOW_MIN) + 1;
     setTopZIndex(newZIndex);
     setWindows(
       windows.map((win) =>
@@ -59,12 +79,28 @@ const App: React.FC = () => {
     );
   };
 
+  // Initialize positions for new items in a folder
+  const initializeIconPositions = (items: FolderConfig[]) => {
+    const newPositions = items.map((item, index) => ({
+      id: item.id,
+      x: FOLDER_PADDING + (ICON_WIDTH + ICON_SPACING) * index,
+      y: FOLDER_PADDING,
+    }));
+
+    setIconPositions((prev) => {
+      // Keep existing positions and add new ones
+      const existingIds = prev.map((p) => p.id);
+      const newItems = newPositions.filter((p) => !existingIds.includes(p.id));
+      return [...prev, ...newItems];
+    });
+  };
+
   const openFolder = (folderConfig: FolderConfig) => {
     const existingWindow = windows.find((w) => w.id === folderConfig.id);
 
     if (existingWindow) {
       if (!existingWindow.isOpen) {
-        const newZIndex = topZIndex + 1;
+        const newZIndex = Math.max(topZIndex, Z_INDEX.WINDOW_MIN) + 1;
         setTopZIndex(newZIndex);
         setWindows(
           windows.map((win) =>
@@ -86,7 +122,12 @@ const App: React.FC = () => {
         );
       }
     } else {
-      const newZIndex = topZIndex + 1;
+      // Initialize positions for new folder content
+      if (folderConfig.children) {
+        initializeIconPositions(folderConfig.children);
+      }
+
+      const newZIndex = Math.max(topZIndex, Z_INDEX.WINDOW_MIN) + 1;
       setTopZIndex(newZIndex);
 
       // Calculate disk space for new window
@@ -125,6 +166,16 @@ const App: React.FC = () => {
     }
   };
 
+  const handleIconDrag = (id: string, x: number, y: number) => {
+    setIconPositions((prev) =>
+      prev.map((pos) => (pos.id === id ? { ...pos, x, y } : pos))
+    );
+  };
+
+  const getIconPosition = (id: string) => {
+    return iconPositions.find((pos) => pos.id === id) || { x: 0, y: 0 };
+  };
+
   const renderWindowContent = (window: WindowState) => {
     switch (window.type) {
       case 'about':
@@ -141,7 +192,7 @@ const App: React.FC = () => {
                 <p className='text-[11px]'>System Software 7.5.3</p>
               </div>
             </div>
-            <div className='border-t border-b border-black py-2'>
+            <div className='py-2 border-t border-b border-black'>
               <p className='text-[11px]'>Memory Built-in: 8,192K</p>
               <p className='text-[11px]'>Total Memory: 8,192K</p>
             </div>
@@ -150,16 +201,21 @@ const App: React.FC = () => {
         );
       case 'folder':
         return (
-          <div className='min-h-[200px] min-w-[300px] p-2'>
-            <div className='grid grid-cols-4 gap-4'>
+          <div className='h-full p-2'>
+            <div
+              className='relative w-full h-full'
+              style={{ minWidth: '400px' }}
+            >
               {window.content?.map((item) => (
                 <DesktopIcon
-                  key={item.name}
+                  key={item.id}
                   name={item.name}
                   icon={item.icon}
                   onDoubleClick={() => openFolder(item as FolderConfig)}
                   isSelected={selectedItemId === item.id}
                   onClick={() => handleItemClick(item.id)}
+                  position={getIconPosition(item.id)}
+                  onDrag={(x, y) => handleIconDrag(item.id, x, y)}
                 />
               ))}
             </div>
@@ -175,16 +231,15 @@ const App: React.FC = () => {
       {/* Desktop Area */}
       <div className='absolute inset-0 pt-5' onClick={handleBackgroundClick}>
         {/* Desktop Icons */}
-        <div
-          className='absolute top-2 right-2 z-10'
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
           <DesktopIcon
             name={rootFolder.name}
             icon={rootFolder.icon}
             onDoubleClick={() => openFolder(rootFolder)}
             isSelected={selectedItemId === rootFolder.id}
             onClick={() => handleItemClick(rootFolder.id)}
+            position={getIconPosition(rootFolder.id)}
+            onDrag={(x, y) => handleIconDrag(rootFolder.id, x, y)}
           />
         </div>
 

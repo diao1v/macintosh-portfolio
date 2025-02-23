@@ -40,3 +40,26 @@
 .read-the-docs {
   color: #888;
 }
+
+.scrollbar-mac::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background-color: #E6E6E6;
+}
+
+.scrollbar-mac::-webkit-scrollbar-thumb {
+  background-color: #E6E6E6;
+  border: 1px solid #999999;
+  border-radius: 0;
+}
+
+.scrollbar-mac::-webkit-scrollbar-button {
+  width: 16px;
+  height: 16px;
+  background-color: #E6E6E6;
+  border: 1px solid #999999;
+}
+
+.scrollbar-mac::-webkit-scrollbar-corner {
+  background-color: #E6E6E6;
+}
