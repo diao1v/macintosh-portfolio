@@ -1,0 +1,1 @@
+export { rootFolder } from './folders';

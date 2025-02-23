@@ -3,6 +3,7 @@ import MenuBar from './components/MenuBar/MenuBar';
 import Window from './components/Window/Window';
 import DesktopIcon from './components/DesktopIcon/DesktopIcon';
 import { MENU_BAR_HEIGHT } from './components/Window/Window';
+import { rootFolder, type FolderConfig } from './config/folders';
 import './App.css';
 
 interface Position {
@@ -16,6 +17,9 @@ interface WindowState {
   type: 'about' | 'folder';
   isOpen: boolean;
   position: Position;
+  content?: FolderConfig[];
+  width?: number;
+  height?: number;
 }
 
 const App: React.FC = () => {
@@ -43,29 +47,34 @@ const App: React.FC = () => {
     setFocusedWindowId(id);
   };
 
-  const openFolder = (folderId: string, title: string) => {
-    const existingWindow = windows.find((w) => w.id === folderId);
+  const openFolder = (folderConfig: FolderConfig) => {
+    const existingWindow = windows.find((w) => w.id === folderConfig.id);
 
     if (existingWindow) {
       if (!existingWindow.isOpen) {
         setWindows(
           windows.map((win) =>
-            win.id === folderId ? { ...win, isOpen: true } : win
+            win.id === folderConfig.id ? { ...win, isOpen: true } : win
           )
         );
       }
     } else {
-      // Calculate new window position with offset from top-left
       const newWindow: WindowState = {
-        id: folderId,
-        title,
+        id: folderConfig.id,
+        title: folderConfig.name,
         type: 'folder',
         isOpen: true,
-        position: { x: 60, y: 40 }, // Consistent with menu bar height
+        position: {
+          x: folderConfig.initialWindow?.x ?? 60,
+          y: folderConfig.initialWindow?.y ?? MENU_BAR_HEIGHT + 20,
+        },
+        width: folderConfig.initialWindow?.width,
+        height: folderConfig.initialWindow?.height,
+        content: folderConfig.children,
       };
       setWindows([...windows, newWindow]);
     }
-    setFocusedWindowId(folderId);
+    setFocusedWindowId(folderConfig.id);
   };
 
   const renderWindowContent = (window: WindowState) => {
@@ -93,8 +102,17 @@ const App: React.FC = () => {
         );
       case 'folder':
         return (
-          <div className='min-h-[200px] min-w-[300px]'>
-            {/* Folder contents will go here */}
+          <div className='min-h-[200px] min-w-[300px] p-2'>
+            <div className='grid grid-cols-4 gap-4'>
+              {window.content?.map((item) => (
+                <DesktopIcon
+                  key={item.name}
+                  name={item.name}
+                  icon={item.icon}
+                  onDoubleClick={() => openFolder(item as FolderConfig)}
+                />
+              ))}
+            </div>
           </div>
         );
     }
@@ -104,14 +122,14 @@ const App: React.FC = () => {
     <div className='h-screen w-screen bg-[#666666] overflow-hidden'>
       <MenuBar />
 
-      {/* Desktop Area - Add padding-top to account for menu bar */}
+      {/* Desktop Area */}
       <div className='absolute inset-0 pt-5'>
-        {/* Desktop Icons */}
-        <div className='absolute top-2 right-2'>
+        {/* Desktop Icons - Higher z-index */}
+        <div className='absolute top-2 right-2 z-10'>
           <DesktopIcon
-            name='Macintosh HD'
-            icon='/icons/drive-harddisk.png'
-            onDoubleClick={() => openFolder('macHD', 'Macintosh HD')}
+            name={rootFolder.name}
+            icon={rootFolder.icon}
+            onDoubleClick={() => openFolder(rootFolder)}
           />
         </div>
 
@@ -125,7 +143,7 @@ const App: React.FC = () => {
                   title={window.title}
                   position={{
                     x: window.position.x,
-                    y: Math.max(window.position.y, MENU_BAR_HEIGHT), // Ensure windows start below menu bar
+                    y: Math.max(window.position.y, MENU_BAR_HEIGHT),
                   }}
                   onClose={() => handleCloseWindow(window.id)}
                   isFocused={focusedWindowId === window.id}
