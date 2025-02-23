@@ -1,6 +1,21 @@
 import { create } from 'zustand';
 import { MENU_BAR_HEIGHT } from '../constants';
-import { File } from '../config/files';
+
+export interface File {
+  id: string;
+  name: string;
+  type: 'folder' | 'file';
+  icon: string;
+  children?: File[];
+  initialWindow?: {
+    width?: number;
+    height?: number;
+    x?: number;
+    y?: number;
+    minWidth?: number;
+    minHeight?: number;
+  };
+}
 
 interface FileStore {
   rootFolder: File;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DropdownMenu from './DropdownMenu';
+import { createMenuConfig, type MenuConfig } from '@/config/menus';
 
 interface MenuBarProps {
   onOpenAbout: () => void;
@@ -7,8 +8,8 @@ interface MenuBarProps {
 
 const MenuBar: React.FC<MenuBarProps> = ({ onOpenAbout }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [isAppleMenuOpen, setIsAppleMenuOpen] = useState(false);
-  const appleIconRef = useRef<HTMLDivElement>(null);
+  const [activeMenu, setActiveMenu] = useState<number | null>(null);
+  const menuConfig = createMenuConfig({ onOpenAbout });
 
   useEffect(() => {
     // Update time immediately to avoid delay
@@ -38,49 +39,42 @@ const MenuBar: React.FC<MenuBarProps> = ({ onOpenAbout }) => {
     return `${hours}:${minutesStr} ${ampm}`;
   };
 
-  const appleMenuItems = [
-    {
-      label: 'About This Portfolio',
-      onClick: onOpenAbout,
-    },
-  ];
-
   return (
     <div className='fixed top-0 left-0 right-0 z-50 flex items-center h-5 px-1 bg-white border-b border-black'>
-      <div className='relative'>
-        <div
-          ref={appleIconRef}
-          className={`
-            px-2 py-1 cursor-default
-            ${isAppleMenuOpen ? 'bg-black' : 'hover:bg-black hover:text-white'}
-          `}
-          onClick={() => setIsAppleMenuOpen(true)}
-        >
-          <img
-            src='/icons/apple.png'
-            alt='Apple Logo'
-            className={`w-[13px] h-[13px] ${isAppleMenuOpen ? 'invert' : ''}`}
+      {menuConfig.map((menu, index) => (
+        <div key={index} className='relative'>
+          <div
+            className={`
+              px-3 cursor-default
+              ${
+                activeMenu === index
+                  ? 'bg-black text-white'
+                  : 'hover:bg-black hover:text-white'
+              }
+            `}
+            onClick={() => setActiveMenu(activeMenu === index ? null : index)}
+          >
+            {index === 0 ? (
+              <div className='h-[20px] flex items-center'>
+                <img
+                  src='/icons/apple.png'
+                  alt='Apple Logo'
+                  className={`h-[15px] ${
+                    activeMenu === index ? 'invert-0' : ''
+                  }`}
+                />
+              </div>
+            ) : (
+              menu.label
+            )}
+          </div>
+          <DropdownMenu
+            items={menu.items}
+            isOpen={activeMenu === index}
+            onClose={() => setActiveMenu(null)}
           />
         </div>
-        <DropdownMenu
-          items={appleMenuItems}
-          isOpen={isAppleMenuOpen}
-          onClose={() => setIsAppleMenuOpen(false)}
-          position={{
-            x: 0,
-            y: 20,
-          }}
-        />
-      </div>
-      <div className='flex text-[11px] leading-none'>
-        {['File', 'Edit', 'View', 'Label', 'Special'].map((item) => (
-          <div key={item} className='relative px-2 py-1 cursor-default group'>
-            <span className='group-hover:bg-black group-hover:text-white'>
-              {item}
-            </span>
-          </div>
-        ))}
-      </div>
+      ))}
       <div className='flex-grow' />
       <div className='text-[11px] leading-none pr-1'>
         {formatTime(currentTime)}

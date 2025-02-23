@@ -9,7 +9,7 @@ import {
   ICON_SPACING,
   FOLDER_PADDING,
 } from './constants';
-import { rootFile, type File } from './config/files';
+import { type File } from './store/useFileStore';
 import './App.css';
 import AboutPortfolio from './components/AboutPortfolio/AboutPortfolio';
 import useWindowStore from './store/useWindowStore';
