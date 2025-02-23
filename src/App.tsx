@@ -9,8 +9,11 @@ import {
   ICON_SPACING,
   FOLDER_PADDING,
 } from './constants';
-import { rootFolder, type FolderConfig } from './config/folders';
+import { rootFile, type File } from './config/files';
 import './App.css';
+import AboutPortfolio from './components/AboutPortfolio/AboutPortfolio';
+import useWindowStore from './store/useWindowStore';
+import useFolderStore from './store/useFileStore';
 
 interface Position {
   x: number;
@@ -23,7 +26,7 @@ interface WindowState {
   type: 'about' | 'folder';
   isOpen: boolean;
   position: Position;
-  content?: FolderConfig[];
+  content?: File[];
   width?: number;
   height?: number;
   zIndex: number;
@@ -43,45 +46,31 @@ interface IconPosition {
 }
 
 const App: React.FC = () => {
-  const [windows, setWindows] = useState<WindowState[]>([
-    {
-      id: 'about',
-      title: 'About This Portfolio',
-      type: 'about',
-      isOpen: true,
-      position: { x: 40, y: 40 },
-      zIndex: 1,
-    },
-  ]);
-  const [focusedWindowId, setFocusedWindowId] = useState<string>('about');
-  const [topZIndex, setTopZIndex] = useState(Z_INDEX.WINDOW_MIN);
+  const {
+    windows,
+    focusedWindowId,
+    closeWindow,
+    focusWindow,
+    setWindowPosition,
+    toggleWindowZoom,
+    openWindow,
+  } = useWindowStore();
+  const { rootFolder } = useFolderStore();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [iconPositions, setIconPositions] = useState<IconPosition[]>([
     { id: rootFolder.id, x: window.innerWidth - 120, y: 20 }, // Initial position for root folder
   ]);
 
   const handleCloseWindow = (id: string): void => {
-    setWindows(
-      windows.map((win) => (win.id === id ? { ...win, isOpen: false } : win))
-    );
-    if (focusedWindowId === id) {
-      setFocusedWindowId('');
-    }
+    closeWindow(id);
   };
 
   const handleWindowFocus = (id: string): void => {
-    setFocusedWindowId(id);
-    const newZIndex = Math.max(topZIndex, Z_INDEX.WINDOW_MIN) + 1;
-    setTopZIndex(newZIndex);
-    setWindows(
-      windows.map((win) =>
-        win.id === id ? { ...win, zIndex: newZIndex } : win
-      )
-    );
+    focusWindow(id);
   };
 
   // Initialize positions for new items in a folder
-  const initializeIconPositions = (items: FolderConfig[]) => {
+  const initializeIconPositions = (items: File[]) => {
     const newPositions = items.map((item, index) => ({
       id: item.id,
       x: FOLDER_PADDING + (ICON_WIDTH + ICON_SPACING) * index,
@@ -96,40 +85,25 @@ const App: React.FC = () => {
     });
   };
 
-  const openFolder = (folderConfig: FolderConfig) => {
+  const openFolder = (folderConfig: File) => {
     const existingWindow = windows.find((w) => w.id === folderConfig.id);
 
     if (existingWindow) {
       if (!existingWindow.isOpen) {
-        const newZIndex = Math.max(topZIndex, Z_INDEX.WINDOW_MIN) + 1;
-        setTopZIndex(newZIndex);
-        setWindows(
-          windows.map((win) =>
-            win.id === folderConfig.id
-              ? {
-                  ...win,
-                  isOpen: true,
-                  zIndex: newZIndex,
-                  // Add diskSpace if it doesn't exist
-                  diskSpace:
-                    win.diskSpace ||
-                    (
-                      (folderConfig.children?.length || 0) *
-                      (Math.random() * 2 + 0.5)
-                    ).toFixed(2),
-                }
-              : win
-          )
-        );
+        const newZIndex =
+          Math.max(Z_INDEX.WINDOW_MIN, windows[windows.length - 1].zIndex) + 1;
+        openWindow(folderConfig.id);
+        setWindowPosition(folderConfig.id, {
+          x: folderConfig.initialWindow?.x ?? 60,
+          y: folderConfig.initialWindow?.y ?? MENU_BAR_HEIGHT + 20,
+        });
+        focusWindow(folderConfig.id);
       }
     } else {
       // Initialize positions for new folder content
       if (folderConfig.children) {
         initializeIconPositions(folderConfig.children);
       }
-
-      const newZIndex = Math.max(topZIndex, Z_INDEX.WINDOW_MIN) + 1;
-      setTopZIndex(newZIndex);
 
       // Calculate disk space for new window
       const diskSpace = (
@@ -149,12 +123,17 @@ const App: React.FC = () => {
         width: folderConfig.initialWindow?.width,
         height: folderConfig.initialWindow?.height,
         content: folderConfig.children,
-        zIndex: newZIndex,
+        zIndex:
+          Math.max(
+            Z_INDEX.WINDOW_MIN,
+            windows[windows.length - 1]?.zIndex || 0
+          ) + 1,
         diskSpace,
       };
-      setWindows([...windows, newWindow]);
+
+      useWindowStore.getState().addWindow(newWindow);
+      focusWindow(folderConfig.id);
     }
-    setFocusedWindowId(folderConfig.id);
   };
 
   const handleItemClick = (itemId: string) => {
@@ -178,80 +157,13 @@ const App: React.FC = () => {
   };
 
   const handleWindowZoom = (id: string): void => {
-    setWindows(
-      windows.map((win) => {
-        if (win.id === id) {
-          if (!win.isZoomed) {
-            // Save original size and zoom in
-            const originalWidth = win.width || 400;
-            const originalHeight = win.height || 300;
-            const maxWidth = window.innerWidth - 40;
-            const maxHeight = window.innerHeight - MENU_BAR_HEIGHT - 20;
-
-            return {
-              ...win,
-              isZoomed: true,
-              originalSize: {
-                width: originalWidth,
-                height: originalHeight,
-              },
-              width: Math.min(originalWidth * 2, maxWidth),
-              height: Math.min(originalHeight * 2, maxHeight),
-              className: 'transition-all duration-200 ease-in-out',
-            };
-          } else {
-            // Restore original size
-            return {
-              ...win,
-              isZoomed: false,
-              width: win.originalSize?.width,
-              height: win.originalSize?.height,
-              originalSize: undefined,
-              className: 'transition-all duration-200 ease-in-out',
-            };
-          }
-        }
-        return win;
-      })
-    );
-  };
-
-  const handleWindowPositionChange = (id: string, x: number, y: number) => {
-    setWindows(
-      windows.map((win) =>
-        win.id === id
-          ? {
-              ...win,
-              position: { x, y },
-            }
-          : win
-      )
-    );
+    toggleWindowZoom(id);
   };
 
   const renderWindowContent = (window: WindowState) => {
     switch (window.type) {
       case 'about':
-        return (
-          <div className='space-y-3'>
-            <div className='flex items-center gap-4'>
-              <img
-                src='/icons/drive-harddisk.png'
-                alt='Computer Icon'
-                className='w-16 h-16'
-              />
-              <div>
-                <h2 className='text-[13px] font-bold'>Your Name's Portfolio</h2>
-                <p className='text-[11px]'>System Software 7.5.3</p>
-              </div>
-            </div>
-            <div className='py-2 border-t border-b border-black'>
-              <p className='text-[11px]'>Memory Built-in: 8,192K</p>
-              <p className='text-[11px]'>Total Memory: 8,192K</p>
-            </div>
-            <p className='text-[11px]'>© Your Name 2024</p>
-          </div>
-        );
+        return <AboutPortfolio />;
       case 'folder':
         return (
           <div className='h-full p-2'>
@@ -264,7 +176,7 @@ const App: React.FC = () => {
                   key={item.id}
                   name={item.name}
                   icon={item.icon}
-                  onDoubleClick={() => openFolder(item as FolderConfig)}
+                  onDoubleClick={() => openFolder(item as File)}
                   isSelected={selectedItemId === item.id}
                   onClick={() => handleItemClick(item.id)}
                   position={getIconPosition(item.id)}
@@ -277,9 +189,14 @@ const App: React.FC = () => {
     }
   };
 
+  const handleOpenAbout = () => {
+    openWindow('about');
+    focusWindow('about');
+  };
+
   return (
     <div className='h-screen w-screen bg-[#666666] overflow-hidden'>
-      <MenuBar />
+      <MenuBar onOpenAbout={handleOpenAbout} />
 
       {/* Desktop Area */}
       <div className='absolute inset-0 pt-5' onClick={handleBackgroundClick}>
@@ -304,10 +221,7 @@ const App: React.FC = () => {
                 <Window
                   key={window.id}
                   title={window.title}
-                  position={{
-                    x: window.position.x,
-                    y: Math.max(window.position.y, MENU_BAR_HEIGHT),
-                  }}
+                  position={window.position}
                   onClose={() => handleCloseWindow(window.id)}
                   isFocused={focusedWindowId === window.id}
                   onFocus={() => handleWindowFocus(window.id)}
@@ -319,7 +233,7 @@ const App: React.FC = () => {
                   width={window.width}
                   height={window.height}
                   onPositionChange={(x, y) =>
-                    handleWindowPositionChange(window.id, x, y)
+                    setWindowPosition(window.id, { x, y })
                   }
                 >
                   {renderWindowContent(window)}

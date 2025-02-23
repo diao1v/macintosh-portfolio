@@ -1,1 +1,1 @@
-export { rootFolder } from './folders';
+export { rootFile as rootFolder } from './files';

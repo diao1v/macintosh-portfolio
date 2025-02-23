@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import DropdownMenu from './DropdownMenu';
 
-const MenuBar: React.FC = () => {
+interface MenuBarProps {
+  onOpenAbout: () => void;
+}
+
+const MenuBar: React.FC<MenuBarProps> = ({ onOpenAbout }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isAppleMenuOpen, setIsAppleMenuOpen] = useState(false);
+  const appleIconRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Update time immediately to avoid delay
@@ -31,16 +38,39 @@ const MenuBar: React.FC = () => {
     return `${hours}:${minutesStr} ${ampm}`;
   };
 
+  const appleMenuItems = [
+    {
+      label: 'About This Portfolio',
+      onClick: onOpenAbout,
+    },
+  ];
+
   return (
     <div className='fixed top-0 left-0 right-0 z-50 flex items-center h-5 px-1 bg-white border-b border-black'>
-      <div className='relative group'>
-        <div className='w-[13px] h-[13px] mr-2 ml-3'>
+      <div className='relative'>
+        <div
+          ref={appleIconRef}
+          className={`
+            px-2 py-1 cursor-default
+            ${isAppleMenuOpen ? 'bg-black' : 'hover:bg-black hover:text-white'}
+          `}
+          onClick={() => setIsAppleMenuOpen(true)}
+        >
           <img
             src='/icons/apple.png'
             alt='Apple Logo'
-            className='w-full h-full'
+            className={`w-[13px] h-[13px] ${isAppleMenuOpen ? 'invert' : ''}`}
           />
         </div>
+        <DropdownMenu
+          items={appleMenuItems}
+          isOpen={isAppleMenuOpen}
+          onClose={() => setIsAppleMenuOpen(false)}
+          position={{
+            x: 0,
+            y: 20,
+          }}
+        />
       </div>
       <div className='flex text-[11px] leading-none'>
         {['File', 'Edit', 'View', 'Label', 'Special'].map((item) => (

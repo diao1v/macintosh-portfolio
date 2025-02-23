@@ -17,3 +17,7 @@ A digital portfolio inspired by the classic Macintosh System 7 and 7.5 interface
 2. run `pnpm install`
 3. run `pnpm dev`
 4. open `http://localhost:5173`
+
+## To do
+1. Add dropdown menu for the Apple Icon
+2. Add store to keep track state such as opened windows, new created files, new created folders, etc.

@@ -7,12 +7,17 @@ interface ScrollableContainerProps {
   type?: 'folder' | 'about';
 }
 
-const ScrollableContainer: React.FC<ScrollableContainerProps> = ({ children, type }) => {
+const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
+  children,
+  type,
+}) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const horizontalTrackRef = useRef<HTMLDivElement>(null);
   const verticalTrackRef = useRef<HTMLDivElement>(null);
   const [isDraggingThumb, setIsDraggingThumb] = useState(false);
-  const [dragType, setDragType] = useState<'vertical' | 'horizontal' | null>(null);
+  const [dragType, setDragType] = useState<'vertical' | 'horizontal' | null>(
+    null
+  );
   const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
     verticalThumbPosition: 0,
     horizontalThumbPosition: 0,
@@ -106,7 +111,11 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({ children, typ
             onClick={() => handleArrowClick('up')}
             onMouseDown={(e) => e.stopPropagation()}
           >
-            <img src='/icons/arrow-up.png' alt='Scroll Up' className='w-3.5 h-3.5' />
+            <img
+              src='/icons/arrow-up.png'
+              alt='Scroll Up'
+              className='w-3.5 h-3.5'
+            />
           </button>
 
           <div
@@ -115,7 +124,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({ children, typ
             style={{ zIndex: 2 }}
           >
             <div
-              className='absolute w-4 h-4 bg-[#E6E6E6] border border-[#999999] flex items-center justify-center'
+              className='absolute w-4 h-4 bg-[#E6E6E6] flex items-center justify-center'
               style={{
                 top: Math.min(
                   scrollInfo.verticalThumbPosition,
@@ -170,7 +179,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({ children, typ
             style={{ zIndex: 2 }}
           >
             <div
-              className='absolute h-4 w-4 bg-[#E6E6E6] border border-[#999999] flex items-center justify-center'
+              className='absolute h-4 w-4 bg-[#E6E6E6] flex items-center justify-center'
               style={{
                 left: Math.min(
                   scrollInfo.horizontalThumbPosition,
@@ -211,4 +220,4 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({ children, typ
   );
 };
 
-export default ScrollableContainer; 
+export default ScrollableContainer;

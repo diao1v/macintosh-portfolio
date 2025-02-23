@@ -1,11 +1,11 @@
 import { MENU_BAR_HEIGHT } from '@/constants';
 
-export interface FolderConfig {
+export interface File {
   id: string;
   name: string;
   type: 'folder' | 'file';
   icon: string;
-  children?: FolderConfig[];
+  children?: File[];
   initialWindow?: {
     width?: number;
     height?: number;
@@ -16,7 +16,7 @@ export interface FolderConfig {
   };
 }
 
-export const rootFolder: FolderConfig = {
+export const rootFile: File = {
   id: 'macHD',
   name: 'Macintosh HD',
   type: 'folder',
