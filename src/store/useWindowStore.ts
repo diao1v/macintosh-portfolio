@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { File } from '../config/files';
+import { File } from '../store/useFileStore';
 
 interface Position {
   x: number;
