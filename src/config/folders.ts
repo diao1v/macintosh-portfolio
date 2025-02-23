@@ -1,4 +1,4 @@
-import { MENU_BAR_HEIGHT } from '@/components/Window/Window';
+import { MENU_BAR_HEIGHT } from '@/constants';
 
 export interface FolderConfig {
   id: string;

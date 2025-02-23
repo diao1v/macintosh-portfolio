@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Z_INDEX } from '../../App';
+import React, { useState, useEffect } from 'react';
+import { Z_INDEX } from '../../constants';
 
 interface DesktopIconProps {
   name: string;
@@ -24,8 +24,44 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [hasMouseMoved, setHasMouseMoved] = useState(false);
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        setHasMouseMoved(true);
+        const newX = e.clientX - dragOffset.x;
+        const newY = e.clientY - dragOffset.y;
+        onDrag(newX, newY);
+        e.preventDefault();
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (isDragging && !hasMouseMoved) {
+        // If we didn't drag, treat it as a click
+        onClick?.(
+          new MouseEvent('click', {
+            bubbles: true,
+          }) as unknown as React.MouseEvent<Element, MouseEvent>
+        );
+      }
+      setIsDragging(false);
+      setHasMouseMoved(false);
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset, hasMouseMoved, onDrag, onClick]);
+
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button === 0) { // Left click only
+    if (e.button === 0) {
+      // Left click only
       setIsDragging(true);
       setHasMouseMoved(false);
       setDragOffset({
@@ -37,23 +73,6 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      setHasMouseMoved(true);
-      const newX = e.clientX - dragOffset.x;
-      const newY = e.clientY - dragOffset.y;
-      onDrag(newX, newY);
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
-
-  const handleMouseUp = (e: React.MouseEvent) => {
-    setIsDragging(false);
-    setHasMouseMoved(false);
-    e.stopPropagation();
-  };
-
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -63,15 +82,12 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
   return (
     <div
       className='absolute w-[108px] flex flex-col items-center'
-      style={{ 
+      style={{
         left: position.x,
         top: position.y,
         cursor: 'default',
       }}
       onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
       onDoubleClick={handleDoubleClick}
     >
       <div
@@ -81,16 +97,16 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
           ${isDragging ? 'opacity-70' : ''}
         `}
         style={{
-          zIndex: isDragging 
-            ? Z_INDEX.DRAGGING_ICON 
-            : isSelected 
-            ? Z_INDEX.SELECTED_ICON 
-            : Z_INDEX.DESKTOP_ICON
+          zIndex: isDragging
+            ? Z_INDEX.DRAGGING_ICON
+            : isSelected
+            ? Z_INDEX.SELECTED_ICON
+            : Z_INDEX.DESKTOP_ICON,
         }}
       >
-        <img 
-          src={icon} 
-          alt={name} 
+        <img
+          src={icon}
+          alt={name}
           className='w-12 h-12 pointer-events-none'
           draggable={false}
         />

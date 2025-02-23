@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import MenuBar from './components/MenuBar/MenuBar';
 import Window from './components/Window/Window';
 import DesktopIcon from './components/DesktopIcon/DesktopIcon';
-import { MENU_BAR_HEIGHT } from './components/Window/Window';
+import {
+  MENU_BAR_HEIGHT,
+  Z_INDEX,
+  ICON_WIDTH,
+  ICON_SPACING,
+  FOLDER_PADDING,
+} from './constants';
 import { rootFolder, type FolderConfig } from './config/folders';
 import './App.css';
 
@@ -22,6 +28,12 @@ interface WindowState {
   height?: number;
   zIndex: number;
   diskSpace?: string;
+  className?: string;
+  isZoomed?: boolean;
+  originalSize?: {
+    width: number;
+    height: number;
+  };
 }
 
 interface IconPosition {
@@ -29,17 +41,6 @@ interface IconPosition {
   x: number;
   y: number;
 }
-
-const ICON_WIDTH = 96;
-const ICON_SPACING = 16;
-const FOLDER_PADDING = 8;
-
-export const Z_INDEX = {
-  DESKTOP_ICON: 1,
-  SELECTED_ICON: 2,
-  DRAGGING_ICON: 3,
-  WINDOW_MIN: 10, // Windows will start from this value
-};
 
 const App: React.FC = () => {
   const [windows, setWindows] = useState<WindowState[]>([
@@ -176,6 +177,58 @@ const App: React.FC = () => {
     return iconPositions.find((pos) => pos.id === id) || { x: 0, y: 0 };
   };
 
+  const handleWindowZoom = (id: string): void => {
+    setWindows(
+      windows.map((win) => {
+        if (win.id === id) {
+          if (!win.isZoomed) {
+            // Save original size and zoom in
+            const originalWidth = win.width || 400;
+            const originalHeight = win.height || 300;
+            const maxWidth = window.innerWidth - 40;
+            const maxHeight = window.innerHeight - MENU_BAR_HEIGHT - 20;
+
+            return {
+              ...win,
+              isZoomed: true,
+              originalSize: {
+                width: originalWidth,
+                height: originalHeight,
+              },
+              width: Math.min(originalWidth * 2, maxWidth),
+              height: Math.min(originalHeight * 2, maxHeight),
+              className: 'transition-all duration-200 ease-in-out',
+            };
+          } else {
+            // Restore original size
+            return {
+              ...win,
+              isZoomed: false,
+              width: win.originalSize?.width,
+              height: win.originalSize?.height,
+              originalSize: undefined,
+              className: 'transition-all duration-200 ease-in-out',
+            };
+          }
+        }
+        return win;
+      })
+    );
+  };
+
+  const handleWindowPositionChange = (id: string, x: number, y: number) => {
+    setWindows(
+      windows.map((win) =>
+        win.id === id
+          ? {
+              ...win,
+              position: { x, y },
+            }
+          : win
+      )
+    );
+  };
+
   const renderWindowContent = (window: WindowState) => {
     switch (window.type) {
       case 'about':
@@ -262,6 +315,12 @@ const App: React.FC = () => {
                   type={window.type}
                   itemCount={window.content?.length ?? 0}
                   diskSpace={window.diskSpace}
+                  onZoom={() => handleWindowZoom(window.id)}
+                  width={window.width}
+                  height={window.height}
+                  onPositionChange={(x, y) =>
+                    handleWindowPositionChange(window.id, x, y)
+                  }
                 >
                   {renderWindowContent(window)}
                 </Window>
