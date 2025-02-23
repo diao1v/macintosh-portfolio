@@ -18,6 +18,11 @@ interface WindowProps {
   position?: Position;
   isFocused?: boolean;
   onFocus?: () => void;
+  zIndex?: number;
+  onMaximize?: () => void;
+  type?: 'folder' | 'about';
+  itemCount?: number;
+  diskSpace?: string;
 }
 
 export const MENU_BAR_HEIGHT = 20; // Height of the menu bar
@@ -29,6 +34,11 @@ const Window: React.FC<WindowProps> = ({
   position = { x: 40, y: 40 },
   isFocused = false,
   onFocus,
+  zIndex = 0,
+  onMaximize,
+  type,
+  itemCount = 0,
+  diskSpace,
 }) => {
   const [size, setSize] = useState<Size>({ width: 400, height: 300 });
   const [windowBounds, setWindowBounds] = useState({
@@ -56,6 +66,7 @@ const Window: React.FC<WindowProps> = ({
 
   return (
     <Rnd
+      style={{ zIndex }}
       default={{
         x: position.x,
         y: Math.max(position.y, MENU_BAR_HEIGHT),
@@ -110,11 +121,11 @@ const Window: React.FC<WindowProps> = ({
         <div
           className={`
             window-title-bar
-            h-5 flex items-center border-b select-none
+            h-5 flex items-center select-none overflow-hidden
             ${
               isFocused
-                ? 'bg-[repeating-linear-gradient(45deg,#888,#888_1px,#fff_1px,#fff_2px)] border-black px-2'
-                : 'bg-white border-[#999999] px-0'
+                ? 'bg-[url("/icons/titlebar.png")] bg-repeat border-b border-black'
+                : 'bg-white border-b border-[#999999]'
             }
           `}
         >
@@ -125,21 +136,29 @@ const Window: React.FC<WindowProps> = ({
                   e.stopPropagation();
                   onClose();
                 }}
-                className='w-3 h-3 bg-white border border-black rounded-none
+                className='w-3 h-3 mx-1 bg-white border border-black rounded-none
                          flex items-center justify-center
                          active:bg-[#000] focus:outline-none'
               >
                 <div className='w-2 h-0.5 bg-black' />
               </button>
-              <span className='flex-grow text-[11px] leading-none font-chicago text-black px-2'>
-                {title}
-              </span>
+              <div className='flex-grow flex justify-center h-full'>
+                <span className='h-full px-2 text-[11px] flex items-center font-chicago text-black bg-repeat bg-gray-200'>
+                  {title}123123
+                </span>
+              </div>
               <button
-                className='w-3 h-3 bg-white border border-black rounded-none
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMaximize?.();
+                }}
+                className='w-3 h-3 mx-1 bg-white border border-black rounded-none
                          flex items-center justify-center
                          active:bg-[#000] focus:outline-none'
               >
-                <div className='w-2 h-2 border border-black bg-white' />
+                <div className='w-2 h-2 border border-black'>
+                  <div className='w-full h-full bg-black transform translate-x-[1px] translate-y-[-1px]' />
+                </div>
               </button>
             </>
           ) : (
@@ -149,10 +168,22 @@ const Window: React.FC<WindowProps> = ({
           )}
         </div>
 
-        {/* Window Content */}
+        {/* Info Bar - Only show for folders */}
+        {type === 'folder' && (
+          <div className='h-[22px] flex justify-between items-center border-b border-[#999999] px-2 bg-white'>
+            <div className='text-[11px] font-chicago text-black block'>
+              {itemCount} item{itemCount !== 1 ? 's' : ''}
+            </div>
+            <div className='text-[11px] font-chicago text-black block'>
+              {diskSpace} MB in disk
+            </div>
+          </div>
+        )}
+
+        {/* Window Content - Adjust height based on info bar */}
         <div
-          className='p-3 overflow-auto'
-          style={{ height: 'calc(100% - 20px)' }}
+          className='p-3 overflow-auto bg-white'
+          style={{ height: `calc(100% - ${type === 'folder' ? 42 : 20}px)` }}
         >
           {children}
         </div>

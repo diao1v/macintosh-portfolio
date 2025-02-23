@@ -20,6 +20,8 @@ interface WindowState {
   content?: FolderConfig[];
   width?: number;
   height?: number;
+  zIndex: number;
+  diskSpace?: string;
 }
 
 const App: React.FC = () => {
@@ -30,9 +32,12 @@ const App: React.FC = () => {
       type: 'about',
       isOpen: true,
       position: { x: 40, y: 40 },
+      zIndex: 1,
     },
   ]);
   const [focusedWindowId, setFocusedWindowId] = useState<string>('about');
+  const [topZIndex, setTopZIndex] = useState(1);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const handleCloseWindow = (id: string): void => {
     setWindows(
@@ -45,6 +50,13 @@ const App: React.FC = () => {
 
   const handleWindowFocus = (id: string): void => {
     setFocusedWindowId(id);
+    const newZIndex = topZIndex + 1;
+    setTopZIndex(newZIndex);
+    setWindows(
+      windows.map((win) =>
+        win.id === id ? { ...win, zIndex: newZIndex } : win
+      )
+    );
   };
 
   const openFolder = (folderConfig: FolderConfig) => {
@@ -52,13 +64,37 @@ const App: React.FC = () => {
 
     if (existingWindow) {
       if (!existingWindow.isOpen) {
+        const newZIndex = topZIndex + 1;
+        setTopZIndex(newZIndex);
         setWindows(
           windows.map((win) =>
-            win.id === folderConfig.id ? { ...win, isOpen: true } : win
+            win.id === folderConfig.id
+              ? {
+                  ...win,
+                  isOpen: true,
+                  zIndex: newZIndex,
+                  // Add diskSpace if it doesn't exist
+                  diskSpace:
+                    win.diskSpace ||
+                    (
+                      (folderConfig.children?.length || 0) *
+                      (Math.random() * 2 + 0.5)
+                    ).toFixed(2),
+                }
+              : win
           )
         );
       }
     } else {
+      const newZIndex = topZIndex + 1;
+      setTopZIndex(newZIndex);
+
+      // Calculate disk space for new window
+      const diskSpace = (
+        (folderConfig.children?.length || 0) *
+        (Math.random() * 2 + 0.5)
+      ).toFixed(2);
+
       const newWindow: WindowState = {
         id: folderConfig.id,
         title: folderConfig.name,
@@ -71,10 +107,22 @@ const App: React.FC = () => {
         width: folderConfig.initialWindow?.width,
         height: folderConfig.initialWindow?.height,
         content: folderConfig.children,
+        zIndex: newZIndex,
+        diskSpace,
       };
       setWindows([...windows, newWindow]);
     }
     setFocusedWindowId(folderConfig.id);
+  };
+
+  const handleItemClick = (itemId: string) => {
+    setSelectedItemId(itemId);
+  };
+
+  const handleBackgroundClick = (e: React.MouseEvent) => {
+    if (e.currentTarget === e.target) {
+      setSelectedItemId(null);
+    }
   };
 
   const renderWindowContent = (window: WindowState) => {
@@ -110,6 +158,8 @@ const App: React.FC = () => {
                   name={item.name}
                   icon={item.icon}
                   onDoubleClick={() => openFolder(item as FolderConfig)}
+                  isSelected={selectedItemId === item.id}
+                  onClick={() => handleItemClick(item.id)}
                 />
               ))}
             </div>
@@ -123,18 +173,23 @@ const App: React.FC = () => {
       <MenuBar />
 
       {/* Desktop Area */}
-      <div className='absolute inset-0 pt-5'>
-        {/* Desktop Icons - Higher z-index */}
-        <div className='absolute top-2 right-2 z-10'>
+      <div className='absolute inset-0 pt-5' onClick={handleBackgroundClick}>
+        {/* Desktop Icons */}
+        <div
+          className='absolute top-2 right-2 z-10'
+          onClick={(e) => e.stopPropagation()}
+        >
           <DesktopIcon
             name={rootFolder.name}
             icon={rootFolder.icon}
             onDoubleClick={() => openFolder(rootFolder)}
+            isSelected={selectedItemId === rootFolder.id}
+            onClick={() => handleItemClick(rootFolder.id)}
           />
         </div>
 
         {/* Windows Container */}
-        <div className='absolute inset-0'>
+        <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
           {windows.map(
             (window) =>
               window.isOpen && (
@@ -148,6 +203,10 @@ const App: React.FC = () => {
                   onClose={() => handleCloseWindow(window.id)}
                   isFocused={focusedWindowId === window.id}
                   onFocus={() => handleWindowFocus(window.id)}
+                  zIndex={window.zIndex}
+                  type={window.type}
+                  itemCount={window.content?.length ?? 0}
+                  diskSpace={window.diskSpace}
                 >
                   {renderWindowContent(window)}
                 </Window>

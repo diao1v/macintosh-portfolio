@@ -3,22 +3,48 @@ import React from 'react';
 interface DesktopIconProps {
   name: string;
   icon: string;
-  onDoubleClick: () => void;
-  className?: string;
+  onDoubleClick?: () => void;
+  isSelected?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
-const DesktopIcon: React.FC<DesktopIconProps> = ({ name, icon, onDoubleClick, className = '' }) => {
+const DesktopIcon: React.FC<DesktopIconProps> = ({
+  name,
+  icon,
+  onDoubleClick,
+  isSelected = false,
+  onClick,
+}) => {
   return (
     <div
-      className={`w-[80px] flex flex-col items-center gap-1 cursor-default ${className}`}
-      onDoubleClick={onDoubleClick}
+      className='w-[108px] flex flex-col items-center cursor-default'
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.(e);
+      }}
+      onDoubleClick={(e) => {
+        e.stopPropagation();
+        onDoubleClick?.();
+      }}
     >
-      <img src={icon} alt={name} className='w-10 h-10' />
-      <span className='text-[11px] text-white text-center font-chicago leading-none px-1'>
-        {name}
-      </span>
+      <div
+        className={`
+          flex flex-col items-center gap-1.5 px-2.5 py-0.5 rounded-sm
+          ${isSelected ? 'bg-[#000000] bg-opacity-50' : ''}
+        `}
+      >
+        <img src={icon} alt={name} className='w-12 h-12' />
+        <span
+          className={`
+            text-[11px] text-center font-chicago whitespace-nowrap
+            ${isSelected ? 'text-white' : 'text-black'}
+          `}
+        >
+          {name}
+        </span>
+      </div>
     </div>
   );
 };
 
-export default DesktopIcon; 
+export default DesktopIcon;
