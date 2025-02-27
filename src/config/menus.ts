@@ -1,5 +1,3 @@
-import { MENU_BAR_HEIGHT } from '../constants';
-
 export interface MenuItem {
   label: string;
   action?: () => void;
@@ -13,18 +11,16 @@ export interface MenuConfig {
   items: MenuItem[];
 }
 
-export const createMenuConfig = (handlers: {
-  onOpenAbout: () => void;
-}) => {
+export const createMenuConfig = (handlers: { onOpenAbout: () => void }) => {
   const menus: MenuConfig[] = [
     {
-      label: '', 
+      label: '',
       items: [
         {
           label: 'About This Portfolio',
           action: handlers.onOpenAbout,
         },
-        { label: '---' }, 
+        { label: '---' },
         {
           label: 'Control Panels',
           disabled: true,
@@ -107,4 +103,4 @@ export const createMenuConfig = (handlers: {
   ];
 
   return menus;
-}; 
+};

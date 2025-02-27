@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { File } from '@/store/useFileStore';
 
 interface MarkdownViewProps {
@@ -6,11 +7,10 @@ interface MarkdownViewProps {
 }
 
 const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
-  console.log(file);
   return (
-    <div className='h-full p-2'>
-      <div className='relative w-full h-full' style={{ minWidth: '400px' }}>
-        123123
+    <div className='p-8 font-chicago text-[11px]'>
+      <div className='prose-sm prose max-w-none prose-headings:font-chicago prose-headings:mb-2'>
+        <ReactMarkdown>{file.content || ''}</ReactMarkdown>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { MENU_BAR_HEIGHT } from '../constants';
+import { content } from '@/content';
 
 export interface File {
   id: string;
@@ -8,13 +9,11 @@ export interface File {
   icon: string;
   children?: File[];
   content?: string;
-  initialWindow?: {
-    width?: number;
-    height?: number;
+  window?: {
+    width: number;
+    height: number;
     x?: number;
     y?: number;
-    minWidth?: number;
-    minHeight?: number;
   };
 }
 
@@ -37,13 +36,21 @@ const defaultRootFile: File = {
       name: 'About Me',
       type: 'folder',
       icon: '/icons/folder.png',
+      window: {
+        width: 600,
+        height: 400,
+      },
       children: [
         {
           id: 'resume',
           name: 'Resume.pdf',
           type: 'text',
           icon: '/icons/text.png',
-          content: 'This is my resume content...',
+          content: content.resume,
+          window: {
+            width: 600,
+            height: 1000,
+          },
         },
       ],
     },
@@ -52,7 +59,7 @@ const defaultRootFile: File = {
       name: 'Projects',
       type: 'folder',
       icon: '/icons/folder.png',
-      initialWindow: {
+      window: {
         width: 500,
         height: 400,
         x: 80,
@@ -62,8 +69,9 @@ const defaultRootFile: File = {
         {
           id: 'project1',
           name: 'Project 1',
-          type: 'folder',
-          icon: '/icons/folder.png',
+          type: 'text',
+          icon: '/icons/text.png',
+          content: content.projects.project1.description,
         },
         {
           id: 'project2',
@@ -129,9 +137,7 @@ const useFolderStore = create<FileStore>((set, get) => ({
       return null;
     };
 
-    console.log('Searching for file with id:', id); // Debug log
     const file = findFileInFolder(get().rootFolder);
-    console.log('Found file:', file); // Debug log
     return file;
   },
 
