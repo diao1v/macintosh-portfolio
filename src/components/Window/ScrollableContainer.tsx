@@ -218,7 +218,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   return (
     <div
       className='relative'
-      style={{ height: `calc(100% - ${type === 'folder' ? 42 : 20}px)` }}
+      style={{ height: `calc(100% - ${type !== 'folder' ? 20 : 42}px)` }}
     >
       <div className='absolute inset-0 overflow-hidden'>
         <div

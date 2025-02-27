@@ -31,13 +31,22 @@ const defaultRootFile: File = {
   name: 'Macintosh HD',
   type: 'folder',
   icon: '/icons/drive-harddisk.png',
-  initialWindow: {
-    width: 400,
-    height: 300,
-    x: 60,
-    y: MENU_BAR_HEIGHT + 20,
-  },
   children: [
+    {
+      id: 'about-me',
+      name: 'About Me',
+      type: 'folder',
+      icon: '/icons/folder.png',
+      children: [
+        {
+          id: 'resume',
+          name: 'Resume.pdf',
+          type: 'text',
+          icon: '/icons/text.png',
+          content: 'This is my resume content...',
+        },
+      ],
+    },
     {
       id: 'projects',
       name: 'Projects',
@@ -61,26 +70,6 @@ const defaultRootFile: File = {
           name: 'Project 2',
           type: 'folder',
           icon: '/icons/folder.png',
-        },
-      ],
-    },
-    {
-      id: 'about-me',
-      name: 'About Me',
-      type: 'folder',
-      icon: '/icons/folder.png',
-      initialWindow: {
-        width: 400,
-        height: 300,
-        x: 100,
-        y: MENU_BAR_HEIGHT + 60,
-      },
-      children: [
-        {
-          id: 'resume',
-          name: 'Resume.pdf',
-          type: 'text',
-          icon: '/icons/text.png',
         },
       ],
     },
@@ -121,13 +110,31 @@ const findItemById = (folder: File, id: string): File | null => {
 
 const useFolderStore = create<FileStore>((set, get) => ({
   rootFolder: defaultRootFile,
-  getFileById: (id: string) => {
-    const findFile = (folder: File): File | null => {
-      if (folder.id === id) return folder;
-      return folder.children?.find((file) => file.id === id) || null;
+
+  getFileById: (id: string): File | null => {
+    const findFileInFolder = (folder: File): File | null => {
+      if (folder.id === id) {
+        return folder;
+      }
+
+      if (folder.children) {
+        for (const child of folder.children) {
+          const found = findFileInFolder(child);
+          if (found) {
+            return found;
+          }
+        }
+      }
+
+      return null;
     };
-    return findFile(get().rootFolder);
+
+    console.log('Searching for file with id:', id); // Debug log
+    const file = findFileInFolder(get().rootFolder);
+    console.log('Found file:', file); // Debug log
+    return file;
   },
+
   addItem: (parentId, newItem) =>
     set((state) => {
       const addItemToFolder = (folder: File): File => {
