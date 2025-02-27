@@ -4,11 +4,13 @@ import { ScrollInfo, TrackDimensions } from './types';
 interface ScrollableContainerProps {
   children: React.ReactNode;
   type?: 'about' | 'folder' | 'project' | 'text' | 'contact' | 'link';
+  isFocused?: boolean;
 }
 
 const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   children,
   type,
+  isFocused = false,
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const horizontalTrackRef = useRef<HTMLDivElement>(null);
@@ -224,7 +226,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         <div
           ref={contentRef}
           className={`absolute inset-0 overflow-auto ${
-            type === 'about' ? 'bg-white' : 'bg-[#E6E6E6]'
+            isFocused ? 'bg-white' : 'bg-[#E6E6E6]'
           }`}
           style={{ zIndex: 1 }}
           onScroll={handleScroll}

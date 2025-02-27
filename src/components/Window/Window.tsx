@@ -68,9 +68,6 @@ const Window: React.FC<WindowProps> = ({
   }, [width, height]);
 
   const renderContent = () => {
-    console.info('File:', file);
-    console.info('ID:', id);
-
     if (id === 'about') {
       return <AboutPortfolio />;
     }
@@ -174,7 +171,9 @@ const Window: React.FC<WindowProps> = ({
           />
         ) : null}
 
-        <ScrollableContainer type={type}>{renderContent()}</ScrollableContainer>
+        <ScrollableContainer type={type} isFocused={isFocused}>
+          {renderContent()}
+        </ScrollableContainer>
       </div>
     </Rnd>
   );
