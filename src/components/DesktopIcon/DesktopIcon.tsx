@@ -37,7 +37,6 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
 
     const handleMouseUp = () => {
       if (isDragging && !hasMouseMoved) {
-        // If we didn't drag, treat it as a click
         onClick?.(
           new MouseEvent('click', {
             bubbles: true,
@@ -68,7 +67,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
         x: e.clientX - position.x,
         y: e.clientY - position.y,
       });
-      onClick?.(e); // Trigger click on mousedown for selection
+      onClick?.(e); 
       e.stopPropagation();
     }
   };

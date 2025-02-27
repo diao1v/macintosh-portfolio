@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Rnd } from 'react-rnd';
 import { MENU_BAR_HEIGHT, Z_INDEX } from '../../constants';
 import WindowHeader from './WindowHeader';
-import WindowContent from './WindowContent';
+import WindowSubHeader from './WindowSubHeader';
 import ScrollableContainer from './ScrollableContainer';
 import { WindowProps } from './types';
+import useFileStore from '@/store/useFileStore';
+import FolderView from '../Views/FolderView';
+import MarkdownView from '../Views/MarkdownView';
+import AboutPortfolio from '../AboutPortfolio/AboutPortfolio';
 
 interface Size {
   width: number;
@@ -12,49 +16,82 @@ interface Size {
 }
 
 const Window: React.FC<WindowProps> = ({
+  id,
   title,
-  children,
   onClose,
   position,
   isFocused = false,
   onFocus,
   zIndex = 0,
-  type,
   itemCount = 0,
   diskSpace,
   onZoom,
   width = 400,
   height = 300,
   onPositionChange,
+  onOpenFolder,
+  onItemClick,
+  onIconDrag,
+  getIconPosition,
+  selectedItemId,
 }) => {
+  const { getFileById } = useFileStore();
+  const file = id !== 'about' ? getFileById(id) : null;
+  const type = id === 'about' ? 'about' : file?.type || 'folder';
   const [size, setSize] = useState<Size>({ width, height });
-  const [windowBounds, setWindowBounds] = useState({
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  });
+  // const [windowBounds, setWindowBounds] = useState({
+  //   top: 0,
+  //   left: 0,
+  //   right: 0,
+  //   bottom: 0,
+  // });
 
-  useEffect(() => {
-    const updateBounds = () => {
-      setWindowBounds({
-        top: MENU_BAR_HEIGHT,
-        left: 0,
-        right: window.innerWidth - size.width,
-        bottom: window.innerHeight - size.height,
-      });
-    };
+  // useEffect(() => {
+  //   const updateBounds = () => {
+  //     setWindowBounds({
+  //       top: MENU_BAR_HEIGHT,
+  //       left: 0,
+  //       right: window.innerWidth - size.width,
+  //       bottom: window.innerHeight - size.height,
+  //     });
+  //   };
 
-    updateBounds();
-    window.addEventListener('resize', updateBounds);
-    return () => window.removeEventListener('resize', updateBounds);
-  }, [size]);
+  //   updateBounds();
+  //   window.addEventListener('resize', updateBounds);
+  //   return () => window.removeEventListener('resize', updateBounds);
+  // }, [size]);
 
   useEffect(() => {
     if (width && height) {
       setSize({ width, height });
     }
   }, [width, height]);
+
+  const renderContent = () => {
+    if (id === 'about') {
+      return <AboutPortfolio />;
+    }
+
+    if (!file) return null;
+
+    switch (file.type) {
+      case 'folder':
+        return (
+          <FolderView
+            file={file}
+            onOpenFolder={onOpenFolder}
+            onItemClick={onItemClick}
+            onIconDrag={onIconDrag}
+            getIconPosition={getIconPosition}
+            selectedItemId={selectedItemId}
+          />
+        );
+      case 'text':
+        return <MarkdownView file={file} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Rnd
@@ -124,11 +161,14 @@ const Window: React.FC<WindowProps> = ({
           isFocused={isFocused}
         />
 
-        {type === 'folder' && (
-          <WindowContent itemCount={itemCount} diskSpace={diskSpace} />
-        )}
+        {file?.type === 'folder' ? (
+          <WindowSubHeader
+            itemCount={file.children?.length || 0}
+            diskSpace={diskSpace}
+          />
+        ) : null}
 
-        <ScrollableContainer type={type}>{children}</ScrollableContainer>
+        <ScrollableContainer type={type}>{renderContent()}</ScrollableContainer>
       </div>
     </Rnd>
   );

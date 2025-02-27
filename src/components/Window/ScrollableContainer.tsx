@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Z_INDEX } from '../../constants';
 import { ScrollInfo, TrackDimensions } from './types';
 
 interface ScrollableContainerProps {
   children: React.ReactNode;
-  type?: 'folder' | 'about';
+  type?: 'about' | 'folder' | 'project' | 'text' | 'contact' | 'link';
 }
 
 const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
@@ -27,20 +26,48 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     null
   );
 
-  useEffect(() => {
-    const updateTrackDimensions = () => {
-      if (horizontalTrackRef.current && verticalTrackRef.current) {
-        setTrackDimensions({
-          width: horizontalTrackRef.current.clientWidth,
-          height: verticalTrackRef.current.clientHeight,
-        });
-      }
-    };
+  const updateDimensions = () => {
+    const content = contentRef.current;
+    const horizontalTrack = horizontalTrackRef.current;
+    const verticalTrack = verticalTrackRef.current;
 
-    updateTrackDimensions();
-    window.addEventListener('resize', updateTrackDimensions);
-    return () => window.removeEventListener('resize', updateTrackDimensions);
+    if (content && horizontalTrack && verticalTrack) {
+      // Update track dimensions
+      const newTrackDimensions = {
+        width: horizontalTrack.clientWidth,
+        height: verticalTrack.clientHeight,
+      };
+      setTrackDimensions(newTrackDimensions);
+
+      // Update thumb positions based on current scroll
+      const verticalRatio =
+        content.scrollHeight > content.clientHeight
+          ? content.scrollTop / (content.scrollHeight - content.clientHeight)
+          : 0;
+      const horizontalRatio =
+        content.scrollWidth > content.clientWidth
+          ? content.scrollLeft / (content.scrollWidth - content.clientWidth)
+          : 0;
+
+      setScrollInfo({
+        verticalThumbPosition: verticalRatio * (newTrackDimensions.height - 16),
+        horizontalThumbPosition:
+          horizontalRatio * (newTrackDimensions.width - 16),
+      });
+    }
+  };
+
+  // Call updateDimensions on mount and resize
+  useEffect(() => {
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, []);
+
+  // Update dimensions when content changes
+  useEffect(() => {
+    updateDimensions();
+  }, [children]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -153,6 +180,41 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     });
   };
 
+  const calculateThumbPosition = (
+    scrollPos: number,
+    contentSize: number,
+    viewportSize: number,
+    trackSize: number
+  ) => {
+    const scrollRatio = scrollPos / (contentSize - viewportSize);
+    const maxThumbTravel = trackSize - 16; // 16 is thumb size
+    return Math.min(scrollRatio * maxThumbTravel, maxThumbTravel);
+  };
+
+  const handleScroll = () => {
+    const content = contentRef.current;
+    if (!content) return;
+
+    const verticalThumbPosition = calculateThumbPosition(
+      content.scrollTop,
+      content.scrollHeight,
+      content.clientHeight,
+      trackDimensions.height
+    );
+
+    const horizontalThumbPosition = calculateThumbPosition(
+      content.scrollLeft,
+      content.scrollWidth,
+      content.clientWidth,
+      trackDimensions.width
+    );
+
+    setScrollInfo({
+      verticalThumbPosition,
+      horizontalThumbPosition,
+    });
+  };
+
   return (
     <div
       className='relative'
@@ -165,24 +227,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
             type === 'about' ? 'bg-white' : 'bg-[#E6E6E6]'
           }`}
           style={{ zIndex: 1 }}
-          onScroll={() => {
-            const content = contentRef.current;
-            if (content) {
-              const verticalRatio =
-                content.scrollTop /
-                (content.scrollHeight - content.clientHeight);
-              const horizontalRatio =
-                content.scrollLeft /
-                (content.scrollWidth - content.clientWidth);
-              const trackHeight = content.clientHeight - 32;
-              const trackWidth = content.clientWidth - 32;
-
-              setScrollInfo({
-                verticalThumbPosition: verticalRatio * trackHeight,
-                horizontalThumbPosition: horizontalRatio * trackWidth,
-              });
-            }
-          }}
+          onScroll={handleScroll}
         >
           <div className='relative min-h-full min-w-[400px]'>{children}</div>
         </div>
@@ -195,10 +240,10 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
             setIsDraggingThumb(true);
             setDragType('vertical');
             const trackRect = e.currentTarget.getBoundingClientRect();
-            const trackHeight = trackRect.height - 32;
+            const maxScroll = trackRect.height - 16;
             const thumbPosition = Math.max(
               0,
-              Math.min(e.clientY - trackRect.top - 16, trackHeight)
+              Math.min(e.clientY - trackRect.top - 16, maxScroll)
             );
             setScrollInfo((prev) => ({
               ...prev,

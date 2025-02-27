@@ -4,9 +4,10 @@ import { MENU_BAR_HEIGHT } from '../constants';
 export interface File {
   id: string;
   name: string;
-  type: 'folder' | 'file';
+  type: 'folder' | 'project' | 'text' | 'contact' | 'link';
   icon: string;
   children?: File[];
+  content?: string;
   initialWindow?: {
     width?: number;
     height?: number;
@@ -19,6 +20,7 @@ export interface File {
 
 interface FileStore {
   rootFolder: File;
+  getFileById: (id: string) => File | null;
   addItem: (parentId: string, item: File) => void;
   deleteItem: (id: string) => void;
   moveItem: (id: string, newParentId: string) => void;
@@ -77,7 +79,7 @@ const defaultRootFile: File = {
         {
           id: 'resume',
           name: 'Resume.pdf',
-          type: 'file',
+          type: 'text',
           icon: '/icons/text.png',
         },
       ],
@@ -85,19 +87,19 @@ const defaultRootFile: File = {
     {
       id: 'contact',
       name: 'Contact',
-      type: 'folder',
+      type: 'contact',
       icon: '/icons/folder.png',
       children: [
         {
           id: 'github',
           name: 'GitHub',
-          type: 'file',
+          type: 'link',
           icon: '/icons/unknown.png',
         },
         {
           id: 'linkedin',
           name: 'LinkedIn',
-          type: 'file',
+          type: 'link',
           icon: '/icons/unknown.png',
         },
       ],
@@ -117,9 +119,15 @@ const findItemById = (folder: File, id: string): File | null => {
   return null;
 };
 
-const useFolderStore = create<FileStore>((set) => ({
+const useFolderStore = create<FileStore>((set, get) => ({
   rootFolder: defaultRootFile,
-
+  getFileById: (id: string) => {
+    const findFile = (folder: File): File | null => {
+      if (folder.id === id) return folder;
+      return folder.children?.find((file) => file.id === id) || null;
+    };
+    return findFile(get().rootFolder);
+  },
   addItem: (parentId, newItem) =>
     set((state) => {
       const addItemToFolder = (folder: File): File => {
@@ -166,7 +174,6 @@ const useFolderStore = create<FileStore>((set) => ({
     set((state) => {
       let itemToMove: File | null = null;
 
-      // First find and remove the item
       const removeItem = (folder: File): File => {
         if (folder.children) {
           const itemIndex = folder.children.findIndex(
@@ -189,7 +196,6 @@ const useFolderStore = create<FileStore>((set) => ({
         return folder;
       };
 
-      // Then add it to the new parent
       const addToNewParent = (folder: File): File => {
         if (folder.id === newParentId && itemToMove) {
           return {

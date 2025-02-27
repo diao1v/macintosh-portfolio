@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { File } from '@/store/useFileStore';
 
 export interface Position {
   x: number;
@@ -6,8 +7,8 @@ export interface Position {
 }
 
 export interface WindowProps {
+  id: string;
   title: string;
-  children: ReactNode;
   onClose: () => void;
   position: Position;
   isFocused?: boolean;
@@ -20,6 +21,11 @@ export interface WindowProps {
   width?: number;
   height?: number;
   onPositionChange?: (x: number, y: number) => void;
+  onOpenFolder?: (file: File) => void;
+  onItemClick?: (id: string) => void;
+  onIconDrag?: (id: string, x: number, y: number) => void;
+  getIconPosition?: (id: string) => Position;
+  selectedItemId?: string | null;
 }
 
 export interface ScrollInfo {

@@ -1,21 +1,21 @@
 import { create } from 'zustand';
-import { File } from '../store/useFileStore';
+import { Z_INDEX } from '@/constants';
+import { File } from './useFileStore';
 
 interface Position {
   x: number;
   y: number;
 }
 
-interface WindowState {
+interface WindowState extends Partial<File> {
   id: string;
   title: string;
-  type: 'about' | 'folder';
+  type: 'folder' | 'project' | 'text' | 'contact' | 'link' | 'about';
   isOpen: boolean;
   position: Position;
-  content?: File[];
+  zIndex: number;
   width?: number;
   height?: number;
-  zIndex: number;
   diskSpace?: string;
   className?: string;
   isZoomed?: boolean;
@@ -67,7 +67,9 @@ const useWindowStore = create<WindowStore>((set) => ({
 
   focusWindow: (id) =>
     set((state) => {
-      const newZIndex = state.topZIndex + 1;
+      const newZIndex =
+        Math.max(...state.windows.map((w) => w.zIndex), Z_INDEX.WINDOW_MIN) + 1;
+
       return {
         focusedWindowId: id,
         topZIndex: newZIndex,
@@ -121,11 +123,33 @@ const useWindowStore = create<WindowStore>((set) => ({
     })),
 
   openWindow: (id) =>
-    set((state) => ({
-      windows: state.windows.map((win) =>
-        win.id === id ? { ...win, isOpen: true } : win
-      ),
-    })),
+    set((state) => {
+      // Find existing window
+      const existingWindow = state.windows.find(w => w.id === id);
+      
+      if (existingWindow) {
+        // Update existing window
+        return {
+          windows: state.windows.map((win) =>
+            win.id === id ? { ...win, isOpen: true } : win
+          ),
+        };
+      }
+
+      // If window doesn't exist, create new one (for 'about' window case)
+      const newWindow: WindowState = {
+        id,
+        title: id === 'about' ? 'About This Portfolio' : '',
+        type: 'about',
+        isOpen: true,
+        position: { x: 40, y: 40 },
+        zIndex: state.topZIndex + 1,
+      };
+
+      return {
+        windows: [...state.windows, newWindow],
+      };
+    }),
 }));
 
 export default useWindowStore;

@@ -1,11 +1,14 @@
 import React from 'react';
 
-interface WindowContentProps {
+interface WindowSubHeaderProps {
   itemCount: number;
   diskSpace?: string;
 }
 
-const WindowContent: React.FC<WindowContentProps> = ({ itemCount, diskSpace }) => {
+const WindowSubHeader: React.FC<WindowSubHeaderProps> = ({
+  itemCount,
+  diskSpace,
+}) => {
   return (
     <div className='flex items-center justify-between px-2 h-[22px] bg-white border-b border-[#999999]'>
       <span className='text-[11px] font-chicago text-black'>
@@ -19,4 +22,4 @@ const WindowContent: React.FC<WindowContentProps> = ({ itemCount, diskSpace }) =
   );
 };
 
-export default WindowContent; 
+export default WindowSubHeader;
