@@ -5,7 +5,7 @@ import WindowHeader from './WindowHeader';
 import WindowSubHeader from './WindowSubHeader';
 import ScrollableContainer from './ScrollableContainer';
 import { WindowProps } from './types';
-import useFileStore from '@/store/useFileStore';
+import useFileStore, { File } from '@/store/useFileStore';
 import FolderView from '../Views/FolderView';
 import MarkdownView from '../Views/MarkdownView';
 import AboutPortfolio from '../AboutPortfolio/AboutPortfolio';
@@ -37,7 +37,7 @@ const Window: React.FC<WindowProps> = ({
 }) => {
   const { getFileById } = useFileStore();
   const file = id !== 'about' ? getFileById(id) : null;
-  const type = id === 'about' ? 'about' : file?.type || 'folder';
+  const type = id === 'about' ? 'about' : file?.type;
   const [size, setSize] = useState<Size>({ width, height });
   // const [windowBounds, setWindowBounds] = useState({
   //   top: 0,
@@ -68,11 +68,17 @@ const Window: React.FC<WindowProps> = ({
   }, [width, height]);
 
   const renderContent = () => {
+    console.info('File:', file);
+    console.info('ID:', id);
+
     if (id === 'about') {
       return <AboutPortfolio />;
     }
 
-    if (!file) return null;
+    if (!file) {
+      console.warn('No file found for id:', id);
+      return null;
+    }
 
     switch (file.type) {
       case 'folder':
