@@ -60,7 +60,6 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button === 0) {
-      // Left click only
       setIsDragging(true);
       setHasMouseMoved(false);
       setDragOffset({

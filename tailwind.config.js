@@ -11,7 +11,9 @@ export default {
       },
       fontFamily: {
         chicago: ['Chicago', 'sans-serif'],
-        monaco: ['Monaco', 'monospace'],
+        monaco: ['Monaco', 'sans-serif'],
+        torrance: ['Torrance', 'sans-serif'],
+        geneva: ['Geneva', 'sans-serif'],
       },
     },
   },

@@ -4,8 +4,18 @@
 }
 
 @font-face {
+  font-family: 'Torrance';
+  src: url('/fonts/Torrance.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'Monaco';
-  src: url('/fonts/monaco.ttf') format('truetype');
+  src: url('/fonts/Monaco.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Geneva';
+  src: url('/fonts/Geneva.ttf') format('truetype');
 }
 
 @tailwind base;
@@ -16,6 +26,10 @@
   body {
     @apply bg-[#666666] text-black overflow-hidden;
     font-family: 'Chicago', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  p {
+    image-rendering: pixelated;
   }
 
   * {
@@ -46,4 +60,10 @@
 /* Show resize handle only when window is focused */
 .window-focused .react-resizable-handle {
   display: block;
+}
+/* Add this to test if font loads */
+@layer utilities {
+  .font-test {
+    font-family: 'Boston', sans-serif;
+  }
 }
