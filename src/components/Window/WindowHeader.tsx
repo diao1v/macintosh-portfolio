@@ -7,11 +7,11 @@ interface WindowHeaderProps {
   isFocused: boolean;
 }
 
-const WindowHeader: React.FC<WindowHeaderProps> = ({ 
-  title, 
-  onClose, 
-  onZoom, 
-  isFocused 
+const WindowHeader: React.FC<WindowHeaderProps> = ({
+  title,
+  onClose,
+  onZoom,
+  isFocused,
 }) => {
   return (
     <div
@@ -32,11 +32,15 @@ const WindowHeader: React.FC<WindowHeaderProps> = ({
               e.stopPropagation();
               onClose();
             }}
-            className='w-3 h-3 mx-1 bg-white border border-black rounded-none
-                     flex items-center justify-center
-                     active:bg-[#000] focus:outline-none'
+            className='w-4 h-4 ml-0.5
+            flex items-center justify-center
+            active:outline-double focus:outline-none'
           >
-            <div className='w-2 h-0.5 bg-black' />
+            <img
+              src='/icons/checkbox-mixed.png'
+              alt='close'
+              className='w-4 h-4'
+            />
           </button>
           <div className='flex justify-center flex-grow h-full'>
             <span className='h-full px-2 text-[11px] flex items-center font-chicago text-black bg-repeat bg-gray-200'>
@@ -48,13 +52,11 @@ const WindowHeader: React.FC<WindowHeaderProps> = ({
               e.stopPropagation();
               onZoom?.();
             }}
-            className='w-3 h-3 mx-1 bg-white border border-black rounded-none
+            className='w-4 h-4 
                      flex items-center justify-center
                      active:bg-[#000] focus:outline-none'
           >
-            <div className='w-2 h-2 border border-black'>
-              <div className='w-full h-full bg-black transform translate-x-[1px] translate-y-[-1px]' />
-            </div>
+            <img src='/icons/drag.png' alt='drag' className='w-4 h-4' />
           </button>
         </>
       ) : (
@@ -66,4 +68,4 @@ const WindowHeader: React.FC<WindowHeaderProps> = ({
   );
 };
 
-export default WindowHeader; 
+export default WindowHeader;

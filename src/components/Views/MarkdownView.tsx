@@ -9,7 +9,7 @@ interface MarkdownViewProps {
 const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
   return (
     <div className='p-8 text-[10px]'>
-      <div className='prose-sm prose max-w-none prose-headings:mb-1'>
+      <div className='prose prose-xs max-w-none prose-headings:mb-1'>
         <ReactMarkdown>{file.content || ''}</ReactMarkdown>
       </div>
     </div>

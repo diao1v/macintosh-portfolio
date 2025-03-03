@@ -5,7 +5,7 @@ const AboutPortfolio: React.FC = () => {
     <div className='p-8 space-y-3'>
       <div className='flex items-center gap-4'>
         <img
-          src='/icons/computer.png'
+          src='/icons/about_macintosh.png'
           alt='Computer Icon'
           className='w-16 h-16'
         />

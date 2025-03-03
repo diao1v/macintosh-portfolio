@@ -18,6 +18,11 @@
   src: url('/fonts/Geneva.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Pixel';
+  src: url('/fonts/Minecraftia-Regular.ttf') format('truetype');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
