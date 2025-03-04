@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { File } from '@/store/useFileStore';
 
 export interface Position {

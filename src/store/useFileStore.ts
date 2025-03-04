@@ -2,10 +2,29 @@ import { create } from 'zustand';
 import { MENU_BAR_HEIGHT } from '../constants';
 import { content } from '@/content';
 
+//create a map that link type with icon path
+const typeToIcon = {
+  harddisk: '/icons/drive-harddisk.png',
+  folder: '/icons/folder.png',
+  project: '/icons/scrapbook.png',
+  text: '/icons/text.png',
+  contact: '/icons/gmail.png',
+  link: '/icons/unknown.png',
+  photo: '/icons/media.png',
+  code: '/icons/text-x-script.png',
+};
+
 export interface File {
   id: string;
   name: string;
-  type: 'folder' | 'project' | 'text' | 'contact' | 'link' | 'scrapbook';
+  type:
+    | 'folder'
+    | 'project'
+    | 'text'
+    | 'contact'
+    | 'link'
+    | 'scrapbook'
+    | 'code';
   icon: string;
   children?: File[];
   content?: string;
@@ -30,13 +49,13 @@ const defaultRootFile: File = {
   id: 'macHD',
   name: 'Macintosh HD',
   type: 'folder',
-  icon: '/icons/drive-harddisk.png',
+  icon: typeToIcon['harddisk'],
   children: [
     {
       id: 'about-me',
       name: 'About Me',
       type: 'folder',
-      icon: '/icons/folder.png',
+      icon: typeToIcon['folder'],
       window: {
         width: 600,
         height: 400,
@@ -46,11 +65,22 @@ const defaultRootFile: File = {
           id: 'resume',
           name: 'Resume.txt',
           type: 'text',
-          icon: '/icons/text.png',
+          icon: typeToIcon['text'],
           content: content.resume,
           window: {
             width: 700,
             height: 500,
+          },
+        },
+        {
+          id: 'about-me-java',
+          name: 'About Me.java',
+          type: 'code',
+          icon: typeToIcon['code'],
+          content: content.aboutMe,
+          window: {
+            width: 800,
+            height: 600,
           },
         },
       ],
@@ -59,9 +89,9 @@ const defaultRootFile: File = {
       id: 'projects',
       name: 'Projects',
       type: 'folder',
-      icon: '/icons/folder.png',
+      icon: typeToIcon['folder'],
       window: {
-        width: 500,
+        width: 600,
         height: 400,
         x: 80,
         y: MENU_BAR_HEIGHT + 40,
@@ -71,17 +101,21 @@ const defaultRootFile: File = {
           id: 'macosPortfolio',
           name: 'Mac OS Portfolio',
           type: 'project',
-          icon: '/icons/scrapbook.png',
+          icon: typeToIcon['project'],
           window: {
-            width: 600,
-            height: 500,
+            width: 1000,
+            height: 750,
           },
         },
         {
           id: 'project2',
           name: 'Project 2',
-          type: 'folder',
-          icon: '/icons/folder.png',
+          type: 'project',
+          icon: typeToIcon['project'],
+          window: {
+            width: 1000,
+            height: 750,
+          },
         },
       ],
     },
@@ -89,7 +123,7 @@ const defaultRootFile: File = {
       id: 'contact',
       name: 'Contact',
       type: 'contact',
-      icon: '/icons/folder.png',
+      icon: typeToIcon['contact'],
       children: [
         {
           id: 'github',

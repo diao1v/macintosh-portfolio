@@ -65,6 +65,7 @@ const Window: React.FC<WindowProps> = ({
           />
         );
       case 'text':
+      case 'code':
         return <MarkdownView file={file} />;
       case 'project':
         return <ScrapbookView file={file} />;
