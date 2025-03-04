@@ -26,6 +26,7 @@ export interface WindowProps {
   onIconDrag?: (id: string, x: number, y: number) => void;
   getIconPosition?: (id: string) => Position;
   selectedItemId?: string | null;
+  children?: React.ReactNode;
 }
 
 export interface ScrollInfo {
