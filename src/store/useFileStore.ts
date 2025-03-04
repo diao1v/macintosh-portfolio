@@ -11,7 +11,7 @@ const typeToIcon = {
   contact: '/icons/gmail.png',
   link: '/icons/unknown.png',
   photo: '/icons/media.png',
-  code: '/icons/text-x-script.png',
+  code: '/icons/text-script.png',
 };
 
 export interface File {
