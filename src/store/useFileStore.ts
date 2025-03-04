@@ -63,7 +63,7 @@ const defaultRootFile: File = {
       children: [
         {
           id: 'resume',
-          name: 'Resume.txt',
+          name: 'Resume.pdf',
           type: 'text',
           icon: typeToIcon['text'],
           content: content.resume,
@@ -74,7 +74,7 @@ const defaultRootFile: File = {
         },
         {
           id: 'about-me-java',
-          name: 'About Me.java',
+          name: 'AboutMe.java',
           type: 'code',
           icon: typeToIcon['code'],
           content: content.aboutMe,
