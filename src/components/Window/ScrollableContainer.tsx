@@ -3,7 +3,7 @@ import { ScrollInfo, TrackDimensions } from './types';
 
 interface ScrollableContainerProps {
   children: React.ReactNode;
-  type?: 'about' | 'folder' | 'project' | 'text' | 'contact' | 'link';
+  type?: 'about' | 'folder' | 'project' | 'text' | 'contact' | 'link' | 'scrapbook';
   isFocused?: boolean;
 }
 
@@ -12,6 +12,27 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   type,
   isFocused = false,
 }) => {
+  // Modified version for project type - hide scrollbars but keep corner drag
+  if (type === 'project') {
+    return (
+      <div className="relative h-full">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-white">
+            {children}
+          </div>
+          
+          {/* Corner Drag Button */}
+          <div
+            className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center"
+            style={{ zIndex: 3 }}
+          >
+            <img src="/icons/maximize.png" alt="resize" className="w-3.5 h-3.5" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const contentRef = useRef<HTMLDivElement>(null);
   const horizontalTrackRef = useRef<HTMLDivElement>(null);
   const verticalTrackRef = useRef<HTMLDivElement>(null);

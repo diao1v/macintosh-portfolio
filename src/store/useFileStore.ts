@@ -5,7 +5,7 @@ import { content } from '@/content';
 export interface File {
   id: string;
   name: string;
-  type: 'folder' | 'project' | 'text' | 'contact' | 'link';
+  type: 'folder' | 'project' | 'text' | 'contact' | 'link' | 'scrapbook';
   icon: string;
   children?: File[];
   content?: string;
@@ -15,6 +15,7 @@ export interface File {
     x?: number;
     y?: number;
   };
+  projectId?: string;
 }
 
 interface FileStore {
@@ -43,13 +44,13 @@ const defaultRootFile: File = {
       children: [
         {
           id: 'resume',
-          name: 'Resume.pdf',
+          name: 'Resume.txt',
           type: 'text',
           icon: '/icons/text.png',
           content: content.resume,
           window: {
-            width: 600,
-            height: 1000,
+            width: 700,
+            height: 500,
           },
         },
       ],
@@ -67,11 +68,14 @@ const defaultRootFile: File = {
       },
       children: [
         {
-          id: 'project1',
-          name: 'Project 1',
-          type: 'text',
-          icon: '/icons/text.png',
-          content: content.projects.project1.description,
+          id: 'macosPortfolio',
+          name: 'Mac OS Portfolio',
+          type: 'project',
+          icon: '/icons/scrapbook.png',
+          window: {
+            width: 600,
+            height: 500,
+          },
         },
         {
           id: 'project2',

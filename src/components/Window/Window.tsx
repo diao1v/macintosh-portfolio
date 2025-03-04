@@ -5,9 +5,10 @@ import WindowHeader from './WindowHeader';
 import WindowSubHeader from './WindowSubHeader';
 import ScrollableContainer from './ScrollableContainer';
 import { WindowProps } from './types';
-import useFileStore, { File } from '@/store/useFileStore';
+import useFileStore from '@/store/useFileStore';
 import FolderView from '../Views/FolderView';
 import MarkdownView from '../Views/MarkdownView';
+import ScrapbookView from '../Views/ScrapbookView';
 import AboutPortfolio from '../AboutPortfolio/AboutPortfolio';
 
 interface Size {
@@ -22,8 +23,7 @@ const Window: React.FC<WindowProps> = ({
   position,
   isFocused = false,
   onFocus,
-  zIndex = 0,
-  itemCount = 0,
+  zIndex = 1,
   diskSpace,
   onZoom,
   width = 400,
@@ -34,37 +34,15 @@ const Window: React.FC<WindowProps> = ({
   onIconDrag,
   getIconPosition,
   selectedItemId,
+  children,
 }) => {
   const { getFileById } = useFileStore();
   const file = id !== 'about' ? getFileById(id) : null;
   const type = id === 'about' ? 'about' : file?.type;
   const [size, setSize] = useState<Size>({ width, height });
-  // const [windowBounds, setWindowBounds] = useState({
-  //   top: 0,
-  //   left: 0,
-  //   right: 0,
-  //   bottom: 0,
-  // });
-
-  // useEffect(() => {
-  //   const updateBounds = () => {
-  //     setWindowBounds({
-  //       top: MENU_BAR_HEIGHT,
-  //       left: 0,
-  //       right: window.innerWidth - size.width,
-  //       bottom: window.innerHeight - size.height,
-  //     });
-  //   };
-
-  //   updateBounds();
-  //   window.addEventListener('resize', updateBounds);
-  //   return () => window.removeEventListener('resize', updateBounds);
-  // }, [size]);
 
   useEffect(() => {
-    if (width && height) {
-      setSize({ width, height });
-    }
+    setSize({ width, height });
   }, [width, height]);
 
   const renderContent = () => {
@@ -72,10 +50,7 @@ const Window: React.FC<WindowProps> = ({
       return <AboutPortfolio />;
     }
 
-    if (!file) {
-      console.warn('No file found for id:', id);
-      return null;
-    }
+    if (!file) return null;
 
     switch (file.type) {
       case 'folder':
@@ -91,6 +66,8 @@ const Window: React.FC<WindowProps> = ({
         );
       case 'text':
         return <MarkdownView file={file} />;
+      case 'project':
+        return <ScrapbookView file={file} />;
       default:
         return null;
     }
@@ -98,22 +75,33 @@ const Window: React.FC<WindowProps> = ({
 
   return (
     <Rnd
-      style={{
-        zIndex: Math.max(zIndex, Z_INDEX.WINDOW_MIN),
-      }}
       size={{ width: size.width, height: size.height }}
       position={{ x: position.x, y: position.y }}
-      default={{
-        x: position.x,
-        y: Math.max(position.y, MENU_BAR_HEIGHT),
-        width: size.width,
-        height: size.height,
+      onDragStop={(e, d) => {
+        if (onPositionChange) {
+          onPositionChange(d.x, d.y);
+        }
       }}
-      minWidth={200}
-      minHeight={150}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        setSize({
+          width: parseInt(ref.style.width),
+          height: parseInt(ref.style.height),
+        });
+      }}
+      minWidth={300}
+      minHeight={200}
       bounds='parent'
+      style={{ zIndex }}
       dragHandleClassName='window-title-bar'
-      onMouseDown={onFocus}
+      className={`${isFocused ? 'window-focused' : ''}`}
+      onClick={() => onFocus && onFocus()}
+      resizeHandleComponent={{
+        bottomRight: (
+          <div className='absolute bottom-[11px] right-[11px] z-40 w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center'>
+            <img src='/icons/maximize.png' alt='maximize' className='w-4 h-4' />
+          </div>
+        ),
+      }}
       enableResizing={{
         top: false,
         right: false,
@@ -124,38 +112,11 @@ const Window: React.FC<WindowProps> = ({
         bottomLeft: false,
         topLeft: false,
       }}
-      resizeHandleComponent={{
-        bottomRight: (
-          <div className='absolute  bottom-[11px] right-[11px] z-40 w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center'>
-            <img src='/icons/maximize.png' alt='maximize' className='w-4 h-4' />
-          </div>
-        ),
-      }}
-      onResize={(e, direction, ref) => {
-        setSize({
-          width: parseInt(ref.style.width),
-          height: parseInt(ref.style.height),
-        });
-      }}
-      onDragStop={(e, d) => {
-        const y = Math.max(d.y, MENU_BAR_HEIGHT);
-        if (d.y !== y) {
-          e.preventDefault();
-        }
-        onPositionChange?.(d.x, y);
-      }}
-      maxWidth={window.innerWidth - 40}
-      maxHeight={window.innerHeight - MENU_BAR_HEIGHT - 20}
     >
       <div
-        className={`
-          bg-[#E6E6E6] h-full
-          ${
-            isFocused
-              ? 'border border-black shadow-[2px_2px_0_rgba(0,0,0,0.1)]'
-              : 'border border-[#999999]'
-          }
-        `}
+        className={`flex flex-col h-full border ${
+          isFocused ? 'border-black' : 'border-[#999999]'
+        } bg-[#E6E6E6] shadow-md`}
       >
         <WindowHeader
           title={title}
@@ -164,16 +125,22 @@ const Window: React.FC<WindowProps> = ({
           isFocused={isFocused}
         />
 
-        {file?.type === 'folder' ? (
+        {type === 'folder' ? (
           <WindowSubHeader
-            itemCount={file.children?.length || 0}
+            itemCount={file?.children?.length || 0}
             diskSpace={diskSpace}
           />
         ) : null}
 
-        <ScrollableContainer type={type} isFocused={isFocused}>
-          {renderContent()}
-        </ScrollableContainer>
+        {type === 'project' ? (
+          <div className='relative flex-1'>
+            <div className='absolute inset-0'>{renderContent()}</div>
+          </div>
+        ) : (
+          <ScrollableContainer type={type} isFocused={isFocused}>
+            {renderContent()}
+          </ScrollableContainer>
+        )}
       </div>
     </Rnd>
   );
