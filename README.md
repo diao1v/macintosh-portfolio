@@ -10,7 +10,6 @@ A digital portfolio inspired by the classic Macintosh System 7 and 7.5 interface
   - **Projects**: Browse my work through a clickable gallery.
   - **Contact**: Reach out using a classic Mac-style form.
 
-
 ## How to Use
 
 1. Clone the repo:
@@ -19,5 +18,14 @@ A digital portfolio inspired by the classic Macintosh System 7 and 7.5 interface
 4. open `http://localhost:5173`
 
 ## To do
-1. Add dropdown menu for the Apple Icon
-2. Add store to keep track state such as opened windows, new created files, new created folders, etc.
+
+- [ ] Add Project details (Grammar Tuner, Mac OS Portfolio, Cheater Encoder, House Shopping Diary)
+- [ ] Add off work projects (wood work, Lego building)
+- [ ] Add "Add new folder" function
+- [ ] Add "Open and Close" function from File menu dropdown
+- [ ] Add "Add new text file" function
+- [ ] Add "Delete" function
+- [ ] Add "Move" function
+- [ ] Add load Mac interface
+- [ ] Add Email/Contact
+- [ ] Add personal links (github, linkedin)
