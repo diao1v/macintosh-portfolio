@@ -60,7 +60,6 @@ const Window: React.FC<WindowProps> = ({
             onOpenFolder={onOpenFolder}
             onItemClick={onItemClick}
             onIconDrag={onIconDrag}
-            getIconPosition={getIconPosition}
             selectedItemId={selectedItemId}
           />
         );

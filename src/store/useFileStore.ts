@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { content } from '@/content';
 
-const typeToIcon = {
+export const typeToIcon = {
   harddisk: '/icons/drive-harddisk.png',
   folder: '/icons/folder.png',
   project: '/icons/scrapbook.png',
@@ -47,7 +47,7 @@ interface FileStore {
 const createFileStructure = () => {
   const defaultRootFile: File = {
     id: 'root',
-    name: "Yiwei's Portfolio",
+    name: 'Macintosh HD',
     type: 'folder',
     icon: typeToIcon['harddisk'],
     window: {
