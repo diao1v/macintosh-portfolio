@@ -10,9 +10,7 @@ import Window from '../Window/Window';
 import useWindowStore from '@/store/useWindowStore';
 import useFolderStore from '@/store/useFileStore';
 import { File } from '@/store/useFileStore';
-import AboutPortfolio from '../AboutPortfolio/AboutPortfolio';
-import FolderView from '../Views/FolderView';
-import MarkdownView from '../Views/MarkdownView';
+import MenuBar from '../MenuBar/MenuBar';
 
 interface IconPosition {
   id: string;
@@ -110,51 +108,58 @@ const Desktop: React.FC = () => {
   };
 
   return (
-    <div className='absolute inset-0 pt-5' onClick={handleBackgroundClick}>
-      {/* Desktop Icons */}
-      <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
-        <DesktopIcon
-          name={rootFolder.name}
-          icon={rootFolder.icon}
-          onDoubleClick={() => openFolder(rootFolder)}
-          isSelected={selectedItemId === rootFolder.id}
-          onClick={() => handleItemClick(rootFolder.id)}
-          position={getIconPosition(rootFolder.id)}
-          onDrag={(x, y) => handleIconDrag(rootFolder.id, x, y)}
-        />
-      </div>
+    <>
+      <MenuBar 
+        selectedItemId={selectedItemId} 
+        onOpenFile={openFolder}
+        onCloseWindow={() => handleCloseWindow(focusedWindowId!)}
+      />
+      <div className='absolute inset-0 pt-5' onClick={handleBackgroundClick}>
+        {/* Desktop Icons */}
+        <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
+          <DesktopIcon
+            name={rootFolder.name}
+            icon={rootFolder.icon}
+            onDoubleClick={() => openFolder(rootFolder)}
+            isSelected={selectedItemId === rootFolder.id}
+            onClick={() => handleItemClick(rootFolder.id)}
+            position={getIconPosition(rootFolder.id)}
+            onDrag={(x, y) => handleIconDrag(rootFolder.id, x, y)}
+          />
+        </div>
 
-      {/* Windows Container */}
-      <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
-        {windows.map(
-          (window) =>
-            window.isOpen && (
-              <Window
-                key={window.id}
-                id={window.id}
-                title={window.title}
-                position={window.position}
-                onClose={() => handleCloseWindow(window.id)}
-                isFocused={focusedWindowId === window.id}
-                onFocus={() => handleWindowFocus(window.id)}
-                zIndex={window.zIndex}
-                diskSpace={window.diskSpace}
-                onZoom={() => handleWindowZoom(window.id)}
-                width={window.width}
-                height={window.height}
-                onPositionChange={(x, y) =>
-                  setWindowPosition(window.id, { x, y })
-                }
-                onOpenFolder={openFolder}
-                onItemClick={handleItemClick}
-                onIconDrag={handleIconDrag}
-                getIconPosition={getIconPosition}
-                selectedItemId={selectedItemId}
-              />
-            )
-        )}
+        {/* Windows Container */}
+        <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
+          {windows.map(
+            (window) =>
+              window.isOpen && (
+                <Window
+                  key={window.id}
+                  id={window.id}
+                  title={window.title}
+                  position={window.position}
+                  onClose={() => handleCloseWindow(window.id)}
+                  isFocused={focusedWindowId === window.id}
+                  onFocus={() => handleWindowFocus(window.id)}
+                  zIndex={window.zIndex}
+                  diskSpace={window.diskSpace}
+                  onZoom={() => handleWindowZoom(window.id)}
+                  width={window.width}
+                  height={window.height}
+                  onPositionChange={(x, y) =>
+                    setWindowPosition(window.id, { x, y })
+                  }
+                  onOpenFolder={openFolder}
+                  onItemClick={handleItemClick}
+                  onIconDrag={handleIconDrag}
+                  getIconPosition={getIconPosition}
+                  selectedItemId={selectedItemId}
+                />
+              )
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

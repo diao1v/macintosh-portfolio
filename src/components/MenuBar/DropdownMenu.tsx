@@ -39,7 +39,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                       ? 'text-gray-400'
                       : 'hover:bg-black hover:text-white'
                   }
-                  ${item.shortcut ? 'flex justify-between items-center' : ''}
                 `}
                 onClick={() => {
                   if (!item.disabled && item.action) {
@@ -50,9 +49,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                 disabled={item.disabled}
               >
                 <span>{item.label}</span>
-                {item.shortcut && (
-                  <span className='ml-4 text-gray-600'>{item.shortcut}</span>
-                )}
               </button>
             )
           )}

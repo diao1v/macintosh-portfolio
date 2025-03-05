@@ -1,15 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DropdownMenu from './DropdownMenu';
 import { createMenuConfig, type MenuConfig } from '@/config/menus';
+import { File } from '@/store/useFileStore';
+import useWindowStore from '@/store/useWindowStore';
 
 interface MenuBarProps {
-  onOpenAbout: () => void;
+  selectedItemId: string | null;
+  onOpenFile: (folderConfig: File) => void;
+  onCloseWindow: () => void;
 }
 
-const MenuBar: React.FC<MenuBarProps> = ({ onOpenAbout }) => {
+const MenuBar: React.FC<MenuBarProps> = ({
+  selectedItemId,
+  onOpenFile,
+  onCloseWindow,
+}) => {
+  const { openWindow } = useWindowStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const menuConfig = createMenuConfig({ onOpenAbout });
+  const menuConfig = createMenuConfig({
+    onOpenAbout: () => openWindow('about'),
+    selectedItemId,
+    onOpenFile,
+    onCloseWindow,
+  });
 
   useEffect(() => {
     // Update time immediately to avoid delay
