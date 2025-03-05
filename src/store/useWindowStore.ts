@@ -7,10 +7,18 @@ interface Position {
   y: number;
 }
 
-interface WindowState extends Partial<File> {
+interface WindowState {
   id: string;
   title: string;
-  type: 'folder' | 'project' | 'text' | 'contact' | 'link' | 'about';
+  type:
+    | 'about'
+    | 'folder'
+    | 'project'
+    | 'text'
+    | 'contact'
+    | 'link'
+    | 'scrapbook'
+    | 'code';
   isOpen: boolean;
   position: Position;
   zIndex: number;
@@ -23,6 +31,8 @@ interface WindowState extends Partial<File> {
     width: number;
     height: number;
   };
+  children?: File[];
+  content?: string;
 }
 
 interface WindowStore {
@@ -125,8 +135,8 @@ const useWindowStore = create<WindowStore>((set) => ({
   openWindow: (id) =>
     set((state) => {
       // Find existing window
-      const existingWindow = state.windows.find(w => w.id === id);
-      
+      const existingWindow = state.windows.find((w) => w.id === id);
+
       if (existingWindow) {
         // Update existing window
         return {

@@ -1,3 +1,7 @@
+import useWindowStore from '@/store/useWindowStore';
+import useFileStore, { typeToIcon, File } from '@/store/useFileStore';
+import { FUN_NAMES } from '@/constants';
+
 export interface MenuItem {
   label: string;
   action?: () => void;
@@ -12,6 +16,31 @@ export interface MenuConfig {
 }
 
 export const createMenuConfig = (handlers: { onOpenAbout: () => void }) => {
+  const { focusedWindowId } = useWindowStore.getState();
+  const { addItem, getFileById } = useFileStore.getState();
+
+  const handleCreateFolder = () => {
+    const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
+
+    if (!focusedFile || focusedFile.type !== 'folder') return;
+
+    const randomName = FUN_NAMES[Math.floor(Math.random() * FUN_NAMES.length)];
+
+    const newFolder: File = {
+      id: `folder-${Date.now()}`,
+      name: randomName,
+      type: 'folder',
+      icon: typeToIcon['folder'],
+      children: [],
+      window: {
+        width: 600,
+        height: 400,
+      },
+    };
+
+    addItem(focusedFile.id, newFolder);
+  };
+
   const menus: MenuConfig[] = [
     {
       label: '',
@@ -33,7 +62,9 @@ export const createMenuConfig = (handlers: { onOpenAbout: () => void }) => {
         {
           label: 'New Folder',
           shortcut: '⌘N',
-          disabled: true,
+          action: handleCreateFolder,
+          disabled:
+            !focusedWindowId || getFileById(focusedWindowId)?.type !== 'folder',
         },
         {
           label: 'Open',

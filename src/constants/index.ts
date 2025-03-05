@@ -13,4 +13,17 @@ export const Z_INDEX = {
   SELECTED_ICON: number;
   DRAGGING_ICON: number;
   WINDOW_MIN: number;
-}; 
+};
+
+export const FUN_NAMES = [
+  'Mystery Box 📦',
+  'Secret Stash 🤫',
+  'Digital Dreams 💭',
+  'Pixel Paradise 🌴',
+  'Quantum Vault 🌌',
+  'Time Capsule ⏰',
+  'Binary Bubble 💫',
+  'Data Dimension 🎲',
+  'Cyber Cave 🕹️',
+  'Tech Treasury 💎',
+];
