@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { MENU_BAR_HEIGHT } from '../constants';
 import { content } from '@/content';
 
-//create a map that link type with icon path
 const typeToIcon = {
   harddisk: '/icons/drive-harddisk.png',
   folder: '/icons/folder.png',
@@ -73,8 +72,8 @@ const createFileStructure = () => {
             type: 'text',
             icon: typeToIcon['text'],
             window: {
-              width: 700,
-              height: 500,
+              width: 600,
+              height: 800,
             },
           },
           {
@@ -83,8 +82,8 @@ const createFileStructure = () => {
             type: 'code',
             icon: typeToIcon['code'],
             window: {
-              width: 800,
-              height: 600,
+              width: 600,
+              height: 800,
             },
           },
         ],
@@ -95,7 +94,7 @@ const createFileStructure = () => {
         type: 'folder',
         icon: typeToIcon['folder'],
         window: {
-          width: 500,
+          width: 600,
           height: 400,
         },
         children: Object.entries(content.projects).map(([id, project]) => ({
