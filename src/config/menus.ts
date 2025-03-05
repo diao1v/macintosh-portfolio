@@ -5,7 +5,6 @@ import { FUN_NAMES } from '@/constants';
 export interface MenuItem {
   label: string;
   action?: () => void;
-  shortcut?: string;
   disabled?: boolean;
   submenu?: MenuItem[];
 }
@@ -15,9 +14,15 @@ export interface MenuConfig {
   items: MenuItem[];
 }
 
-export const createMenuConfig = (handlers: { onOpenAbout: () => void }) => {
+export const createMenuConfig = (handlers: {
+  onOpenAbout: () => void;
+  selectedItemId: string | null;
+  onOpenFile: (folderConfig: File) => void;
+  onCloseWindow?: () => void;
+}) => {
   const { focusedWindowId } = useWindowStore.getState();
   const { addItem, getFileById } = useFileStore.getState();
+  const { selectedItemId, onOpenFile, onCloseWindow } = handlers;
 
   const handleCreateFolder = () => {
     const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
@@ -41,6 +46,22 @@ export const createMenuConfig = (handlers: { onOpenAbout: () => void }) => {
     addItem(focusedFile.id, newFolder);
   };
 
+  const handleOpen = () => {
+    if (selectedItemId === 'root') {
+      onOpenFile(getFileById('root')!);
+      return;
+    }
+
+    const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
+    const selectedItem = focusedFile?.children?.find(
+      (item) => item.id === selectedItemId
+    );
+
+    if (selectedItem && onOpenFile) {
+      onOpenFile(selectedItem);
+    }
+  };
+
   const menus: MenuConfig[] = [
     {
       label: '',
@@ -61,21 +82,26 @@ export const createMenuConfig = (handlers: { onOpenAbout: () => void }) => {
       items: [
         {
           label: 'New Folder',
-          shortcut: '⌘N',
           action: handleCreateFolder,
           disabled:
             !focusedWindowId || getFileById(focusedWindowId)?.type !== 'folder',
         },
         {
           label: 'Open',
-          shortcut: '⌘O',
-          disabled: true,
+          action: handleOpen,
+          disabled:
+            !selectedItemId ||
+            (selectedItemId !== 'root' &&
+              (!focusedWindowId ||
+                !getFileById(focusedWindowId)?.children?.some(
+                  (item) => item.id === selectedItemId
+                ))),
         },
         { label: '---' },
         {
           label: 'Close Window',
-          shortcut: '⌘W',
-          disabled: true,
+          action: onCloseWindow,
+          disabled: !focusedWindowId,
         },
       ],
     },
@@ -84,23 +110,19 @@ export const createMenuConfig = (handlers: { onOpenAbout: () => void }) => {
       items: [
         {
           label: 'Undo',
-          shortcut: '⌘Z',
           disabled: true,
         },
         { label: '---' },
         {
           label: 'Cut',
-          shortcut: '⌘X',
           disabled: true,
         },
         {
           label: 'Copy',
-          shortcut: '⌘C',
           disabled: true,
         },
         {
           label: 'Paste',
-          shortcut: '⌘V',
           disabled: true,
         },
       ],
