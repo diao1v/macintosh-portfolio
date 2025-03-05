@@ -4,13 +4,16 @@ import { Prism, SyntaxHighlighterProps } from 'react-syntax-highlighter';
 const SyntaxHighlighter = Prism as any as React.FC<SyntaxHighlighterProps>;
 import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { File } from '@/store/useFileStore';
+import { getContentForFile } from '@/content';
 
 interface MarkdownViewProps {
   file: File;
 }
 
 const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
+  console.log(file);
   const type = file.type;
+  const content = getContentForFile(file.id);
 
   const textSize = type === 'code' ? 'text-[28px]' : 'text-[14px]';
   const padding = type === 'code' ? 'p-0' : 'p-4';
@@ -50,7 +53,7 @@ const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
           },
         }}
       >
-        {file.content || ''}
+        {content || ''}
       </ReactMarkdown>
     </div>
   );

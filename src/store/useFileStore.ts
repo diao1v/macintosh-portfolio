@@ -45,101 +45,74 @@ interface FileStore {
   moveItem: (id: string, newParentId: string) => void;
 }
 
-const defaultRootFile: File = {
-  id: 'macHD',
-  name: 'Macintosh HD',
-  type: 'folder',
-  icon: typeToIcon['harddisk'],
-  children: [
-    {
-      id: 'about-me',
-      name: 'About Me',
-      type: 'folder',
-      icon: typeToIcon['folder'],
-      window: {
-        width: 600,
-        height: 400,
-      },
-      children: [
-        {
-          id: 'resume',
-          name: 'Resume.pdf',
-          type: 'text',
-          icon: typeToIcon['text'],
-          content: content.resume,
-          window: {
-            width: 700,
-            height: 500,
-          },
-        },
-        {
-          id: 'about-me-java',
-          name: 'AboutMe.java',
-          type: 'code',
-          icon: typeToIcon['code'],
-          content: content.aboutMe,
-          window: {
-            width: 800,
-            height: 600,
-          },
-        },
-      ],
+// Helper function to create file structure from content
+const createFileStructure = () => {
+  const defaultRootFile: File = {
+    id: 'root',
+    name: "Yiwei's Portfolio",
+    type: 'folder',
+    icon: typeToIcon['harddisk'],
+    window: {
+      width: 600,
+      height: 400,
     },
-    {
-      id: 'projects',
-      name: 'Projects',
-      type: 'folder',
-      icon: typeToIcon['folder'],
-      window: {
-        width: 600,
-        height: 400,
-        x: 80,
-        y: MENU_BAR_HEIGHT + 40,
+    children: [
+      {
+        id: 'about-me',
+        name: 'About Me',
+        type: 'folder',
+        icon: typeToIcon['folder'],
+        window: {
+          width: 600,
+          height: 400,
+        },
+        children: [
+          {
+            id: 'resume',
+            name: 'Resume.txt',
+            type: 'text',
+            icon: typeToIcon['text'],
+            window: {
+              width: 700,
+              height: 500,
+            },
+          },
+          {
+            id: 'about-me-java',
+            name: 'About Me.java',
+            type: 'code',
+            icon: typeToIcon['code'],
+            window: {
+              width: 800,
+              height: 600,
+            },
+          },
+        ],
       },
-      children: [
-        {
-          id: 'macosPortfolio',
-          name: 'Mac OS Portfolio',
+      {
+        id: 'projects',
+        name: 'Projects',
+        type: 'folder',
+        icon: typeToIcon['folder'],
+        window: {
+          width: 500,
+          height: 400,
+        },
+        children: Object.entries(content.projects).map(([id, project]) => ({
+          id,
+          name: project.title,
           type: 'project',
           icon: typeToIcon['project'],
           window: {
             width: 1000,
-            height: 750,
+            height: 700,
           },
-        },
-        {
-          id: 'project2',
-          name: 'Project 2',
-          type: 'project',
-          icon: typeToIcon['project'],
-          window: {
-            width: 1000,
-            height: 750,
-          },
-        },
-      ],
-    },
-    {
-      id: 'contact',
-      name: 'Contact',
-      type: 'contact',
-      icon: typeToIcon['contact'],
-      children: [
-        {
-          id: 'github',
-          name: 'GitHub',
-          type: 'link',
-          icon: '/icons/unknown.png',
-        },
-        {
-          id: 'linkedin',
-          name: 'LinkedIn',
-          type: 'link',
-          icon: '/icons/unknown.png',
-        },
-      ],
-    },
-  ],
+        })),
+      },
+    ],
+  };
+
+  return defaultRootFile;
 };
 
 const findItemById = (folder: File, id: string): File | null => {
@@ -154,30 +127,9 @@ const findItemById = (folder: File, id: string): File | null => {
   return null;
 };
 
-const useFolderStore = create<FileStore>((set, get) => ({
-  rootFolder: defaultRootFile,
-
-  getFileById: (id: string): File | null => {
-    const findFileInFolder = (folder: File): File | null => {
-      if (folder.id === id) {
-        return folder;
-      }
-
-      if (folder.children) {
-        for (const child of folder.children) {
-          const found = findFileInFolder(child);
-          if (found) {
-            return found;
-          }
-        }
-      }
-
-      return null;
-    };
-
-    const file = findFileInFolder(get().rootFolder);
-    return file;
-  },
+const useFileStore = create<FileStore>((set, get) => ({
+  rootFolder: createFileStructure(),
+  getFileById: (id) => findItemById(get().rootFolder, id),
 
   addItem: (parentId, newItem) =>
     set((state) => {
@@ -270,4 +222,4 @@ const useFolderStore = create<FileStore>((set, get) => ({
     }),
 }));
 
-export default useFolderStore;
+export default useFileStore;

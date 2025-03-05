@@ -15,16 +15,16 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const [showVerticalScrollbar, setShowVerticalScrollbar] = useState(false);
   const [verticalThumbPosition, setVerticalThumbPosition] = useState(0);
   const [isDraggingThumb, setIsDraggingThumb] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const project = content.projects[file.id] || {
     title: file.name,
-    description: file.content || '',
-    images: [],
+    pages: [],
     oneLiner: '',
-    links: { github: '', demo: '' },
+    links: { github: '', live: '' },
   };
 
-  const totalPages = Math.max(1, (project.images?.length || 0) + 1);
+  const totalPages = Math.max(1, project.pages.length);
 
   // Check if content is scrollable
   useEffect(() => {
@@ -46,7 +46,7 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         resizeObserver.disconnect();
       };
     }
-  }, [currentPage, project.description]);
+  }, [currentPage, project.pages]);
 
   // Update thumb position on scroll
   useEffect(() => {
@@ -165,27 +165,56 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   }, [isDraggingThumb]);
 
   const renderContent = () => {
-    if (currentPage === 0) {
-      return (
-        <div className='h-full'>
-          <div className='prose prose-sm max-w-none font-chicago text-[11px]'>
-            <ReactMarkdown>{project.description}</ReactMarkdown>
-          </div>
-        </div>
-      );
-    }
+    const currentPageContent = project.pages[currentPage];
+    if (!currentPageContent) return null;
 
-    const imageIndex = currentPage - 1;
-    return (
-      <div className='flex items-center justify-center h-full'>
-        <img
-          src={project.images[imageIndex]}
-          alt={`${project.title} screenshot ${imageIndex + 1}`}
-          className='object-contain max-w-full max-h-full'
-        />
-      </div>
-    );
+    switch (currentPageContent.type) {
+      case 'description':
+        return (
+          <div className='h-full'>
+            <div className='prose prose-sm max-w-none font-chicago text-[11px]'>
+              <ReactMarkdown>{currentPageContent.details}</ReactMarkdown>
+            </div>
+          </div>
+        );
+      case 'photo':
+        return (
+          <div className='relative flex items-center justify-center h-full min-h-[600px]'>
+            {isImageLoading && (
+              <div className='absolute inset-0 flex items-center justify-center'>
+                <div className='w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin'></div>
+              </div>
+            )}
+            <img
+              src={currentPageContent.details}
+              alt={`${project.title} screenshot ${currentPage + 1}`}
+              className={`object-contain max-w-full max-h-full transition-opacity duration-300 ${
+                isImageLoading ? 'opacity-0' : 'opacity-100'
+              }`}
+              onLoad={() => setIsImageLoading(false)}
+              onError={() => setIsImageLoading(false)}
+            />
+          </div>
+        );
+      case 'video':
+        return (
+          <div className='flex items-center justify-center h-full'>
+            <video
+              src={currentPageContent.details}
+              controls
+              className='max-w-full max-h-full'
+            />
+          </div>
+        );
+      default:
+        return null;
+    }
   };
+
+  // Reset loading state when page changes
+  useEffect(() => {
+    setIsImageLoading(true);
+  }, [currentPage]);
 
   return (
     <div className='flex flex-col h-full pb-4 overflow-hidden'>

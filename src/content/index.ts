@@ -1,19 +1,29 @@
+interface ProjectPage {
+  pageNumber: number;
+  type: 'description' | 'photo' | 'video';
+  details: string;
+}
+
+interface Project {
+  title: string;
+  pages: ProjectPage[];
+  oneLiner: string;
+  links: {
+    github?: string;
+    live?: string;
+  };
+}
+
 interface Content {
   resume: string;
   aboutMe: string;
   projects: {
-    [key: string]: {
-      title: string;
-      description: string;
-      images: string[];
-      oneLiner: string;
-      links: {
-        github?: string;
-        demo?: string;
-      };
-    };
+    [key: string]: Project;
   };
 }
+
+const DEFAULT_IMAGE_WIDTH = 'w_910';
+const DEFAULT_IMAGE_HEIGHT = 'h_540';
 
 const resume = `
 # Yiwei Diao
@@ -163,40 +173,279 @@ public class AboutMe {
         }
 \`\`\``;
 
+const macosPortfolioProject: Project = {
+  title: 'Mac OS Portfolio',
+  pages: [
+    {
+      pageNumber: 0,
+      type: 'description',
+      details: `# My Portfolio: Classic Macintosh System 7.6/8 Interface
+
+This project is a fun and nostalgic recreation of the Classic Macintosh System 7.6 and 8 interface, where I showcase my skills, projects, and information in a retro desktop environment. It's a fully functional desktop with icons, folders, and files, mimicking the look and feel of the old MacOS
+
+## Features
+
+- **Functional Desktop**:
+  - Icons, folders, and files (text, projects, code, photos/videos).
+  - Create, move, and delete files/folders.
+- **Mock Applications**:
+  - **SimpleText**: A text editor mimicking the classic MacOS SimpleText.
+  - **Scrapbook**: A scrapbook application for mimicking the classic MacOS. Use for displaying projects, photos, and videos.
+  - **Email App**: A custom email application styled like the old MacOS email clients.
+  - **Interactive Experience**:
+    - Drag-and-drop functionality
+    - Resizable windows
+    - FRetro UI elements like menus, buttons
+
+## Technologies Used
+
+- React (with Vite for fast development)
+- Tailwind CSS for styling
+- React-Markdown for rendering Markdown content
+- Zustand for code state management
+
+## How to Use
+
+1. Clone the repo:
+2. run pnpm install
+3. run pnpm dev
+4. open http://localhost:5173`,
+    },
+    {
+      pageNumber: 2,
+      type: 'description',
+      details: `## Your are on that project already! Are you still looking for the screenshots?`,
+    },
+  ],
+  oneLiner: 'A Mac OS portfolio website',
+  links: {
+    github: 'https://github.com/diao1v/macintosh-portfolio',
+  },
+};
+
+const cheaterEncoderProject: Project = {
+  title: 'Cheater Encoder',
+  pages: [
+    {
+      pageNumber: 0,
+      type: 'description',
+      details: `# Cheater Encoder
+
+The **Cheater Encoder** is a tool designed to help video developers test streaming players by generating mock manifests. Normally, setting up a test stream with specific requirements (e.g., fallover time, video behavior debugging) requires significant effort and coordination with encoder teams. This project empowers video developers to upload video segments to a desired CDN and generate manifests to simulate live, VoD, and Live-to-VoD scenarios. Developers have full control over manifest parameters such as buffer time, DVR window, presentation delay, timescale, presentation time offset, segment start number, and more.
+
+---
+
+## Features
+
+1. **Supabase Authentication**:
+   - Sign up (with invitation code) and sign in.
+2. **Manifest Generation**:
+   - Default manifest values for quick setup.
+   - DASH format manifest.
+   - Live stream format manifest.
+   - VoD format manifest.
+   - Live-to-VoD format manifest with real-time switching option.
+3. **Full Control Over Manifest Parameters**:
+   - Buffer time, DVR window, presentation delay, timescale, presentation time offset, segment start number, etc.
+
+---
+
+## Technologies Used
+
+- **Authentication**: Supabase Auth
+- **Database**: Supabase PostgreSQL
+- **Frontend Framework**: Next.js (Page Router)
+- **UI Library**: Mantine Component Library
+- **Styling**: TailwindCSS
+
+---
+
+## Installation
+
+1. Install dependencies:
+
+   yarn install
+
+2.Set up environment variables:
+
+- Create a .env.local file in the root directory.
+- Add the following environment variables:
+
+  SUPABASE_URL=
+
+  SUPABASE_DATABASE_PASSWORD=
+
+  SUPABASE_ANON_KEY=
+
+  SUPABASE_SERVER_ROLE_KEY=
+
+  NEXT_PUBLIC_SUPABASE_URL=
+
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+  NEXT_PUBLIC_SITE_URL=
+  
+
+3. Run the development server:
+
+   yarn dev
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Usage
+
+### Sign Up and Sign In
+
+- Use an invitation code to sign up (you could preset the invitation code in supabase database).
+- Sign in with your credentials to access the dashboard.
+
+### Generate Manifests
+
+1. Upload video segments to your desired CDN(eg. ASW S3).
+2. Configure manifest parameters (e.g., buffer time, DVR window, presentation delay).
+3. Select the desired manifest format:
+   - **Live Stream**
+   - **VoD**
+   - **Live-to-VoD** (with real-time switching option).
+4. Generate and download the manifest.
+5. Copy the manifest URL and test it in your streaming player.
+`,
+    },
+    {
+      pageNumber: 1,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161031/macintosh-portfolio/cheater-encoder-1_xha0k0.png`,
+    },
+    {
+      pageNumber: 2,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161031/macintosh-portfolio/cheater-encoder-2_r0uypo.png`,
+    },
+    {
+      pageNumber: 3,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161031/macintosh-portfolio/cheater-encoder-2.5_tpj6lk.png`,
+    },
+    {
+      pageNumber: 4,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161031/macintosh-portfolio/cheater-encoder-3_pjeydc.png`,
+    },
+    {
+      pageNumber: 5,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161032/macintosh-portfolio/cheater-encoder-4_mrcgxs.png`,
+    },
+    {
+      pageNumber: 6,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161031/macintosh-portfolio/cheater-encoder-5_wqlead.png`,
+    },
+    {
+      pageNumber: 7,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161031/macintosh-portfolio/cheater-encoder-6_rbkd1p.png`,
+    },
+  ],
+  oneLiner: 'A Mac OS portfolio website',
+  links: {
+    github: 'https://github.com/diao1v/cheater-encoder',
+  },
+};
+
+const grammarTunerProject: Project = {
+  title: 'Grammar Tuner',
+  pages: [
+    {
+      pageNumber: 0,
+      type: 'description',
+      details: `# Grammar Tuner
+
+Grammar Tuner is a desktop application designed to help users correct and refine English grammar and tone in a convenient way, especially for daily communication tasks like sending messages on platforms such as Microsoft Teams. With just a simple keyboard shortcut, users can select text, and the app will process it using AI models to provide polished and tone-adjusted text.
+
+---
+
+## Features
+
+- **Quick Text Selection**: Select text anywhere and press \`control^ + Z\` to send it to the app for tuning.
+- **Predefined Tune Styles**: Choose from predefined styles (minimal, casual, polite) to adjust the tone and grammar of your text.
+- **AI Model Selection**: Switch between OpenAI GPT-4o mini and DeepSeek Chat models in the settings.
+- **Customizable Styles**: Add and save your own predefined styles to fit your specific needs.
+- **Cross-Platform Desktop App**: Built with Tauri for a lightweight and fast desktop experience.
+
+---
+
+## Technologies Used
+
+- **Frontend**: React + TailwindCSS
+- **Backend**: Rust (with AI assistance for development)
+- **Framework**: Tauri (for building cross-platform desktop apps)
+- **Package Manager**: pnpm
+
+---
+
+## How to run
+
+1. install dependencies
+
+   pnpm install
+
+2. Frontend Development Mode
+
+   pnpm dev
+
+3. Full Application Development Mode
+
+   pnpm tauri dev
+
+4. Build the Application
+
+    pnpm tauri build
+
+## Release download
+
+Currently, the app is only available for Arm MacOS(Apple Silicon). You can download the latest release from the [releases page](https://github.com/diao1v/grammar-tuner/releases/tag/pre-release).
+
+## Acknowledgments
+
+- Special thanks to AI tools for assisting in the development of the Rust backend.
+- Built with [Tauri](https://tauri.app/), [React](https://reactjs.org/), and [TailwindCSS](https://tailwindcss.com/).
+      `,
+    },
+    {
+      pageNumber: 1,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741120267/macintosh-portfolio/grammar-tuner-1_gfpd1z.png`,
+    },
+    {
+      pageNumber: 2,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1741161031/macintosh-portfolio/grammar-tuner-2_o2kxzm.png`,
+    },
+  ],
+  oneLiner: 'A desktop application for grammar tuning',
+  links: {
+    github: 'https://github.com/diao1v/grammar-tuner',
+  },
+};
+
+const projects = {
+  'macos-portfolio': macosPortfolioProject,
+  'cheater-encoder': cheaterEncoderProject,
+  'grammar-tuner': grammarTunerProject,
+};
+
 export const content: Content = {
   resume,
   aboutMe,
-  projects: {
-    macosPortfolio: {
-      title: 'Mac OS Portfolio',
-      description: `
-# Mac OS Portfolio
+  projects,
+};
 
-This project is a recreation of the classic Mac OS interface as a portfolio website.
-
-## Technologies Used
-- React
-- TypeScript
-- Tailwind CSS
-- Zustand for state management
-
-## Features
-- Classic Mac OS look and feel
-- Window management system
-- File browser
-- Markdown text viewer
-- Scrapbook for project showcase
-      `,
-      images: [
-        '/projects/macos-portfolio/screenshot1.png',
-        '/projects/macos-portfolio/screenshot2.png',
-      ],
-      oneLiner: 'A Mac OS portfolio website',
-      links: {
-        github: 'https://github.com/yourusername/macos-portfolio',
-        demo: 'https://macos-portfolio.yourdomain.com',
-      },
-    },
-    // Add more projects here
-  },
+// Helper to get content for a file
+export const getContentForFile = (id: string): string | undefined => {
+  if (id === 'resume') return content.resume;
+  if (id === 'about-me-java') return content.aboutMe;
+  return undefined;
 };
