@@ -1,14 +1,27 @@
-# Macintosh OS 7 Portfolio
+# My Portfolio: Classic Macintosh System 7.6/8 Interface
 
-A digital portfolio inspired by the classic Macintosh System 7 and 7.5 interface. This project brings the nostalgic look and feel of the 1990s Mac OS to the web, showcasing my work in a unique and interactive way.
+This project is a fun and nostalgic recreation of the Classic Macintosh System 7.6 and 8 interface, where I showcase my skills, projects, and information in a retro desktop environment. It’s a fully functional desktop with icons, folders, and files, mimicking the look and feel of the old MacOS
 
 ## Features
 
-- **Retro Desktop**: A functional desktop with icons, folders, and windows.
-- **Interactive Apps**:
-  - **About Me**: Learn more about me in a styled document.
-  - **Projects**: Browse my work through a clickable gallery.
-  - **Contact**: Reach out using a classic Mac-style form.
+- **Functional Desktop**:
+  - Icons, folders, and files (text, projects, code, photos/videos).
+  - Create, move, and delete files/folders.
+- **Mock Applications**:
+  - **SimpleText**: A text editor mimicking the classic MacOS SimpleText.
+  - **Scrapbook**: A scrapbook application for mimicking the classic MacOS. Use for displaying projects, photos, and videos.
+  - **Email App**: A custom email application styled like the old MacOS email clients.
+  - **Interactive Experience**:
+    - Drag-and-drop functionality
+    - Resizable windows
+    - FRetro UI elements like menus, buttons
+
+## Technologies Used
+
+- React (with Vite for fast development)
+- Tailwind CSS for styling
+- React-Markdown for rendering Markdown content
+- Zustand for code state management
 
 ## How to Use
 
@@ -19,7 +32,7 @@ A digital portfolio inspired by the classic Macintosh System 7 and 7.5 interface
 
 ## To do
 
-- [ ] Add Project details (Grammar Tuner, Mac OS Portfolio, Cheater Encoder, House Shopping Diary)
+- [x] Add Project details (Grammar Tuner, Mac OS Portfolio, Cheater Encoder, House Shopping Diary)
 - [ ] Add off work projects (wood work, Lego building)
 - [ ] Add "Add new folder" function
 - [ ] Add "Open and Close" function from File menu dropdown
