@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { MENU_BAR_HEIGHT } from '../constants';
 import { content } from '@/content';
 
 const typeToIcon = {

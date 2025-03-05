@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { File } from '@/store/useFileStore';
 import ReactMarkdown from 'react-markdown';
-import { content } from '@/content';
+import { content } from '@/content/';
 
 interface ScrapbookViewProps {
   file: File;

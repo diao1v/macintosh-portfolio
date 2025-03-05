@@ -4,7 +4,7 @@ import { Prism, SyntaxHighlighterProps } from 'react-syntax-highlighter';
 const SyntaxHighlighter = Prism as any as React.FC<SyntaxHighlighterProps>;
 import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { File } from '@/store/useFileStore';
-import { getContentForFile } from '@/content';
+import { getContentForFile } from '@/content/';
 
 interface MarkdownViewProps {
   file: File;
