@@ -34,7 +34,7 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 
 - [x] Add Project details (Grammar Tuner, Mac OS Portfolio, Cheater Encoder, House Shopping Diary)
 - [ ] Add off work projects (wood work, Lego building)
-- [ ] Add "Add new folder" function
+- [x] Add "Add new folder" function
 - [ ] Add "Open and Close" function from File menu dropdown
 - [ ] Add "Add new text file" function
 - [ ] Add "Delete" function
