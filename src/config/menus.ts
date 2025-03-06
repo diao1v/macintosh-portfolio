@@ -21,7 +21,7 @@ export const createMenuConfig = (handlers: {
   onCloseWindow?: () => void;
 }) => {
   const { focusedWindowId } = useWindowStore.getState();
-  const { addItem, getFileById } = useFileStore.getState();
+  const { addItem, getFileById, deleteItem } = useFileStore.getState();
   const { selectedItemId, onOpenFile, onCloseWindow } = handlers;
 
   const handleCreateFolder = () => {
@@ -62,6 +62,21 @@ export const createMenuConfig = (handlers: {
     }
   };
 
+  const handleDelete = () => {
+    if (!selectedItemId) return;
+
+    if (selectedItemId === 'root') return;
+
+    const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
+    const selectedItem = focusedFile?.children?.find(
+      (item) => item.id === selectedItemId
+    );
+
+    if (selectedItem) {
+        deleteItem(selectedItemId);
+    }
+  };
+
   const menus: MenuConfig[] = [
     {
       label: '',
@@ -96,6 +111,18 @@ export const createMenuConfig = (handlers: {
                 !getFileById(focusedWindowId)?.children?.some(
                   (item) => item.id === selectedItemId
                 ))),
+        },
+        { label: '---' },
+        {
+          label: 'Delete',
+          action: handleDelete,
+          disabled:
+            !selectedItemId ||
+            selectedItemId === 'root' ||
+            !focusedWindowId ||
+            !getFileById(focusedWindowId)?.children?.some(
+              (item) => item.id === selectedItemId
+            ),
         },
         { label: '---' },
         {
