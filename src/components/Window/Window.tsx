@@ -10,6 +10,7 @@ import FolderView from '../Views/FolderView';
 import MarkdownView from '../Views/MarkdownView';
 import ScrapbookView from '../Views/ScrapbookView';
 import AboutPortfolio from '../AboutPortfolio/AboutPortfolio';
+import EditableTextView from '../Views/EditableTextView';
 
 interface Size {
   width: number;
@@ -64,7 +65,9 @@ const Window: React.FC<WindowProps> = ({
           />
         );
       case 'text':
+        return <EditableTextView file={file} />;
       case 'code':
+      case 'pdf':
         return <MarkdownView file={file} />;
       case 'project':
         return <ScrapbookView file={file} />;

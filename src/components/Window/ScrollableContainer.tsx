@@ -3,7 +3,7 @@ import { ScrollInfo, TrackDimensions } from './types';
 
 interface ScrollableContainerProps {
   children: React.ReactNode;
-  type?: 'about' | 'folder' | 'project' | 'text' | 'contact' | 'link' | 'scrapbook' | 'code';
+  type?: 'about' | 'folder' | 'project' | 'text' | 'contact' | 'link' | 'scrapbook' | 'code' | 'pdf';
   isFocused?: boolean;
 }
 

@@ -19,6 +19,7 @@ export interface File {
     | 'folder'
     | 'project'
     | 'text'
+    | 'pdf'
     | 'contact'
     | 'link'
     | 'scrapbook'
@@ -27,8 +28,8 @@ export interface File {
   children?: File[];
   content?: string;
   window?: {
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
     x?: number;
     y?: number;
   };
@@ -41,6 +42,14 @@ interface FileStore {
   addItem: (parentId: string, item: File) => void;
   deleteItem: (id: string) => void;
   moveItem: (id: string, newParentId: string) => void;
+  updateFileContent: (id: string, content: string) => void;
+  unsavedChanges: Set<string>;
+  markFileAsDirty: (id: string) => void;
+  markFileAsClean: (id: string) => void;
+  hasUnsavedChanges: (id: string) => boolean;
+  pendingContent: Record<string, string>;
+  setPendingContent: (id: string, content: string) => void;
+  saveFile: (id: string) => void;
 }
 
 // Helper function to create file structure from content
@@ -67,8 +76,8 @@ const createFileStructure = () => {
         children: [
           {
             id: 'resume',
-            name: 'Resume.txt',
-            type: 'text',
+            name: 'Resume.pdf',
+            type: 'pdf',
             icon: typeToIcon['text'],
             window: {
               width: 600,
@@ -218,6 +227,71 @@ const useFileStore = create<FileStore>((set, get) => ({
         rootFolder: addToNewParent(rootWithItemRemoved),
       };
     }),
+
+  updateFileContent: (id, content) =>
+    set((state) => {
+      const updateContent = (folder: File): File => {
+        if (folder.id === id) {
+          return {
+            ...folder,
+            content,
+          };
+        }
+
+        if (folder.children) {
+          return {
+            ...folder,
+            children: folder.children.map(updateContent),
+          };
+        }
+
+        return folder;
+      };
+
+      return {
+        rootFolder: updateContent(state.rootFolder),
+      };
+    }),
+
+  unsavedChanges: new Set<string>(),
+  pendingContent: {},
+
+  markFileAsDirty: (id) =>
+    set((state) => {
+      const newUnsavedChanges = new Set(state.unsavedChanges);
+      newUnsavedChanges.add(id);
+      return { unsavedChanges: newUnsavedChanges };
+    }),
+
+  markFileAsClean: (id) =>
+    set((state) => {
+      const newUnsavedChanges = new Set(state.unsavedChanges);
+      newUnsavedChanges.delete(id);
+      return { unsavedChanges: newUnsavedChanges };
+    }),
+
+  hasUnsavedChanges: (id) => get().unsavedChanges.has(id),
+
+  setPendingContent: (id, content) =>
+    set((state) => ({
+      pendingContent: { ...state.pendingContent, [id]: content },
+    })),
+
+  saveFile: (id) => {
+    const { pendingContent, markFileAsClean, updateFileContent } = get();
+
+    if (pendingContent[id]) {
+      updateFileContent(id, pendingContent[id]);
+      markFileAsClean(id);
+
+      // Remove from pending content after saving
+      set((state) => {
+        const newPendingContent = { ...state.pendingContent };
+        delete newPendingContent[id];
+        return { pendingContent: newPendingContent };
+      });
+    }
+  },
 }));
 
 export default useFileStore;

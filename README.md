@@ -36,8 +36,9 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 - [ ] Add off work projects (wood work, Lego building)
 - [x] Add "Add new folder" function
 - [x] Add "Open and Close" function from File menu dropdown
-- [ ] Add "Add new text file" function
-- [ ] Add "Delete" function
+- [x] Add "Add new text file" function
+- [x] Add "Delete" function
+- [x] Add "Save" function
 - [ ] Add "Move" function
 - [ ] Add load Mac interface
 - [ ] Add Email/Contact
