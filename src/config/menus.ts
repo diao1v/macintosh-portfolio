@@ -21,7 +21,8 @@ export const createMenuConfig = (handlers: {
   onCloseWindow?: () => void;
 }) => {
   const { focusedWindowId } = useWindowStore.getState();
-  const { addItem, getFileById, deleteItem } = useFileStore.getState();
+  const { addItem, getFileById, deleteItem, saveFile } =
+    useFileStore.getState();
   const { selectedItemId, onOpenFile, onCloseWindow } = handlers;
 
   const handleCreateFolder = () => {
@@ -44,6 +45,29 @@ export const createMenuConfig = (handlers: {
     };
 
     addItem(focusedFile.id, newFolder);
+  };
+
+  const handleCreateFile = (type: 'text') => {
+    const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
+
+    if (!focusedFile || focusedFile.type !== 'folder') return;
+
+    const fileExtension = '.txt';
+    const newFileName = `New File${fileExtension}`;
+
+    const newFile: File = {
+      id: `file-${Date.now()}`,
+      name: newFileName,
+      type: type,
+      icon: typeToIcon[type],
+      content: '',
+      window: {
+        width: 600,
+        height: 400,
+      },
+    };
+
+    addItem(focusedFile.id, newFile);
   };
 
   const handleOpen = () => {
@@ -73,8 +97,14 @@ export const createMenuConfig = (handlers: {
     );
 
     if (selectedItem) {
-        deleteItem(selectedItemId);
+      deleteItem(selectedItemId);
     }
+  };
+
+  const handleSave = () => {
+    if (!focusedWindowId) return;
+
+    saveFile(focusedWindowId);
   };
 
   const menus: MenuConfig[] = [
@@ -100,6 +130,20 @@ export const createMenuConfig = (handlers: {
           action: handleCreateFolder,
           disabled:
             !focusedWindowId || getFileById(focusedWindowId)?.type !== 'folder',
+        },
+        {
+          label: 'New File',
+          disabled:
+            !focusedWindowId || getFileById(focusedWindowId)?.type !== 'folder',
+          submenu: [
+            {
+              label: 'SimpleText',
+              action: () => handleCreateFile('text'),
+              disabled:
+                !focusedWindowId ||
+                getFileById(focusedWindowId)?.type !== 'folder',
+            },
+          ],
         },
         {
           label: 'Open',
@@ -151,6 +195,14 @@ export const createMenuConfig = (handlers: {
         {
           label: 'Paste',
           disabled: true,
+        },
+        { label: '---' },
+        {
+          label: 'Save',
+          action: handleSave,
+          disabled:
+            !focusedWindowId ||
+            !useFileStore.getState().hasUnsavedChanges(focusedWindowId),
         },
       ],
     },

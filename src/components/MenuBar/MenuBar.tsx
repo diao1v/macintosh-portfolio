@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import DropdownMenu from './DropdownMenu';
-import { createMenuConfig, type MenuConfig } from '@/config/menus';
+import { createMenuConfig } from '@/config/menus';
 import { File } from '@/store/useFileStore';
 import useWindowStore from '@/store/useWindowStore';
 
@@ -15,15 +15,45 @@ const MenuBar: React.FC<MenuBarProps> = ({
   onOpenFile,
   onCloseWindow,
 }) => {
-  const { openWindow } = useWindowStore();
+  const { openWindow, focusedWindowId } = useWindowStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const menuConfig = createMenuConfig({
-    onOpenAbout: () => openWindow('about'),
-    selectedItemId,
-    onOpenFile,
-    onCloseWindow,
-  });
+  const [menuConfig, setMenuConfig] = useState(() =>
+    createMenuConfig({
+      onOpenAbout: () => openWindow('about'),
+      selectedItemId,
+      onOpenFile,
+      onCloseWindow,
+    })
+  );
+
+  // Update menu config when dependencies change
+  useEffect(() => {
+    setMenuConfig(
+      createMenuConfig({
+        onOpenAbout: () => openWindow('about'),
+        selectedItemId,
+        onOpenFile,
+        onCloseWindow,
+      })
+    );
+  }, [selectedItemId, onOpenFile, onCloseWindow, openWindow, focusedWindowId]);
+
+  // Refresh menu config periodically to check for unsaved files
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      setMenuConfig(
+        createMenuConfig({
+          onOpenAbout: () => openWindow('about'),
+          selectedItemId,
+          onOpenFile,
+          onCloseWindow,
+        })
+      );
+    }, 500);
+
+    return () => clearInterval(refreshInterval);
+  }, [selectedItemId, onOpenFile, onCloseWindow, openWindow]);
 
   useEffect(() => {
     // Update time immediately to avoid delay
