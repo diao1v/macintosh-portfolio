@@ -18,7 +18,8 @@ interface WindowState {
     | 'contact'
     | 'link'
     | 'scrapbook'
-    | 'code';
+    | 'code'
+    | 'pdf';
   isOpen: boolean;
   position: Position;
   zIndex: number;
