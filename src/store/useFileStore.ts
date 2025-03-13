@@ -5,11 +5,12 @@ export const typeToIcon = {
   harddisk: '/icons/drive-harddisk.png',
   folder: '/icons/folder.png',
   project: '/icons/scrapbook.png',
-  text: '/icons/text.png',
+  text: '/icons/simple-text.png',
   contact: '/icons/gmail.png',
   link: '/icons/unknown.png',
   photo: '/icons/media.png',
   code: '/icons/text-script.png',
+  pdf: '/icons/text.png',
 };
 
 export interface File {
@@ -80,7 +81,7 @@ const createFileStructure = () => {
             id: 'resume',
             name: 'Resume.pdf',
             type: 'pdf',
-            icon: typeToIcon['text'],
+            icon: typeToIcon['pdf'],
             window: {
               width: 600,
               height: 800,

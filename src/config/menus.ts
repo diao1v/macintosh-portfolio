@@ -223,11 +223,7 @@ export const createMenuConfig = (handlers: {
       label: 'Special',
       items: [
         {
-          label: 'Clean Up Window',
-          disabled: true,
-        },
-        {
-          label: 'Empty Trash',
+          label: 'Credits',
           disabled: true,
         },
       ],
