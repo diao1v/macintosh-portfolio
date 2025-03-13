@@ -24,7 +24,7 @@ export const emailFormSchema = z.object({
     .refine((val) => !/<script|javascript:/i.test(val), {
       message: 'Sender contains invalid characters',
     }),
-  honeyPot: z.string().max(0, 'This field should be empty'),
+  recipient: z.string().max(0, 'Recipient'),
 });
 
 export type EmailFormData = z.infer<typeof emailFormSchema>;

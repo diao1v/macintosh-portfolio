@@ -16,7 +16,7 @@ const EmailClientView: React.FC = () => {
     subject: '',
     message: '',
     sender: '',
-    honeyPot: '',
+    recipient: '',
   };
 
   const {
@@ -33,7 +33,7 @@ const EmailClientView: React.FC = () => {
   const sendEmailMutation = useSendEmail();
 
   const validateAndSubmit = (data: EmailFormData) => {
-    if (data.honeyPot) {
+    if (data.recipient) {
       return;
     }
 
@@ -106,7 +106,7 @@ const EmailClientView: React.FC = () => {
         </button>
         <Controller
           control={control}
-          name="honeyPot"
+          name="recipient"
           render={({ field: { name, value, onChange } }) => (
             <input
               type="hidden"
