@@ -30,7 +30,7 @@ const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
             return match ? (
               <SyntaxHighlighter
                 {...rest}
-                PreTag='div'
+                PreTag="div"
                 children={String(children).replace(/\n$/, '')}
                 language={match[1]}
                 wrapLines={true}

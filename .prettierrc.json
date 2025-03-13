@@ -1,0 +1,17 @@
+{
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "importOrder": [
+    "^react$",
+    "^(?:(?:@?react|react\\-)|(?<=\\/react))|next",
+    "<THIRD_PARTY_MODULES>",
+    "^(?:[a-zA-Z@].*/)?(?:store|pages|shared|hooks|config|content)",
+    "^[.]"
+  ],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true
+}

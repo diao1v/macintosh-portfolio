@@ -99,7 +99,7 @@ const Desktop: React.FC = () => {
 
   const handleIconDrag = (id: string, x: number, y: number) => {
     setIconPositions((prev) =>
-      prev.map((pos) => (pos.id === id ? { ...pos, x, y } : pos))
+      prev.map((pos) => (pos.id === id ? { ...pos, x, y } : pos)),
     );
   };
 
@@ -109,14 +109,14 @@ const Desktop: React.FC = () => {
 
   return (
     <>
-      <MenuBar 
-        selectedItemId={selectedItemId} 
+      <MenuBar
+        selectedItemId={selectedItemId}
         onOpenFile={openFolder}
         onCloseWindow={() => handleCloseWindow(focusedWindowId!)}
       />
-      <div className='absolute inset-0 pt-5' onClick={handleBackgroundClick}>
+      <div className="absolute inset-0 pt-5" onClick={handleBackgroundClick}>
         {/* Desktop Icons */}
-        <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
+        <div className="absolute inset-0" onClick={(e) => e.stopPropagation()}>
           <DesktopIcon
             name={rootFolder.name}
             icon={rootFolder.icon}
@@ -129,7 +129,7 @@ const Desktop: React.FC = () => {
         </div>
 
         {/* Windows Container */}
-        <div className='absolute inset-0' onClick={(e) => e.stopPropagation()}>
+        <div className="absolute inset-0" onClick={(e) => e.stopPropagation()}>
           {windows.map(
             (window) =>
               window.isOpen && (
@@ -155,7 +155,7 @@ const Desktop: React.FC = () => {
                   getIconPosition={getIconPosition}
                   selectedItemId={selectedItemId}
                 />
-              )
+              ),
           )}
         </div>
       </div>

@@ -70,7 +70,7 @@ const useWindowStore = create<WindowStore>((set) => ({
   closeWindow: (id) =>
     set((state) => ({
       windows: state.windows.map((win) =>
-        win.id === id ? { ...win, isOpen: false } : win
+        win.id === id ? { ...win, isOpen: false } : win,
       ),
       focusedWindowId:
         state.focusedWindowId === id ? '' : state.focusedWindowId,
@@ -85,7 +85,7 @@ const useWindowStore = create<WindowStore>((set) => ({
         focusedWindowId: id,
         topZIndex: newZIndex,
         windows: state.windows.map((win) =>
-          win.id === id ? { ...win, zIndex: newZIndex } : win
+          win.id === id ? { ...win, zIndex: newZIndex } : win,
         ),
       };
     }),
@@ -93,7 +93,7 @@ const useWindowStore = create<WindowStore>((set) => ({
   setWindowPosition: (id, position) =>
     set((state) => ({
       windows: state.windows.map((win) =>
-        win.id === id ? { ...win, position } : win
+        win.id === id ? { ...win, position } : win,
       ),
     })),
 
@@ -142,7 +142,7 @@ const useWindowStore = create<WindowStore>((set) => ({
         // Update existing window
         return {
           windows: state.windows.map((win) =>
-            win.id === id ? { ...win, isOpen: true } : win
+            win.id === id ? { ...win, isOpen: true } : win,
           ),
         };
       }

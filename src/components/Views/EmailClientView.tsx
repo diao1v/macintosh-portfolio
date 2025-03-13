@@ -87,86 +87,86 @@ const EmailClientView: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(validateAndSubmit, handleError)}
-      className='flex flex-col flex-1  font-monaco text-[20px]'
+      className="flex flex-col flex-1  font-monaco text-[20px]"
     >
       <Dialog {...dialogProps} isOpen={isOpen} onClose={closeDialog} />
       {/* Email client header */}
-      <div className='flex items-center justify-between p-2 border-b  pl-4 border-black bg-[#f3f3f3]'>
-        <button disabled className='rounded-md shadow-sm cursor-not-allowed'>
-          <img src='/icons/eudora1.png' alt='QP' />
+      <div className="flex items-center justify-between p-2 border-b  pl-4 border-black bg-[#f3f3f3]">
+        <button disabled className="rounded-md shadow-sm cursor-not-allowed">
+          <img src="/icons/eudora1.png" alt="QP" />
         </button>
-        <button disabled className='rounded-md shadow-sm cursor-not-allowed'>
-          <img src='/icons/eudora2.png' alt='connect' />
+        <button disabled className="rounded-md shadow-sm cursor-not-allowed">
+          <img src="/icons/eudora2.png" alt="connect" />
         </button>
-        <button disabled className='rounded-md shadow-sm cursor-not-allowed'>
-          <img src='/icons/eudora3.png' alt='wrap' />
+        <button disabled className="rounded-md shadow-sm cursor-not-allowed">
+          <img src="/icons/eudora3.png" alt="wrap" />
         </button>
-        <button disabled className='rounded-md shadow-sm cursor-not-allowed'>
-          <img src='/icons/eudora4.png' alt='duplicate' />
+        <button disabled className="rounded-md shadow-sm cursor-not-allowed">
+          <img src="/icons/eudora4.png" alt="duplicate" />
         </button>
         <Controller
           control={control}
-          name='honeyPot'
+          name="honeyPot"
           render={({ field: { name, value, onChange } }) => (
             <input
-              type='hidden'
+              type="hidden"
               name={name}
               value={value}
               onChange={onChange}
-              className='absolute'
+              className="absolute"
             />
           )}
         />
 
         <button
-          type='submit'
-          className='px-4 bg-white border border-black rounded-md shadow-sm font-chicago text-[15px]'
+          type="submit"
+          className="px-4 bg-white border border-black rounded-md shadow-sm font-chicago text-[15px]"
         >
           Send
         </button>
       </div>
 
       {/* Email header section*/}
-      <div className='flex flex-row justify-start flex-grow border-b border-black'>
-        <div className='flex flex-col justify-end pl-10 w-30'>
-          <div className='flex flex-row justify-end'>To :</div>
-          <div className='flex flex-row justify-end'>From :</div>
-          <div className='flex flex-row justify-end'>Subject :</div>
-          <div className='flex flex-row justify-end'>X-Attachments :</div>
+      <div className="flex flex-row justify-start flex-grow border-b border-black">
+        <div className="flex flex-col justify-end pl-10 w-30">
+          <div className="flex flex-row justify-end">To :</div>
+          <div className="flex flex-row justify-end">From :</div>
+          <div className="flex flex-row justify-end">Subject :</div>
+          <div className="flex flex-row justify-end">X-Attachments :</div>
         </div>
-        <div className='flex flex-col justify-start flex-1 pl-3 '>
+        <div className="flex flex-col justify-start flex-1 pl-3 ">
           <p>{recipientEmail}</p>
           <Controller
             control={control}
-            name='sender'
+            name="sender"
             render={({ field: { name, value, onChange } }) => (
               <input
                 name={name}
                 value={value}
                 onChange={onChange}
-                className='w-full border-transparent border-b-1 focus:border-black focus:outline-none'
+                className="w-full border-transparent border-b-1 focus:border-black focus:outline-none"
               />
             )}
           />
           <Controller
             control={control}
-            name='subject'
+            name="subject"
             render={({ field: { name, value, onChange } }) => (
               <input
                 name={name}
                 value={value}
                 onChange={onChange}
-                className='w-full border-transparent border-b-1 focus:border-black focus:outline-none'
+                className="w-full border-transparent border-b-1 focus:border-black focus:outline-none"
               />
             )}
           />
-          <p className='text-gray-400'>Attachment is disabled</p>
+          <p className="text-gray-400">Attachment is disabled</p>
         </div>
       </div>
 
       <Controller
         control={control}
-        name='message'
+        name="message"
         render={({ field: { name, value, onChange } }) => (
           <textarea
             name={name}
@@ -174,7 +174,7 @@ const EmailClientView: React.FC = () => {
             onChange={onChange}
             rows={11}
             maxLength={1000}
-            className='w-full p-1 overflow-hidden border-transparent resize-none border-b-1 focus:border-black focus:outline-none scrollbar-hide'
+            className="w-full p-1 overflow-hidden border-transparent resize-none border-b-1 focus:border-black focus:outline-none scrollbar-hide"
           />
         )}
       />

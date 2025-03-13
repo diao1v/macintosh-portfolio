@@ -20,23 +20,23 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   return (
     <>
-      <div className='fixed inset-0' onClick={onClose} />
+      <div className="fixed inset-0" onClick={onClose} />
       <div
-        className='absolute z-50'
+        className="absolute z-50"
         style={{
           left: parentPosition?.left || 0,
           top: parentPosition?.top || '100%',
           minWidth: '200px',
         }}
       >
-        <div className='bg-white border border-black shadow-md'>
+        <div className="bg-white border border-black shadow-md">
           {items.map((item, index) =>
             item.label === '---' ? (
-              <div key={index} className='h-[1px] bg-black my-1' />
+              <div key={index} className="h-[1px] bg-black my-1" />
             ) : (
               <div
                 key={index}
-                className='relative'
+                className="relative"
                 onMouseEnter={() => item.submenu && setActiveSubmenu(index)}
                 onMouseLeave={() => setActiveSubmenu(null)}
               >
@@ -70,7 +70,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                   />
                 )}
               </div>
-            )
+            ),
           )}
         </div>
       </div>

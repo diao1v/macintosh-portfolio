@@ -14,10 +14,8 @@ export interface Project {
   };
 }
 
-
 const DEFAULT_IMAGE_WIDTH = 'w_910';
 const DEFAULT_IMAGE_HEIGHT = 'h_540';
-
 
 const macosPortfolioProject: Project = {
   title: 'Mac OS Portfolio',
@@ -378,4 +376,3 @@ export const projects = {
   'grammar-tuner': grammarTunerProject,
   'my-house-shopping-diary': myHouseShoppingDiaryProject,
 };
-

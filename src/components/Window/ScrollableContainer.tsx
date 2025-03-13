@@ -26,19 +26,19 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   // Modified version for project type - hide scrollbars but keep corner drag
   if (type === 'project') {
     return (
-      <div className='relative h-full'>
-        <div className='absolute inset-0 overflow-hidden'>
-          <div className='absolute inset-0 bg-white'>{children}</div>
+      <div className="relative h-full">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-white">{children}</div>
 
           {/* Corner Drag Button */}
           <div
-            className='absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center'
+            className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center"
             style={{ zIndex: 3 }}
           >
             <img
-              src='/icons/maximize.png'
-              alt='resize'
-              className='w-3.5 h-3.5'
+              src="/icons/maximize.png"
+              alt="resize"
+              className="w-3.5 h-3.5"
             />
           </div>
         </div>
@@ -59,7 +59,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   });
   const [isDraggingThumb, setIsDraggingThumb] = useState(false);
   const [dragType, setDragType] = useState<'vertical' | 'horizontal' | null>(
-    null
+    null,
   );
 
   const updateDimensions = () => {
@@ -117,7 +117,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         const trackHeight = trackRect.height - 32;
         const thumbPosition = Math.max(
           0,
-          Math.min(e.clientY - trackRect.top - 16, trackHeight)
+          Math.min(e.clientY - trackRect.top - 16, trackHeight),
         );
         const scrollRatio = thumbPosition / trackHeight;
         const scrollPos =
@@ -136,7 +136,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         const trackWidth = trackRect.width - 32;
         const thumbPosition = Math.max(
           0,
-          Math.min(e.clientX - trackRect.left - 16, trackWidth)
+          Math.min(e.clientX - trackRect.left - 16, trackWidth),
         );
         const scrollRatio = thumbPosition / trackWidth;
         const scrollPos =
@@ -179,7 +179,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
       case 'down':
         content.scrollTop = Math.min(
           content.scrollHeight - content.clientHeight,
-          content.scrollTop + SCROLL_STEP
+          content.scrollTop + SCROLL_STEP,
         );
         break;
       case 'left':
@@ -188,7 +188,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
       case 'right':
         content.scrollLeft = Math.min(
           content.scrollWidth - content.clientWidth,
-          content.scrollLeft + SCROLL_STEP
+          content.scrollLeft + SCROLL_STEP,
         );
         break;
     }
@@ -207,11 +207,11 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     setScrollInfo({
       verticalThumbPosition: Math.min(
         verticalRatio * maxVerticalThumbPosition,
-        maxVerticalThumbPosition
+        maxVerticalThumbPosition,
       ),
       horizontalThumbPosition: Math.min(
         horizontalRatio * maxHorizontalThumbPosition,
-        maxHorizontalThumbPosition
+        maxHorizontalThumbPosition,
       ),
     });
   };
@@ -220,7 +220,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     scrollPos: number,
     contentSize: number,
     viewportSize: number,
-    trackSize: number
+    trackSize: number,
   ) => {
     const scrollRatio = scrollPos / (contentSize - viewportSize);
     const maxThumbTravel = trackSize - 16; // 16 is thumb size
@@ -235,14 +235,14 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
       content.scrollTop,
       content.scrollHeight,
       content.clientHeight,
-      trackDimensions.height
+      trackDimensions.height,
     );
 
     const horizontalThumbPosition = calculateThumbPosition(
       content.scrollLeft,
       content.scrollWidth,
       content.clientWidth,
-      trackDimensions.width
+      trackDimensions.width,
     );
 
     setScrollInfo({
@@ -253,10 +253,10 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
 
   return (
     <div
-      className='relative'
+      className="relative"
       style={{ height: `calc(100% - ${type !== 'folder' ? 20 : 42}px)` }}
     >
-      <div className='absolute inset-0 overflow-hidden'>
+      <div className="absolute inset-0 overflow-hidden">
         <div
           ref={contentRef}
           className={`absolute inset-0 overflow-auto ${
@@ -265,12 +265,12 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
           style={{ zIndex: 1 }}
           onScroll={handleScroll}
         >
-          <div className='relative min-h-full min-w-[400px]'>{children}</div>
+          <div className="relative min-h-full min-w-[400px]">{children}</div>
         </div>
 
         {/* Vertical Scrollbar */}
         <div
-          className='absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]'
+          className="absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]"
           style={{ zIndex: 2 }}
           onMouseDown={(e) => {
             setIsDraggingThumb(true);
@@ -279,7 +279,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
             const maxScroll = trackRect.height - 16;
             const thumbPosition = Math.max(
               0,
-              Math.min(e.clientY - trackRect.top - 16, maxScroll)
+              Math.min(e.clientY - trackRect.top - 16, maxScroll),
             );
             setScrollInfo((prev) => ({
               ...prev,
@@ -288,51 +288,51 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
           }}
         >
           <button
-            className='absolute top-0 right-0 w-4 h-4 bg-[#E6E6E6] border-l border-b border-[#999999] flex items-center justify-center'
+            className="absolute top-0 right-0 w-4 h-4 bg-[#E6E6E6] border-l border-b border-[#999999] flex items-center justify-center"
             style={{ zIndex: 3 }}
             onClick={() => handleArrowClick('up')}
             onMouseDown={(e) => e.stopPropagation()}
           >
             <img
-              src='/icons/arrow-up.png'
-              alt='Scroll Up'
-              className='w-3.5 h-3.5'
+              src="/icons/arrow-up.png"
+              alt="Scroll Up"
+              className="w-3.5 h-3.5"
             />
           </button>
 
           <div
             ref={verticalTrackRef}
-            className='absolute left-0 right-0 top-4 bottom-4'
+            className="absolute left-0 right-0 top-4 bottom-4"
             style={{ zIndex: 2 }}
           >
             <div
-              className='absolute w-4 h-4 bg-[#E6E6E6] flex items-center justify-center'
+              className="absolute w-4 h-4 bg-[#E6E6E6] flex items-center justify-center"
               style={{
                 top: Math.min(
                   scrollInfo.verticalThumbPosition,
-                  trackDimensions.height - 16
+                  trackDimensions.height - 16,
                 ),
                 zIndex: 3,
               }}
             >
               <img
-                src='/icons/slider-vert-left.png'
-                alt='Slider'
-                className='w-3.5 h-3.5'
+                src="/icons/slider-vert-left.png"
+                alt="Slider"
+                className="w-3.5 h-3.5"
               />
             </div>
           </div>
 
           <button
-            className='absolute bottom-4 right-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center'
+            className="absolute bottom-4 right-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center"
             style={{ zIndex: 3 }}
             onClick={() => handleArrowClick('down')}
             onMouseDown={(e) => e.stopPropagation()}
           >
             <img
-              src='/icons/arrow-down.png'
-              alt='Scroll Down'
-              className='w-3.5 h-3.5'
+              src="/icons/arrow-down.png"
+              alt="Scroll Down"
+              className="w-3.5 h-3.5"
             />
           </button>
         </div>
@@ -340,7 +340,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         {/* Horizontal Scrollbar */}
         {!hideHorizontal ? (
           <div
-            className='absolute left-0 bottom-0 right-4 h-4 bg-[#E6E6E6] border-t border-[#999999]'
+            className="absolute left-0 bottom-0 right-4 h-4 bg-[#E6E6E6] border-t border-[#999999]"
             style={{ zIndex: 2 }}
             onMouseDown={(e) => {
               setIsDraggingThumb(true);
@@ -349,7 +349,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
               const maxScroll = trackDimensions.width - 16;
               const thumbPosition = Math.max(
                 0,
-                Math.min(e.clientX - trackRect.left - 16, maxScroll)
+                Math.min(e.clientX - trackRect.left - 16, maxScroll),
               );
               setScrollInfo((prev) => ({
                 ...prev,
@@ -358,51 +358,51 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
             }}
           >
             <button
-              className='absolute left-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-r border-t border-[#999999] flex items-center justify-center'
+              className="absolute left-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-r border-t border-[#999999] flex items-center justify-center"
               style={{ zIndex: 3 }}
               onClick={() => handleArrowClick('left')}
               onMouseDown={(e) => e.stopPropagation()}
             >
               <img
-                src='/icons/arrow-left.png'
-                alt='Scroll Left'
-                className='w-3.5 h-3.5'
+                src="/icons/arrow-left.png"
+                alt="Scroll Left"
+                className="w-3.5 h-3.5"
               />
             </button>
 
             <div
               ref={horizontalTrackRef}
-              className='absolute top-0 bottom-0 left-4 right-4'
+              className="absolute top-0 bottom-0 left-4 right-4"
               style={{ zIndex: 2 }}
             >
               <div
-                className='absolute h-4 w-4 bg-[#E6E6E6] flex items-center justify-center'
+                className="absolute h-4 w-4 bg-[#E6E6E6] flex items-center justify-center"
                 style={{
                   left: Math.min(
                     scrollInfo.horizontalThumbPosition,
-                    trackDimensions.width - 16
+                    trackDimensions.width - 16,
                   ),
                   zIndex: 3,
                 }}
               >
                 <img
-                  src='/icons/slider-horiz-top.png'
-                  alt='Slider'
-                  className='w-3.5 h-3.5'
+                  src="/icons/slider-horiz-top.png"
+                  alt="Slider"
+                  className="w-3.5 h-3.5"
                 />
               </div>
             </div>
 
             <button
-              className='absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center'
+              className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center"
               style={{ zIndex: 3 }}
               onClick={() => handleArrowClick('right')}
               onMouseDown={(e) => e.stopPropagation()}
             >
               <img
-                src='/icons/arrow-right.png'
-                alt='Scroll Right'
-                className='w-3.5 h-3.5'
+                src="/icons/arrow-right.png"
+                alt="Scroll Right"
+                className="w-3.5 h-3.5"
               />
             </button>
           </div>
@@ -410,7 +410,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
 
         {/* Corner */}
         <div
-          className='absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999]'
+          className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999]"
           style={{ zIndex: 3 }}
         />
       </div>

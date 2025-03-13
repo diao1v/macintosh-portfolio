@@ -32,7 +32,7 @@ export type EmailFormData = z.infer<typeof emailFormSchema>;
 const emailApiUrl = 'http://localhost:3000/api/send-email';
 
 const sendEmail = async (
-  data: EmailFormData
+  data: EmailFormData,
 ): Promise<{ success: boolean; message: string }> => {
   const response = await fetch(emailApiUrl, {
     method: 'POST',

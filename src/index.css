@@ -30,7 +30,11 @@
 @layer base {
   body {
     @apply bg-[#666666] text-black overflow-hidden;
-    font-family: 'Chicago', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family:
+      'Chicago',
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif;
   }
 
   p {

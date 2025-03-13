@@ -50,8 +50,8 @@ const FolderView: React.FC<FolderViewProps> = ({
   };
 
   return (
-    <div className='h-full p-2'>
-      <div className='relative w-full h-full' style={{ minWidth: '400px' }}>
+    <div className="h-full p-2">
+      <div className="relative w-full h-full" style={{ minWidth: '400px' }}>
         {file.children?.map((item) => (
           <DesktopIcon
             key={item.id}

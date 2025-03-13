@@ -78,7 +78,7 @@ export const createMenuConfig = (handlers: {
 
     const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
     const selectedItem = focusedFile?.children?.find(
-      (item) => item.id === selectedItemId
+      (item) => item.id === selectedItemId,
     );
 
     if (selectedItem && onOpenFile) {
@@ -93,7 +93,7 @@ export const createMenuConfig = (handlers: {
 
     const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
     const selectedItem = focusedFile?.children?.find(
-      (item) => item.id === selectedItemId
+      (item) => item.id === selectedItemId,
     );
 
     if (selectedItem) {
@@ -153,7 +153,7 @@ export const createMenuConfig = (handlers: {
             (selectedItemId !== 'root' &&
               (!focusedWindowId ||
                 !getFileById(focusedWindowId)?.children?.some(
-                  (item) => item.id === selectedItemId
+                  (item) => item.id === selectedItemId,
                 ))),
         },
         { label: '---' },
@@ -165,7 +165,7 @@ export const createMenuConfig = (handlers: {
             selectedItemId === 'root' ||
             !focusedWindowId ||
             !getFileById(focusedWindowId)?.children?.some(
-              (item) => item.id === selectedItemId
+              (item) => item.id === selectedItemId,
             ),
         },
         { label: '---' },
