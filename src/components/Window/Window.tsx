@@ -100,15 +100,15 @@ const Window: React.FC<WindowProps> = ({
       }}
       minWidth={minWidth}
       minHeight={minHeight}
-      bounds='parent'
+      bounds="parent"
       style={{ zIndex }}
-      dragHandleClassName='window-title-bar'
+      dragHandleClassName="window-title-bar"
       className={`${isFocused ? 'window-focused' : ''}`}
       onClick={() => onFocus && onFocus()}
       resizeHandleComponent={{
         bottomRight: (
-          <div className='absolute bottom-[11px] right-[11px] z-40 w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center'>
-            <img src='/icons/maximize.png' alt='maximize' className='w-4 h-4' />
+          <div className="absolute bottom-[11px] right-[11px] z-40 w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center">
+            <img src="/icons/maximize.png" alt="maximize" className="w-4 h-4" />
           </div>
         ),
       }}
@@ -143,8 +143,8 @@ const Window: React.FC<WindowProps> = ({
         ) : null}
 
         {type === 'project' ? (
-          <div className='relative flex-1'>
-            <div className='absolute inset-0'>{renderContent()}</div>
+          <div className="relative flex-1">
+            <div className="absolute inset-0">{renderContent()}</div>
           </div>
         ) : (
           <ScrollableContainer

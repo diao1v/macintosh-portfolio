@@ -112,8 +112,8 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
           currentPage === 0
             ? '0px'
             : currentPage === totalPages - 1
-            ? '14px'
-            : '7px'
+              ? '14px'
+              : '7px'
         })`;
 
   const handleVerticalTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -171,18 +171,18 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
     switch (currentPageContent.type) {
       case 'description':
         return (
-          <div className='h-full'>
-            <div className='prose prose-sm max-w-none font-chicago text-[11px]'>
+          <div className="h-full">
+            <div className="prose prose-sm max-w-none font-chicago text-[11px]">
               <ReactMarkdown>{currentPageContent.details}</ReactMarkdown>
             </div>
           </div>
         );
       case 'photo':
         return (
-          <div className='relative flex items-center justify-center h-full min-h-[600px]'>
+          <div className="relative flex items-center justify-center h-full min-h-[600px]">
             {isImageLoading && (
-              <div className='absolute inset-0 flex items-center justify-center'>
-                <div className='w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin'></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
               </div>
             )}
             <img
@@ -198,11 +198,11 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         );
       case 'video':
         return (
-          <div className='flex items-center justify-center h-full'>
+          <div className="flex items-center justify-center h-full">
             <video
               src={currentPageContent.details}
               controls
-              className='max-w-full max-h-full'
+              className="max-w-full max-h-full"
             />
           </div>
         );
@@ -217,22 +217,22 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   }, [currentPage]);
 
   return (
-    <div className='flex flex-col h-full pb-4 overflow-hidden'>
+    <div className="flex flex-col h-full pb-4 overflow-hidden">
       {/* Main Content Area */}
-      <div className='flex-1 min-h-0 p-4'>
-        <div className='relative h-full border border-[#999999] bg-white'>
-          <div ref={contentRef} className='absolute inset-0 overflow-y-auto'>
-            <div className='p-4'>{renderContent()}</div>
+      <div className="flex-1 min-h-0 p-4">
+        <div className="relative h-full border border-[#999999] bg-white">
+          <div ref={contentRef} className="absolute inset-0 overflow-y-auto">
+            <div className="p-4">{renderContent()}</div>
           </div>
 
           {/* Vertical Scrollbar */}
           {showVerticalScrollbar && (
             <div
-              className='vertical-track absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]'
+              className="vertical-track absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]"
               onClick={handleVerticalTrackClick}
             >
               <div
-                className='absolute w-4 h-4 bg-[#E6E6E6] border border-[#999999] cursor-pointer'
+                className="absolute w-4 h-4 bg-[#E6E6E6] border border-[#999999] cursor-pointer"
                 style={{
                   top: `calc(${verticalThumbPosition * 100}% - ${
                     verticalThumbPosition * 16
@@ -241,9 +241,9 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
                 onMouseDown={handleVerticalThumbMouseDown}
               >
                 <img
-                  src='/icons/handle-vert.png'
-                  alt='Scroll'
-                  className='w-3.5 h-3.5'
+                  src="/icons/handle-vert.png"
+                  alt="Scroll"
+                  className="w-3.5 h-3.5"
                   draggable={false}
                 />
               </div>
@@ -253,16 +253,16 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
       </div>
 
       {/* Navigation Controls */}
-      <div className='flex-none'>
+      <div className="flex-none">
         {/* Scroll Bar */}
-        <div className='flex px-4 pb-3'>
+        <div className="flex px-4 pb-3">
           <button
-            className='flex items-center justify-center flex-none w-4 h-4 bg-gray-200 border border-gray-400'
+            className="flex items-center justify-center flex-none w-4 h-4 bg-gray-200 border border-gray-400"
             onClick={goToPrevPage}
           >
             <img
-              src='/icons/arrow-left.png'
-              alt='Scroll Left'
+              src="/icons/arrow-left.png"
+              alt="Scroll Left"
               className={`w-3.5 h-3.5 ${currentPage === 0 ? 'opacity-50' : ''}`}
             />
           </button>
@@ -275,27 +275,27 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
             onMouseLeave={handleDragEnd}
           >
             <div
-              className='absolute top-0 left-0 h-4 cursor-pointer'
+              className="absolute top-0 left-0 h-4 cursor-pointer"
               style={{
                 left: handlePosition,
               }}
               onMouseDown={handleDragStart}
             >
               <img
-                src='/icons/handle-horiz.png'
-                alt='handle horizontal'
-                className='w-3.5 h-3.5'
+                src="/icons/handle-horiz.png"
+                alt="handle horizontal"
+                className="w-3.5 h-3.5"
                 draggable={false}
               />
             </div>
           </div>
           <button
-            className='flex items-center justify-center flex-none w-4 h-4 border border-gray-400'
+            className="flex items-center justify-center flex-none w-4 h-4 border border-gray-400"
             onClick={goToNextPage}
           >
             <img
-              src='/icons/arrow-right.png'
-              alt='Scroll Right'
+              src="/icons/arrow-right.png"
+              alt="Scroll Right"
               className={`w-3.5 h-3.5 ${
                 currentPage === totalPages - 1 ? 'opacity-50' : ''
               }`}
@@ -304,10 +304,10 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         </div>
 
         {/* Info Bar - Fixed Height */}
-        <div className=' bg-[#E6E6E6] px-4 py-1'>
+        <div className=" bg-[#E6E6E6] px-4 py-1">
           {/* Project info with markdown */}
-          <div className='h-28 bg-white border border-[#999999] px-2 py-0.5 overflow-x-auto'>
-            <div className='leading-tight prose-sm prose max-w-none text-[11px]'>
+          <div className="h-28 bg-white border border-[#999999] px-2 py-0.5 overflow-x-auto">
+            <div className="leading-tight prose-sm prose max-w-none text-[11px]">
               <ReactMarkdown>{`${project.oneLiner}`}</ReactMarkdown>
             </div>
           </div>

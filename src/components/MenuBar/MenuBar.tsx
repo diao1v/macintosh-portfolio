@@ -24,7 +24,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
       selectedItemId,
       onOpenFile,
       onCloseWindow,
-    })
+    }),
   );
 
   // Update menu config when dependencies change
@@ -35,7 +35,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
         selectedItemId,
         onOpenFile,
         onCloseWindow,
-      })
+      }),
     );
   }, [selectedItemId, onOpenFile, onCloseWindow, openWindow, focusedWindowId]);
 
@@ -48,7 +48,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
           selectedItemId,
           onOpenFile,
           onCloseWindow,
-        })
+        }),
       );
     }, 500);
 
@@ -84,9 +84,9 @@ const MenuBar: React.FC<MenuBarProps> = ({
   };
 
   return (
-    <div className='fixed top-0 left-0 right-0 z-50 flex items-center h-5 px-1 bg-white border-b border-black'>
+    <div className="fixed top-0 left-0 right-0 z-50 flex items-center h-5 px-1 bg-white border-b border-black">
       {menuConfig.map((menu, index) => (
-        <div key={index} className='relative'>
+        <div key={index} className="relative">
           <div
             className={`
               px-3 cursor-default
@@ -99,10 +99,10 @@ const MenuBar: React.FC<MenuBarProps> = ({
             onClick={() => setActiveMenu(activeMenu === index ? null : index)}
           >
             {index === 0 ? (
-              <div className='h-[20px] flex items-center'>
+              <div className="h-[20px] flex items-center">
                 <img
-                  src='/icons/apple.png'
-                  alt='Apple Logo'
+                  src="/icons/apple.png"
+                  alt="Apple Logo"
                   className={`h-[15px] ${
                     activeMenu === index ? 'invert-0' : ''
                   }`}
@@ -119,8 +119,8 @@ const MenuBar: React.FC<MenuBarProps> = ({
           />
         </div>
       ))}
-      <div className='flex-grow' />
-      <div className='text-[11px] leading-none pr-1'>
+      <div className="flex-grow" />
+      <div className="text-[11px] leading-none pr-1">
         {formatTime(currentTime)}
       </div>
     </div>

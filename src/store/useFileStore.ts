@@ -201,14 +201,14 @@ const useFileStore = create<FileStore>((set, get) => ({
       const removeItem = (folder: File): File => {
         if (folder.children) {
           const itemIndex = folder.children.findIndex(
-            (child) => child.id === id
+            (child) => child.id === id,
           );
           if (itemIndex !== -1) {
             itemToMove = folder.children[itemIndex];
             return {
               ...folder,
               children: folder.children.filter(
-                (_, index) => index !== itemIndex
+                (_, index) => index !== itemIndex,
               ),
             };
           }

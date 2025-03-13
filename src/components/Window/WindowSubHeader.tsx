@@ -10,12 +10,12 @@ const WindowSubHeader: React.FC<WindowSubHeaderProps> = ({
   diskSpace,
 }) => {
   return (
-    <div className='flex items-center justify-between px-2 h-[22px] bg-white border-b border-[#999999]'>
-      <span className='text-[11px] font-chicago text-black'>
+    <div className="flex items-center justify-between px-2 h-[22px] bg-white border-b border-[#999999]">
+      <span className="text-[11px] font-chicago text-black">
         {itemCount} items
       </span>
-      <span className='flex-grow' />
-      <span className='text-[11px] font-chicago text-black'>
+      <span className="flex-grow" />
+      <span className="text-[11px] font-chicago text-black">
         {diskSpace} MB in disk
       </span>
     </div>

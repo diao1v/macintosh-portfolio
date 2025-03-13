@@ -1,0 +1,18 @@
+{
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "importOrder": [
+    "^react$",
+    "^(?:(?:@?react|react\\-)|(?<=\\/react))|next",
+    "<THIRD_PARTY_MODULES>",
+    "^(?:@sparknz)",
+    "^(?:[a-zA-Z].*/)?(?:journey|pages|shared|mocks|test|generated)",
+    "^[.]"
+  ],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true
+}

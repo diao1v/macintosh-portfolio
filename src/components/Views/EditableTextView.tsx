@@ -26,9 +26,9 @@ const EditableTextView: React.FC<EditableTextViewProps> = ({ file }) => {
   };
 
   return (
-    <div className='min-h-[calc(100vh-200px)]'>
+    <div className="min-h-[calc(100vh-200px)]">
       <textarea
-        className='w-full min-h-[calc(100vh-200px)] p-4 text-sm text-black bg-white outline-none resize-none font-torrance'
+        className="w-full min-h-[calc(100vh-200px)] p-4 text-sm text-black bg-white outline-none resize-none font-torrance"
         value={content}
         onChange={handleChange}
         spellCheck={false}

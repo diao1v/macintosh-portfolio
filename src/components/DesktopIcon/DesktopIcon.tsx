@@ -40,7 +40,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
         onClick?.(
           new MouseEvent('click', {
             bubbles: true,
-          }) as unknown as React.MouseEvent<Element, MouseEvent>
+          }) as unknown as React.MouseEvent<Element, MouseEvent>,
         );
       }
       setIsDragging(false);
@@ -66,7 +66,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
         x: e.clientX - position.x,
         y: e.clientY - position.y,
       });
-      onClick?.(e); 
+      onClick?.(e);
       e.stopPropagation();
     }
   };
@@ -79,7 +79,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
 
   return (
     <div
-      className='absolute w-[108px] flex flex-col items-center'
+      className="absolute w-[108px] flex flex-col items-center"
       style={{
         left: position.x,
         top: position.y,
@@ -98,14 +98,14 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
           zIndex: isDragging
             ? Z_INDEX.DRAGGING_ICON
             : isSelected
-            ? Z_INDEX.SELECTED_ICON
-            : Z_INDEX.DESKTOP_ICON,
+              ? Z_INDEX.SELECTED_ICON
+              : Z_INDEX.DESKTOP_ICON,
         }}
       >
         <img
           src={icon}
           alt={name}
-          className='w-12 h-12 pointer-events-none'
+          className="w-12 h-12 pointer-events-none"
           draggable={false}
         />
         <span
