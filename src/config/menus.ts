@@ -226,6 +226,14 @@ export const createMenuConfig = (handlers: {
           label: 'Credits',
           disabled: true,
         },
+        { label: '---' },
+        {
+          label: 'Restart',
+          action: () => {
+            window.location.reload();
+          },
+          disabled: false,
+        },
       ],
     },
   ];

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Desktop from './components/Desktop/Desktop';
-import StartupScreen from './components/StartupScreen/StartupScreen';
+import StartupScreen from './components/Desktop/StartupScreen';
 
 const queryClient = new QueryClient();
 

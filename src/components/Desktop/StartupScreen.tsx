@@ -5,31 +5,47 @@ interface StartupScreenProps {
   loadingTime?: number;
 }
 
-export const STARTUP_LOADING_TIME = 500;
+export const BLACK_SCREEN_TIME = 1000;
+export const STARTUP_LOADING_TIME = 1000;
 
 const StartupScreen: React.FC<StartupScreenProps> = ({
   onLoadComplete,
   loadingTime = STARTUP_LOADING_TIME,
 }) => {
   const [progress, setProgress] = useState(0);
+  const [showBlackScreen, setShowBlackScreen] = useState(true);
 
   useEffect(() => {
+    // First show black screen for BLACK_SCREEN_TIME
+    const blackScreenTimer = setTimeout(() => {
+      setShowBlackScreen(false);
+    }, BLACK_SCREEN_TIME);
+
+    // Then start the loading progress after black screen
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        const newProgress = prev + 2;
-        return newProgress >= 100 ? 100 : newProgress;
-      });
+      if (!showBlackScreen) {
+        setProgress((prev) => {
+          const newProgress = prev + 2;
+          return newProgress >= 100 ? 100 : newProgress;
+        });
+      }
     }, loadingTime / 50);
 
-    const timer = setTimeout(() => {
+    // Complete loading after black screen + loading time
+    const loadingTimer = setTimeout(() => {
       onLoadComplete();
-    }, loadingTime);
+    }, BLACK_SCREEN_TIME + loadingTime);
 
     return () => {
       clearInterval(interval);
-      clearTimeout(timer);
+      clearTimeout(blackScreenTimer);
+      clearTimeout(loadingTimer);
     };
-  }, [loadingTime, onLoadComplete]);
+  }, [loadingTime, onLoadComplete, showBlackScreen]);
+
+  if (showBlackScreen) {
+    return <div className="fixed inset-0 bg-black" />;
+  }
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#8e8e8e]">
