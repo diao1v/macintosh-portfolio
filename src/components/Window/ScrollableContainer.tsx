@@ -3,30 +3,43 @@ import { ScrollInfo, TrackDimensions } from './types';
 
 interface ScrollableContainerProps {
   children: React.ReactNode;
-  type?: 'about' | 'folder' | 'project' | 'text' | 'contact' | 'link' | 'scrapbook' | 'code' | 'pdf';
+  type?:
+    | 'about'
+    | 'folder'
+    | 'project'
+    | 'text'
+    | 'contact'
+    | 'link'
+    | 'scrapbook'
+    | 'code'
+    | 'pdf';
   isFocused?: boolean;
+  hideHorizontal?: boolean;
 }
 
 const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   children,
   type,
   isFocused = false,
+  hideHorizontal = false,
 }) => {
   // Modified version for project type - hide scrollbars but keep corner drag
   if (type === 'project') {
     return (
-      <div className="relative h-full">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-white">
-            {children}
-          </div>
-          
+      <div className='relative h-full'>
+        <div className='absolute inset-0 overflow-hidden'>
+          <div className='absolute inset-0 bg-white'>{children}</div>
+
           {/* Corner Drag Button */}
           <div
-            className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center"
+            className='absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center'
             style={{ zIndex: 3 }}
           >
-            <img src="/icons/maximize.png" alt="resize" className="w-3.5 h-3.5" />
+            <img
+              src='/icons/maximize.png'
+              alt='resize'
+              className='w-3.5 h-3.5'
+            />
           </div>
         </div>
       </div>
@@ -325,73 +338,75 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         </div>
 
         {/* Horizontal Scrollbar */}
-        <div
-          className='absolute left-0 bottom-0 right-4 h-4 bg-[#E6E6E6] border-t border-[#999999]'
-          style={{ zIndex: 2 }}
-          onMouseDown={(e) => {
-            setIsDraggingThumb(true);
-            setDragType('horizontal');
-            const trackRect = e.currentTarget.getBoundingClientRect();
-            const maxScroll = trackDimensions.width - 16;
-            const thumbPosition = Math.max(
-              0,
-              Math.min(e.clientX - trackRect.left - 16, maxScroll)
-            );
-            setScrollInfo((prev) => ({
-              ...prev,
-              horizontalThumbPosition: thumbPosition,
-            }));
-          }}
-        >
-          <button
-            className='absolute left-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-r border-t border-[#999999] flex items-center justify-center'
-            style={{ zIndex: 3 }}
-            onClick={() => handleArrowClick('left')}
-            onMouseDown={(e) => e.stopPropagation()}
-          >
-            <img
-              src='/icons/arrow-left.png'
-              alt='Scroll Left'
-              className='w-3.5 h-3.5'
-            />
-          </button>
-
+        {!hideHorizontal ? (
           <div
-            ref={horizontalTrackRef}
-            className='absolute top-0 bottom-0 left-4 right-4'
+            className='absolute left-0 bottom-0 right-4 h-4 bg-[#E6E6E6] border-t border-[#999999]'
             style={{ zIndex: 2 }}
+            onMouseDown={(e) => {
+              setIsDraggingThumb(true);
+              setDragType('horizontal');
+              const trackRect = e.currentTarget.getBoundingClientRect();
+              const maxScroll = trackDimensions.width - 16;
+              const thumbPosition = Math.max(
+                0,
+                Math.min(e.clientX - trackRect.left - 16, maxScroll)
+              );
+              setScrollInfo((prev) => ({
+                ...prev,
+                horizontalThumbPosition: thumbPosition,
+              }));
+            }}
           >
-            <div
-              className='absolute h-4 w-4 bg-[#E6E6E6] flex items-center justify-center'
-              style={{
-                left: Math.min(
-                  scrollInfo.horizontalThumbPosition,
-                  trackDimensions.width - 16
-                ),
-                zIndex: 3,
-              }}
+            <button
+              className='absolute left-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-r border-t border-[#999999] flex items-center justify-center'
+              style={{ zIndex: 3 }}
+              onClick={() => handleArrowClick('left')}
+              onMouseDown={(e) => e.stopPropagation()}
             >
               <img
-                src='/icons/slider-horiz-top.png'
-                alt='Slider'
+                src='/icons/arrow-left.png'
+                alt='Scroll Left'
                 className='w-3.5 h-3.5'
               />
-            </div>
-          </div>
+            </button>
 
-          <button
-            className='absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center'
-            style={{ zIndex: 3 }}
-            onClick={() => handleArrowClick('right')}
-            onMouseDown={(e) => e.stopPropagation()}
-          >
-            <img
-              src='/icons/arrow-right.png'
-              alt='Scroll Right'
-              className='w-3.5 h-3.5'
-            />
-          </button>
-        </div>
+            <div
+              ref={horizontalTrackRef}
+              className='absolute top-0 bottom-0 left-4 right-4'
+              style={{ zIndex: 2 }}
+            >
+              <div
+                className='absolute h-4 w-4 bg-[#E6E6E6] flex items-center justify-center'
+                style={{
+                  left: Math.min(
+                    scrollInfo.horizontalThumbPosition,
+                    trackDimensions.width - 16
+                  ),
+                  zIndex: 3,
+                }}
+              >
+                <img
+                  src='/icons/slider-horiz-top.png'
+                  alt='Slider'
+                  className='w-3.5 h-3.5'
+                />
+              </div>
+            </div>
+
+            <button
+              className='absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center'
+              style={{ zIndex: 3 }}
+              onClick={() => handleArrowClick('right')}
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <img
+                src='/icons/arrow-right.png'
+                alt='Scroll Right'
+                className='w-3.5 h-3.5'
+              />
+            </button>
+          </div>
+        ) : null}
 
         {/* Corner */}
         <div

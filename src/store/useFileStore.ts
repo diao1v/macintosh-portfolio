@@ -32,6 +32,8 @@ export interface File {
     height?: number;
     x?: number;
     y?: number;
+    minWidth?: number;
+    minHeight?: number;
   };
   projectId?: string;
 }
@@ -115,6 +117,18 @@ const createFileStructure = () => {
             height: 700,
           },
         })),
+      },
+      {
+        id: 'contact',
+        name: 'Eudora Light 3.0.1',
+        type: 'contact',
+        icon: typeToIcon['contact'],
+        window: {
+          width: 600,
+          height: 430,
+          minWidth: 420,
+          minHeight: 430,
+        },
       },
     ],
   };
