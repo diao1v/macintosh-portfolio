@@ -9,7 +9,6 @@
     "^react$",
     "^(?:(?:@?react|react\\-)|(?<=\\/react))|next",
     "<THIRD_PARTY_MODULES>",
-    "^(?:@sparknz)",
     "^(?:[a-zA-Z].*/)?(?:journey|pages|shared|mocks|test|generated)",
     "^[.]"
   ],
