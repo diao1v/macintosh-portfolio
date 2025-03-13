@@ -9,7 +9,7 @@
     "^react$",
     "^(?:(?:@?react|react\\-)|(?<=\\/react))|next",
     "<THIRD_PARTY_MODULES>",
-    "^(?:[a-zA-Z].*/)?(?:journey|pages|shared|mocks|test|generated)",
+    "^(?:[a-zA-Z@].*/)?(?:store|pages|shared|hooks|config|content)",
     "^[.]"
   ],
   "importOrderSeparation": false,
