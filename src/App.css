@@ -44,11 +44,11 @@
 .scrollbar-mac::-webkit-scrollbar {
   width: 16px;
   height: 16px;
-  background-color: #E6E6E6;
+  background-color: #e6e6e6;
 }
 
 .scrollbar-mac::-webkit-scrollbar-thumb {
-  background-color: #E6E6E6;
+  background-color: #e6e6e6;
   border: 1px solid #999999;
   border-radius: 0;
 }
@@ -56,10 +56,19 @@
 .scrollbar-mac::-webkit-scrollbar-button {
   width: 16px;
   height: 16px;
-  background-color: #E6E6E6;
+  background-color: #e6e6e6;
   border: 1px solid #999999;
 }
 
 .scrollbar-mac::-webkit-scrollbar-corner {
-  background-color: #E6E6E6;
+  background-color: #e6e6e6;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
 }

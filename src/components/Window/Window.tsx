@@ -11,6 +11,7 @@ import MarkdownView from '../Views/MarkdownView';
 import ScrapbookView from '../Views/ScrapbookView';
 import AboutPortfolio from '../AboutPortfolio/AboutPortfolio';
 import EditableTextView from '../Views/EditableTextView';
+import EmailClientView from '../Views/EmailClientView';
 
 interface Size {
   width: number;
@@ -42,6 +43,10 @@ const Window: React.FC<WindowProps> = ({
   const type = id === 'about' ? 'about' : file?.type;
   const [size, setSize] = useState<Size>({ width, height });
 
+  // Get minimum dimensions from file if they exist
+  const minWidth = file?.window?.minWidth || 300;
+  const minHeight = file?.window?.minHeight || 200;
+
   useEffect(() => {
     setSize({ width, height });
   }, [width, height]);
@@ -71,8 +76,10 @@ const Window: React.FC<WindowProps> = ({
         return <MarkdownView file={file} />;
       case 'project':
         return <ScrapbookView file={file} />;
+      case 'contact':
+        return <EmailClientView />;
       default:
-        return null;
+        return <div>Unknown file type</div>;
     }
   };
 
@@ -91,8 +98,8 @@ const Window: React.FC<WindowProps> = ({
           height: parseInt(ref.style.height),
         });
       }}
-      minWidth={300}
-      minHeight={200}
+      minWidth={minWidth}
+      minHeight={minHeight}
       bounds='parent'
       style={{ zIndex }}
       dragHandleClassName='window-title-bar'
@@ -140,7 +147,11 @@ const Window: React.FC<WindowProps> = ({
             <div className='absolute inset-0'>{renderContent()}</div>
           </div>
         ) : (
-          <ScrollableContainer type={type} isFocused={isFocused}>
+          <ScrollableContainer
+            type={type}
+            isFocused={isFocused}
+            hideHorizontal={type === 'contact'}
+          >
             {renderContent()}
           </ScrollableContainer>
         )}
