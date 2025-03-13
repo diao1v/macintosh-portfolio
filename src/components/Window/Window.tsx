@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Rnd } from 'react-rnd';
-import { MENU_BAR_HEIGHT, Z_INDEX } from '../../constants';
 import WindowHeader from './WindowHeader';
 import WindowSubHeader from './WindowSubHeader';
 import ScrollableContainer from './ScrollableContainer';
@@ -87,7 +86,7 @@ const Window: React.FC<WindowProps> = ({
     <Rnd
       size={{ width: size.width, height: size.height }}
       position={{ x: position.x, y: position.y }}
-      onDragStop={(e, d) => {
+      onDragStop={(_, d) => {
         if (onPositionChange) {
           onPositionChange(d.x, d.y);
         }
