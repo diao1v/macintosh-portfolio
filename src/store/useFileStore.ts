@@ -11,6 +11,8 @@ export const typeToIcon = {
   photo: '/icons/media.png',
   code: '/icons/text-script.png',
   pdf: '/icons/text.png',
+  github: '/icons/github.png',
+  linkedin: '/icons/linkedin.png',
 };
 
 export interface File {
@@ -118,6 +120,32 @@ const createFileStructure = () => {
             height: 700,
           },
         })),
+      },
+      {
+        id: 'socials',
+        name: 'Socials',
+        type: 'folder',
+        icon: typeToIcon['folder'],
+        window: {
+          width: 600,
+          height: 400,
+        },
+        children: [
+          {
+            id: 'github',
+            name: 'GitHub',
+            type: 'link',
+            icon: typeToIcon['github'],
+            content: 'https://github.com/diao1v',
+          },
+          {
+            id: 'linkedin',
+            name: 'LinkedIn',
+            type: 'link',
+            icon: typeToIcon['linkedin'],
+            content: 'https://www.linkedin.com/in/yiwei-diao/',
+          },
+        ],
       },
       {
         id: 'contact',

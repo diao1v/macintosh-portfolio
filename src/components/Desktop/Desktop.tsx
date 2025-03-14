@@ -53,41 +53,46 @@ const Desktop: React.FC = () => {
     });
   };
 
-  const openFolder = (folderConfig: File) => {
-    const existingWindow = windows.find((w) => w.id === folderConfig.id);
-
-    if (existingWindow) {
-      openWindow(folderConfig.id);
-      focusWindow(folderConfig.id);
+  const handleFileOpen = (file: File) => {
+    if (file.type === 'link' && file.content) {
+      window.open(file.content, '_blank', 'noopener,noreferrer');
       return;
     }
 
-    if (folderConfig.children) {
-      initializeIconPositions(folderConfig.children);
+    const existingWindow = windows.find((w) => w.id === file.id);
+
+    if (existingWindow) {
+      openWindow(file.id);
+      focusWindow(file.id);
+      return;
+    }
+
+    if (file.children) {
+      initializeIconPositions(file.children);
     }
 
     const diskSpace = (
-      (folderConfig.children?.length || 0) *
+      (file.children?.length || 0) *
       (Math.random() * 2 + 0.5)
     ).toFixed(2);
 
     addWindow({
-      id: folderConfig.id,
-      title: folderConfig.name,
-      type: folderConfig.type,
+      id: file.id,
+      title: file.name,
+      type: file.type,
       isOpen: true,
       position: {
-        x: folderConfig.window?.x || 60,
-        y: folderConfig.window?.y || MENU_BAR_HEIGHT + 20,
+        x: file.window?.x || 60,
+        y: file.window?.y || MENU_BAR_HEIGHT + 20,
       },
-      width: folderConfig.window?.width || 400,
-      height: folderConfig.window?.height || 300,
+      width: file.window?.width || 400,
+      height: file.window?.height || 300,
       zIndex: 1,
       diskSpace,
-      children: folderConfig.children,
-      content: folderConfig.content,
+      children: file.children,
+      content: file.content,
     });
-    focusWindow(folderConfig.id);
+    focusWindow(file.id);
   };
 
   const handleItemClick = (itemId: string) => setSelectedItemId(itemId);
@@ -111,7 +116,7 @@ const Desktop: React.FC = () => {
     <>
       <MenuBar
         selectedItemId={selectedItemId}
-        onOpenFile={openFolder}
+        onOpenFile={handleFileOpen}
         onCloseWindow={() => handleCloseWindow(focusedWindowId!)}
       />
       <div className="absolute inset-0 pt-5" onClick={handleBackgroundClick}>
@@ -120,7 +125,7 @@ const Desktop: React.FC = () => {
           <DesktopIcon
             name={rootFolder.name}
             icon={rootFolder.icon}
-            onDoubleClick={() => openFolder(rootFolder)}
+            onDoubleClick={() => handleFileOpen(rootFolder)}
             isSelected={selectedItemId === rootFolder.id}
             onClick={() => handleItemClick(rootFolder.id)}
             position={getIconPosition(rootFolder.id)}
@@ -149,7 +154,7 @@ const Desktop: React.FC = () => {
                   onPositionChange={(x, y) =>
                     setWindowPosition(window.id, { x, y })
                   }
-                  onOpenFolder={openFolder}
+                  onOpenFolder={handleFileOpen}
                   onItemClick={handleItemClick}
                   onIconDrag={handleIconDrag}
                   getIconPosition={getIconPosition}

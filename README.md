@@ -43,5 +43,5 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 - [x] Add load Mac interface
 - [x] Add Email/Contact
 - [x] Add Dialog
-- [ ] Add Email api
-- [ ] Add personal links (github, linkedin)
+- [x] Add Email api
+- [x] Add personal links (github, linkedin)
