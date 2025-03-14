@@ -50,7 +50,7 @@ const WindowHeader: React.FC<WindowHeaderProps> = ({
             }}
             className="w-4 h-4 flex items-center justify-center active:bg-[#000] focus:outline-none"
           >
-            <img src="/icons/drag.png" alt="drag" className="w-4 h-4" />
+            <img src="/icons/drag.png" alt="drag" className="z-50 w-4 h-4" />
           </button>
         </>
       ) : (
