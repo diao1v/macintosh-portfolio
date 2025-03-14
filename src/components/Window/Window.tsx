@@ -104,8 +104,12 @@ const Window: React.FC<WindowProps> = ({
       onClick={() => onFocus && onFocus()}
       resizeHandleComponent={{
         bottomRight: (
-          <div className="absolute bottom-[11px] right-[11px] z-40 w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center">
-            <img src="/icons/maximize.png" alt="maximize" className="w-4 h-4" />
+          <div className="absolute bottom-[11px] right-[11px] w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center z-50">
+            <img
+              src="/icons/maximize.png"
+              alt="maximize"
+              className="z-50 w-4 h-4"
+            />
           </div>
         ),
       }}
