@@ -1,3 +1,5 @@
+import { DEFAULT_IMAGE_WIDTH } from '@/constants';
+
 interface ProjectPage {
   pageNumber: number;
   type: 'description' | 'photo' | 'video';
@@ -13,9 +15,6 @@ export interface Project {
     live?: string;
   };
 }
-
-const DEFAULT_IMAGE_WIDTH = 'w_910';
-const DEFAULT_IMAGE_HEIGHT = 'h_540';
 
 const macosPortfolioProject: Project = {
   title: 'Mac OS Portfolio',

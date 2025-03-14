@@ -16,7 +16,6 @@ const FolderView: React.FC<FolderViewProps> = ({
   file,
   onOpenFolder,
   onItemClick,
-  onIconDrag,
   selectedItemId,
 }) => {
   const [iconPositions, setIconPositions] = useState<{

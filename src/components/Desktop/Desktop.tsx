@@ -29,7 +29,7 @@ const Desktop: React.FC = () => {
     openWindow,
     addWindow,
   } = useWindowStore();
-  const { rootFolder, getFileById } = useFolderStore();
+  const { rootFolder } = useFolderStore();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [iconPositions, setIconPositions] = useState<IconPosition[]>([
     { id: rootFolder.id, x: window.innerWidth - 120, y: 20 },

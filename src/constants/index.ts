@@ -27,3 +27,6 @@ export const FUN_NAMES = [
   'Cyber Cave 🕹️',
   'Tech Treasury 💎',
 ];
+
+export const DEFAULT_IMAGE_WIDTH = 'w_910';
+export const DEFAULT_IMAGE_HEIGHT = 'h_540';

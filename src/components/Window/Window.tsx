@@ -33,9 +33,7 @@ const Window: React.FC<WindowProps> = ({
   onOpenFolder,
   onItemClick,
   onIconDrag,
-  getIconPosition,
   selectedItemId,
-  children,
 }) => {
   const { getFileById } = useFileStore();
   const file = id !== 'about' ? getFileById(id) : null;
@@ -91,7 +89,7 @@ const Window: React.FC<WindowProps> = ({
           onPositionChange(d.x, d.y);
         }
       }}
-      onResizeStop={(e, direction, ref, delta, position) => {
+      onResizeStop={(_e, _direction, ref, _delta, _position) => {
         setSize({
           width: parseInt(ref.style.width),
           height: parseInt(ref.style.height),

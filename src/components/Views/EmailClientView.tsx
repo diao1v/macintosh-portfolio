@@ -35,10 +35,6 @@ const EmailClientView: React.FC = () => {
   const recipientEmail = import.meta.env.VITE_EMAIL_ADDRESS;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitResult, setSubmitResult] = useState<{
-    success?: boolean;
-    message?: string;
-  }>({});
 
   const validateAndSubmit = (data: EmailFormData) => {
     if (data.recipient) {
@@ -50,12 +46,10 @@ const EmailClientView: React.FC = () => {
 
   const handleEmailSubmit = (data: EmailFormData) => {
     setIsSubmitting(true);
-    setSubmitResult({});
 
     sendEmailMutation.mutate(data, {
       onSuccess: (response) => {
         const result = parseApiResponse(response);
-        setSubmitResult(result);
 
         if (result.success) {
           openDialog({
@@ -81,12 +75,6 @@ const EmailClientView: React.FC = () => {
         setIsSubmitting(false);
       },
       onError: (error) => {
-        setSubmitResult({
-          success: false,
-          message:
-            error instanceof Error ? error.message : 'Failed to send email',
-        });
-
         openDialog({
           title: 'Error',
           message:
