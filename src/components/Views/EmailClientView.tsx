@@ -192,7 +192,7 @@ const EmailClientView: React.FC = () => {
             name={name}
             value={value}
             onChange={onChange}
-            rows={11}
+            rows={17}
             maxLength={1000}
             className="w-full p-1 overflow-hidden border-transparent resize-none border-b-1 focus:border-black focus:outline-none scrollbar-hide"
           />
