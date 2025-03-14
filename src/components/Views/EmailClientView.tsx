@@ -110,7 +110,7 @@ const EmailClientView: React.FC = () => {
     >
       <Dialog {...dialogProps} isOpen={isOpen} onClose={closeDialog} />
       {/* Email client header */}
-      <div className="flex items-center justify-between p-2 border-b pl-4 border-black bg-[#f3f3f3]">
+      <div className="flex items-center justify-between p-2 border-b px-6 border-black bg-[#f3f3f3]">
         <button disabled className="rounded-md shadow-sm cursor-not-allowed">
           <img src="/icons/eudora1.png" alt="QP" />
         </button>
@@ -128,11 +128,10 @@ const EmailClientView: React.FC = () => {
           name="recipient"
           render={({ field: { name, value, onChange } }) => (
             <input
-              type="hidden"
               name={name}
               value={value}
               onChange={onChange}
-              className="absolute"
+              className="absolute hidden"
             />
           )}
         />

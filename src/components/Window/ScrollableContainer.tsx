@@ -259,7 +259,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
       <div className="absolute inset-0 overflow-hidden">
         <div
           ref={contentRef}
-          className={`absolute inset-0 overflow-auto ${
+          className={`absolute inset-0 overflow-hidden ${
             isFocused ? 'bg-white' : 'bg-[#E6E6E6]'
           }`}
           style={{ zIndex: 1 }}
