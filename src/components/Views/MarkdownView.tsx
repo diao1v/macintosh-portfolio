@@ -20,7 +20,7 @@ const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
   const font = type === 'code' ? 'font-torrance' : 'font-chicago';
   return (
     <div
-      className={`${padding} prose-sm prose rounded-none max-w-none ${font} ${textSize} flex flex-col overflow-hidden scrollbar-hide p-4`}
+      className={`${padding} prose-sm prose rounded-none max-w-none ${font} ${textSize} flex flex-col overflow-hidden scrollbar-hide`}
     >
       <ReactMarkdown
         components={{
