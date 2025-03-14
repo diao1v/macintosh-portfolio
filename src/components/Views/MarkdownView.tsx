@@ -16,10 +16,11 @@ const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
   const content = getContentForFile(file.id);
 
   const textSize = type === 'code' ? 'text-[14px]' : 'text-[14px]';
+  const padding = type === 'code' ? 'p-0' : 'p-4';
   const font = type === 'code' ? 'font-torrance' : 'font-chicago';
   return (
     <div
-      className={`prose-sm prose rounded-none max-w-none ${font} ${textSize} flex flex-col overflow-hidden scrollbar-hide`}
+      className={`${padding} prose-sm prose rounded-none max-w-none ${font} ${textSize} flex flex-col overflow-hidden scrollbar-hide p-4`}
     >
       <ReactMarkdown
         components={{
