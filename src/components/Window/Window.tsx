@@ -24,7 +24,7 @@ const Window: React.FC<WindowProps> = ({
   position,
   isFocused = false,
   onFocus,
-  zIndex = 1,
+  zIndex,
   diskSpace,
   onZoom,
   width = 400,
@@ -98,7 +98,7 @@ const Window: React.FC<WindowProps> = ({
       minWidth={minWidth}
       minHeight={minHeight}
       bounds="parent"
-      style={{ zIndex: 999 }}
+      style={{ zIndex: zIndex ? zIndex : 999 }}
       dragHandleClassName="window-title-bar"
       className={`${isFocused ? 'window-focused' : ''}`}
       onClick={() => onFocus && onFocus()}
