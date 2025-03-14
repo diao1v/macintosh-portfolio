@@ -98,17 +98,17 @@ const Window: React.FC<WindowProps> = ({
       minWidth={minWidth}
       minHeight={minHeight}
       bounds="parent"
-      style={{ zIndex }}
+      style={{ zIndex: 999 }}
       dragHandleClassName="window-title-bar"
       className={`${isFocused ? 'window-focused' : ''}`}
       onClick={() => onFocus && onFocus()}
       resizeHandleComponent={{
         bottomRight: (
-          <div className="absolute bottom-[11px] right-[11px] w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center z-50">
+          <div className="absolute bottom-[11px] right-[11px] w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center z-[999]">
             <img
               src="/icons/maximize.png"
               alt="maximize"
-              className="z-50 w-4 h-4"
+              className="w-4 h-4 z-[999]"
             />
           </div>
         ),
