@@ -102,6 +102,11 @@ const Window: React.FC<WindowProps> = ({
       dragHandleClassName="window-title-bar"
       className={`${isFocused ? 'window-focused' : ''}`}
       onClick={() => onFocus && onFocus()}
+      resizeHandleStyles={{
+        bottomRight: {
+          zIndex: 999,
+        },
+      }}
       resizeHandleComponent={{
         bottomRight: (
           <div
