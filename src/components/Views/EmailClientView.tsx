@@ -106,7 +106,7 @@ const EmailClientView: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(validateAndSubmit, handleError)}
-      className="flex flex-col flex-1 font-monaco text-[12px] pr-4"
+      className="flex flex-col flex-1 font-monaco text-[12px] pr-0"
     >
       <Dialog {...dialogProps} isOpen={isOpen} onClose={closeDialog} />
       {/* Email client header */}
