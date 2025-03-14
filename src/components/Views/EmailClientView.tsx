@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -8,6 +8,7 @@ import {
   emailFormSchema,
   useSendEmail,
   type EmailFormData,
+  parseApiResponse,
 } from '@/api/emailApi';
 
 const EmailClientView: React.FC = () => {
@@ -33,6 +34,12 @@ const EmailClientView: React.FC = () => {
 
   const recipientEmail = import.meta.env.VITE_EMAIL_ADDRESS;
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState<{
+    success?: boolean;
+    message?: string;
+  }>({});
+
   const validateAndSubmit = (data: EmailFormData) => {
     if (data.recipient) {
       return;
@@ -42,22 +49,44 @@ const EmailClientView: React.FC = () => {
   };
 
   const handleEmailSubmit = (data: EmailFormData) => {
+    setIsSubmitting(true);
+    setSubmitResult({});
+
     sendEmailMutation.mutate(data, {
       onSuccess: (response) => {
-        openDialog({
-          title: 'Message Sent',
-          message:
-            response.message || 'Your message has been queued for delivery.',
-          icon: '/icons/success.png',
-          buttons: [
-            {
-              label: 'OK',
-              onClick: () => reset(formDefaultValues),
-            },
-          ],
-        });
+        const result = parseApiResponse(response);
+        setSubmitResult(result);
+
+        if (result.success) {
+          openDialog({
+            title: 'Message Sent',
+            message:
+              result.message || 'Your message has been queued for delivery.',
+            icon: '/icons/success.png',
+            buttons: [
+              {
+                label: 'OK',
+                onClick: () => reset(formDefaultValues),
+              },
+            ],
+          });
+        } else {
+          openDialog({
+            title: 'Error',
+            message: result.message || 'Failed to send email',
+            icon: '/icons/alert.png',
+            buttons: [{ label: 'OK', onClick: () => {} }],
+          });
+        }
+        setIsSubmitting(false);
       },
       onError: (error) => {
+        setSubmitResult({
+          success: false,
+          message:
+            error instanceof Error ? error.message : 'Failed to send email',
+        });
+
         openDialog({
           title: 'Error',
           message:
@@ -65,6 +94,7 @@ const EmailClientView: React.FC = () => {
           icon: '/icons/alert.png',
           buttons: [{ label: 'OK', onClick: () => {} }],
         });
+        setIsSubmitting(false);
       },
     });
   };
@@ -88,11 +118,11 @@ const EmailClientView: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(validateAndSubmit, handleError)}
-      className="flex flex-col flex-1  font-monaco text-[20px]"
+      className="flex flex-col flex-1 font-monaco text-[20px]"
     >
       <Dialog {...dialogProps} isOpen={isOpen} onClose={closeDialog} />
       {/* Email client header */}
-      <div className="flex items-center justify-between p-2 border-b  pl-4 border-black bg-[#f3f3f3]">
+      <div className="flex items-center justify-between p-2 border-b pl-4 border-black bg-[#f3f3f3]">
         <button disabled className="rounded-md shadow-sm cursor-not-allowed">
           <img src="/icons/eudora1.png" alt="QP" />
         </button>
@@ -121,9 +151,10 @@ const EmailClientView: React.FC = () => {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="px-4 bg-white border border-black rounded-md shadow-sm font-chicago text-[15px]"
         >
-          Send
+          {isSubmitting ? 'Sending...' : 'Send'}
         </button>
       </div>
 

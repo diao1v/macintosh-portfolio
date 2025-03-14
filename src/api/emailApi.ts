@@ -58,3 +58,42 @@ export const useSendEmail = () => {
     },
   });
 };
+
+/**
+ * Parses the API response and determines if it was successful
+ * @param response The API response object
+ * @returns An object with success status and message
+ */
+export const parseApiResponse = (response: any) => {
+  try {
+    if (response.statusCode !== undefined && response.body) {
+      const bodyData =
+        typeof response.body === 'string'
+          ? JSON.parse(response.body)
+          : response.body;
+
+      if (response.statusCode === 200 && bodyData.message) {
+        return {
+          success: true,
+          message: bodyData.message,
+        };
+      }
+      else {
+        return {
+          success: false,
+          message: bodyData.error || 'An unknown error occurred',
+        };
+      }
+    }
+    return {
+      success: false,
+      message: 'Invalid response format from server',
+    };
+  } catch (error) {
+    console.error('Error parsing API response:', error);
+    return {
+      success: false,
+      message: 'Failed to process server response',
+    };
+  }
+};
