@@ -16,7 +16,7 @@ export const emailFormSchema = z.object({
     .refine((val) => !/<script|javascript:|on\w+=/i.test(val), {
       message: 'Message contains invalid characters',
     }),
-  sender: z
+  email: z
     .string()
     .min(1, "Sender can't be empty")
     .max(100, "Sender can't exceed 100 characters")
@@ -29,7 +29,7 @@ export const emailFormSchema = z.object({
 
 export type EmailFormData = z.infer<typeof emailFormSchema>;
 
-const emailApiUrl = 'http://localhost:3000/api/send-email';
+const emailApiUrl = import.meta.env.VITE_EMAIL_API;
 
 const sendEmail = async (
   data: EmailFormData,

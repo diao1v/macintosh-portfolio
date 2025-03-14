@@ -11,11 +11,10 @@ import {
 } from '@/api/emailApi';
 
 const EmailClientView: React.FC = () => {
-  const recipientEmail = 'tuicaodanad@gmail.com';
   const formDefaultValues: EmailFormData = {
     subject: '',
     message: '',
-    sender: '',
+    email: '',
     recipient: '',
   };
 
@@ -31,6 +30,8 @@ const EmailClientView: React.FC = () => {
 
   const { isOpen, dialogProps, openDialog, closeDialog } = useDialog();
   const sendEmailMutation = useSendEmail();
+
+  const recipientEmail = import.meta.env.VITE_EMAIL_ADDRESS;
 
   const validateAndSubmit = (data: EmailFormData) => {
     if (data.recipient) {
@@ -138,7 +139,7 @@ const EmailClientView: React.FC = () => {
           <p>{recipientEmail}</p>
           <Controller
             control={control}
-            name="sender"
+            name="email"
             render={({ field: { name, value, onChange } }) => (
               <input
                 name={name}
