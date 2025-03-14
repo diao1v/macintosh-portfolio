@@ -33,12 +33,12 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
           {/* Corner Drag Button */}
           <div
             className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center"
-            style={{ zIndex: 3 }}
+            style={{ zIndex: 999 }}
           >
             <img
               src="/icons/maximize.png"
               alt="resize"
-              className="w-3.5 h-3.5"
+              className="w-3.5 h-3.5 z-50"
             />
           </div>
         </div>
