@@ -17,13 +17,14 @@ interface ScrollableContainerProps {
   hideHorizontal?: boolean;
 }
 
+const SCROLL_STEP = 32;
+
 const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   children,
   type,
   isFocused = false,
   hideHorizontal = false,
 }) => {
-  // Modified version for project type - hide scrollbars but keep corner drag
   if (type === 'project') {
     return (
       <div className="relative h-full">
@@ -31,10 +32,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
           <div className="absolute inset-0 bg-white">{children}</div>
 
           {/* Corner Drag Button */}
-          <div
-            className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center"
-            style={{ zIndex: 999 }}
-          >
+          <div className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center z-[999]">
             <img
               src="/icons/maximize.png"
               alt="resize"
@@ -169,8 +167,6 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   const handleArrowClick = (direction: 'up' | 'down' | 'left' | 'right') => {
     const content = contentRef.current;
     if (!content) return;
-
-    const SCROLL_STEP = 32;
 
     switch (direction) {
       case 'up':

@@ -1,7 +1,7 @@
 export const MENU_BAR_HEIGHT = 20;
 export const ICON_WIDTH = 96;
 export const ICON_SPACING = 16;
-export const FOLDER_PADDING = 8;
+export const FOLDER_PADDING = 16;
 
 export const Z_INDEX = {
   DESKTOP_ICON: 1,

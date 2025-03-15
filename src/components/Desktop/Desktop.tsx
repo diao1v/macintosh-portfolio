@@ -5,13 +5,13 @@ import {
   ICON_SPACING,
   FOLDER_PADDING,
 } from '@/constants';
-import DesktopIcon from '../DesktopIcon/DesktopIcon';
-import Window from '../Window/Window';
 import useWindowStore from '@/store/useWindowStore';
 import useFolderStore from '@/store/useFileStore';
 import { File } from '@/store/useFileStore';
-import MenuBar from '../MenuBar/MenuBar';
-import Dialog from '../Dialog/Dialog';
+import DesktopIcon from '@/components/DesktopIcon/DesktopIcon';
+import Window from '@/components/Window/Window';
+import MenuBar from '@/components/MenuBar/MenuBar';
+import Dialog from '@/components/Dialog/Dialog';
 
 interface IconPosition {
   id: string;
