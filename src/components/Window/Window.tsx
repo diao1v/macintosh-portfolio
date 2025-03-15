@@ -110,13 +110,12 @@ const Window: React.FC<WindowProps> = ({
       resizeHandleComponent={{
         bottomRight: (
           <div
-            style={{ zIndex: 999 }}
-            className="absolute bottom-[11px] right-[11px] w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center z-[999]"
+            className="absolute bottom-[11px] right-[11px] w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center"
           >
             <img
               src="/icons/maximize.png"
               alt="maximize"
-              className="w-4 h-4 z-[999]"
+              className="w-4 h-4"
             />
           </div>
         ),
