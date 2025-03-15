@@ -1,6 +1,8 @@
 import useWindowStore from '@/store/useWindowStore';
 import useFileStore, { typeToIcon, File } from '@/store/useFileStore';
 import { FUN_NAMES } from '@/constants';
+import { DialogProps } from '@/contexts/DialogContext';
+import { getDialogProps } from '@/config/dialogs';
 
 export interface MenuItem {
   label: string;
@@ -19,11 +21,12 @@ export const createMenuConfig = (handlers: {
   selectedItemId: string | null;
   onOpenFile: (folderConfig: File) => void;
   onCloseWindow?: () => void;
+  openDialog?: (dialogProps: DialogProps) => void;
 }) => {
   const { focusedWindowId } = useWindowStore.getState();
   const { addItem, getFileById, deleteItem, saveFile } =
     useFileStore.getState();
-  const { selectedItemId, onOpenFile, onCloseWindow } = handlers;
+  const { selectedItemId, onOpenFile, onCloseWindow, openDialog } = handlers;
 
   const handleCreateFolder = () => {
     const focusedFile = focusedWindowId ? getFileById(focusedWindowId) : null;
@@ -105,6 +108,12 @@ export const createMenuConfig = (handlers: {
     if (!focusedWindowId) return;
 
     saveFile(focusedWindowId);
+  };
+
+  const handleShowCredits = () => {
+    if (openDialog) {
+      openDialog(getDialogProps('CREDITS'));
+    }
   };
 
   const menus: MenuConfig[] = [
@@ -224,7 +233,8 @@ export const createMenuConfig = (handlers: {
       items: [
         {
           label: 'Credits',
-          disabled: true,
+          action: handleShowCredits,
+          disabled: false,
         },
         { label: '---' },
         {

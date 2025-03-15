@@ -11,7 +11,7 @@ const AboutPortfolio: React.FC = () => {
         />
         <div>
           <h2 className="text-[13px] font-bold">Yiwei's Portfolio</h2>
-          <p className="text-[11px]">System Software 7.5.3 & 8 Mixture</p>
+          <p className="text-[11px]">Macintosh OS 7.5.3, 7.6 & 8 Mixture</p>
         </div>
       </div>
       <div className="py-2 border-t border-b border-black">
