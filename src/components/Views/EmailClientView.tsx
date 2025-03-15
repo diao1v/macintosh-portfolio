@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useDialog } from '@/contexts/DialogContext';
 import {
   emailFormSchema,
@@ -23,10 +22,11 @@ const EmailClientView: React.FC = () => {
     control,
     reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = useForm<EmailFormData>({
     defaultValues: formDefaultValues,
     resolver: zodResolver(emailFormSchema),
+    mode: 'onChange',
   });
 
   const { openDialog } = useDialog();
@@ -93,6 +93,12 @@ const EmailClientView: React.FC = () => {
       );
     }
   };
+
+  useEffect(() => {
+    if (isSubmitted && Object.keys(errors).length > 0) {
+      handleError();
+    }
+  }, [isSubmitted, errors]);
 
   return (
     <form
