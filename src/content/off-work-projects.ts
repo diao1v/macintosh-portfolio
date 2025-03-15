@@ -80,7 +80,7 @@ const woodworks: Project = {
     'Page 2: Customized Tech Cabinet with Rattan Weave',
     'Page 3: Customized Shoe Rack + Bench + Coat Hanger',
     'Page 4 and 5: Frames + Decorative Lighting',
-    "Page 6: The famous Mr.bean whistler's mother - Mr.Bean version",
+    "Page 6: The famous Whistler's Mother - Mr.Bean version",
   ],
 };
 
