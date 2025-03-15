@@ -1,10 +1,13 @@
 import { aboutMe, resume } from './about-me';
 import { Project, projects } from './projects';
-
+import { offWorkProjects } from './off-work-projects';
 interface Content {
   resume: string;
   aboutMe: string;
   projects: {
+    [key: string]: Project;
+  };
+  offWorkProjects: {
     [key: string]: Project;
   };
 }
@@ -13,6 +16,7 @@ export const content: Content = {
   resume,
   aboutMe,
   projects,
+  offWorkProjects,
 };
 
 // Helper to get content for a file

@@ -10,10 +10,13 @@ export interface Project {
   title: string;
   pages: ProjectPage[];
   oneLiner: string;
-  links: {
-    github?: string;
-    live?: string;
-  };
+  links?: [
+    {
+      name: string;
+      url: string;
+    },
+  ];
+  subContent?: string[];
 }
 
 const macosPortfolioProject: Project = {
@@ -38,14 +41,16 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
   - **Interactive Experience**:
     - Drag-and-drop functionality
     - Resizable windows
-    - FRetro UI elements like menus, buttons
+    - Retro UI elements like menus, buttons
 
 ## Technologies Used
 
 - React (with Vite for fast development)
 - Tailwind CSS for styling
-- React-Markdown for rendering Markdown content
 - Zustand for code state management
+- AWS API Gateway/Lambda/SES for email sending
+- Cloudflare for DNS and CDN
+
 
 ## How to Use
 
@@ -61,9 +66,12 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
     },
   ],
   oneLiner: 'A Mac OS portfolio website',
-  links: {
-    github: 'https://github.com/diao1v/macintosh-portfolio',
-  },
+  links: [
+    {
+      name: 'Github',
+      url: 'https://github.com/diao1v/macintosh-portfolio',
+    },
+  ],
 };
 
 const myHouseShoppingDiaryProject: Project = {
@@ -158,7 +166,7 @@ CLERK_SECRET_KEY=
     },
   ],
   oneLiner: 'Still under construction',
-  links: {},
+  subContent: ['App is still under construction'],
 };
 
 const cheaterEncoderProject: Project = {
@@ -288,9 +296,12 @@ The **Cheater Encoder** is a tool designed to help video developers test streami
     },
   ],
   oneLiner: 'A Mac OS portfolio website',
-  links: {
-    github: 'https://github.com/diao1v/cheater-encoder',
-  },
+  links: [
+    {
+      name: 'Github',
+      url: 'https://github.com/diao1v/cheater-encoder',
+    },
+  ],
 };
 
 const grammarTunerProject: Project = {
@@ -364,9 +375,12 @@ Currently, the app is only available for Arm MacOS(Apple Silicon). You can downl
     },
   ],
   oneLiner: 'A desktop application for grammar tuning',
-  links: {
-    github: 'https://github.com/diao1v/grammar-tuner',
-  },
+  links: [
+    {
+      name: 'Github',
+      url: 'https://github.com/diao1v/grammar-tuner',
+    },
+  ],
 };
 
 export const projects = {
