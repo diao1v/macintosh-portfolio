@@ -1,5 +1,5 @@
 import React from 'react';
-import { DialogProps } from '@/contexts/DialogContext';
+import { DialogProps } from '@/store/useDialogStore';
 
 export type DialogType =
   | 'CREDITS'
@@ -13,11 +13,12 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
       return {
         title: 'Credits',
         message: React.createElement('div', { className: 'space-y-3' }, [
-          React.createElement('p', {}, [
+          React.createElement('p', { key: 'credit-1' }, [
             '- Thanks henryjeff (',
             React.createElement(
               'a',
               {
+                key: 'link-1',
                 href: 'https://github.com/henryjeff',
                 target: '_blank',
                 rel: 'noopener noreferrer',
@@ -29,6 +30,7 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
             React.createElement(
               'a',
               {
+                key: 'link-2',
                 href: 'https://github.com/Renovamen',
                 target: '_blank',
                 rel: 'noopener noreferrer',
@@ -38,11 +40,12 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
             ),
             ') for inspiring me about the OS mock portfolio site',
           ]),
-          React.createElement('p', {}, [
+          React.createElement('p', { key: 'credit-2' }, [
             '- Thanks ',
             React.createElement(
               'a',
               {
+                key: 'link-3',
                 href: 'https://infinitemac.org',
                 target: '_blank',
                 rel: 'noopener noreferrer',
@@ -52,8 +55,10 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
             ),
             ' for providing Macintosh emulator for experiencing Macintosh OS 7-8',
           ]),
-          React.createElement('p', {}, ['- Thanks Yuan for spiritual support']),
-          React.createElement('p', {}, [
+          React.createElement('p', { key: 'credit-3' }, [
+            '- Thanks Yuan for spiritual support',
+          ]),
+          React.createElement('p', { key: 'credit-4' }, [
             '- Thanks Deepseek for technical support',
           ]),
         ]),

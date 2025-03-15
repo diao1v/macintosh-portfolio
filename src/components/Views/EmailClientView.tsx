@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useDialog } from '@/contexts/DialogContext';
+import useDialogStore from '@/store/useDialogStore';
 import {
   emailFormSchema,
   useSendEmail,
@@ -29,7 +29,7 @@ const EmailClientView: React.FC = () => {
     mode: 'onChange',
   });
 
-  const { openDialog } = useDialog();
+  const { openDialog } = useDialogStore();
   const sendEmailMutation = useSendEmail();
 
   const recipientEmail = import.meta.env.VITE_EMAIL_ADDRESS;

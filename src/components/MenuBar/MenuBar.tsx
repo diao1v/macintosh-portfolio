@@ -3,7 +3,7 @@ import DropdownMenu from './DropdownMenu';
 import { createMenuConfig } from '@/config/menus';
 import { File } from '@/store/useFileStore';
 import useWindowStore from '@/store/useWindowStore';
-import { useDialog } from '@/contexts/DialogContext';
+import useDialogStore from '@/store/useDialogStore';
 
 interface MenuBarProps {
   selectedItemId: string | null;
@@ -19,12 +19,10 @@ const MenuBar: React.FC<MenuBarProps> = ({
   const { openWindow, focusedWindowId } = useWindowStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const { openDialog } = useDialog();
+  const { openDialog } = useDialogStore();
 
-  // Update the useState initialization
   const [menuConfig, setMenuConfig] = useState<any[]>([]);
 
-  // In the useEffect, add a check before setting the state
   useEffect(() => {
     const config = createMenuConfig({
       onOpenAbout: () => openWindow('about'),
@@ -50,15 +48,12 @@ const MenuBar: React.FC<MenuBarProps> = ({
   ]);
 
   useEffect(() => {
-    // Update time immediately to avoid delay
     setCurrentTime(new Date());
 
-    // Update time every minute
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 60000);
 
-    // Cleanup interval on unmount
     return () => clearInterval(timer);
   }, []);
 
@@ -71,7 +66,6 @@ const MenuBar: React.FC<MenuBarProps> = ({
     hours = hours % 12;
     hours = hours ? hours : 12; // Handle midnight (0)
 
-    // Add leading zero to minutes if needed
     const minutesStr = minutes < 10 ? `0${minutes}` : minutes;
 
     return `${hours}:${minutesStr} ${ampm}`;
