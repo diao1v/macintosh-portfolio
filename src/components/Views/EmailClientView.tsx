@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useDialog } from '@/hooks/useDialog';
-import Dialog from '@/components/Dialog/Dialog';
+import { useDialog } from '@/contexts/DialogContext';
 import {
   emailFormSchema,
   useSendEmail,
   type EmailFormData,
   parseApiResponse,
 } from '@/api/emailApi';
+import { getDialogProps } from '@/config/dialogs';
 
 const EmailClientView: React.FC = () => {
   const formDefaultValues: EmailFormData = {
@@ -29,7 +29,7 @@ const EmailClientView: React.FC = () => {
     resolver: zodResolver(emailFormSchema),
   });
 
-  const { isOpen, dialogProps, openDialog, closeDialog } = useDialog();
+  const { openDialog } = useDialog();
   const sendEmailMutation = useSendEmail();
 
   const recipientEmail = import.meta.env.VITE_EMAIL_ADDRESS;
@@ -52,36 +52,28 @@ const EmailClientView: React.FC = () => {
         const result = parseApiResponse(response);
 
         if (result.success) {
-          openDialog({
-            title: 'Message Sent',
-            message:
-              result.message || 'Your message has been queued for delivery.',
-            icon: '/icons/success.png',
-            buttons: [
-              {
-                label: 'OK',
-                onClick: () => reset(formDefaultValues),
-              },
-            ],
-          });
+          openDialog(
+            getDialogProps('EMAIL_SUCCESS', {
+              message: result.message,
+              onSuccess: () => reset(formDefaultValues),
+            }),
+          );
         } else {
-          openDialog({
-            title: 'Error',
-            message: result.message || 'Failed to send email',
-            icon: '/icons/alert.png',
-            buttons: [{ label: 'OK', onClick: () => {} }],
-          });
+          openDialog(
+            getDialogProps('EMAIL_ERROR', {
+              message: result.message,
+            }),
+          );
         }
         setIsSubmitting(false);
       },
       onError: (error) => {
-        openDialog({
-          title: 'Error',
-          message:
-            error instanceof Error ? error.message : 'Failed to send email',
-          icon: '/icons/alert.png',
-          buttons: [{ label: 'OK', onClick: () => {} }],
-        });
+        openDialog(
+          getDialogProps('EMAIL_ERROR', {
+            message:
+              error instanceof Error ? error.message : 'Failed to send email',
+          }),
+        );
         setIsSubmitting(false);
       },
     });
@@ -94,12 +86,11 @@ const EmailClientView: React.FC = () => {
       .join('; ');
 
     if (errorMessages) {
-      openDialog({
-        title: 'Validation Error',
-        message: errorMessages,
-        icon: '/icons/alert.png',
-        buttons: [{ label: 'OK', onClick: () => {} }],
-      });
+      openDialog(
+        getDialogProps('VALIDATION_ERROR', {
+          message: errorMessages,
+        }),
+      );
     }
   };
 
@@ -108,7 +99,6 @@ const EmailClientView: React.FC = () => {
       onSubmit={handleSubmit(validateAndSubmit, handleError)}
       className="flex flex-col flex-1 font-monaco text-[12px] pr-0"
     >
-      <Dialog {...dialogProps} isOpen={isOpen} onClose={closeDialog} />
       {/* Email client header */}
       <div className="flex items-center justify-between p-2 border-b px-6 border-black bg-[#f3f3f3]">
         <button disabled className="rounded-md shadow-sm cursor-not-allowed">

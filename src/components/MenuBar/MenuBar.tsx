@@ -3,6 +3,7 @@ import DropdownMenu from './DropdownMenu';
 import { createMenuConfig } from '@/config/menus';
 import { File } from '@/store/useFileStore';
 import useWindowStore from '@/store/useWindowStore';
+import { useDialog } from '@/contexts/DialogContext';
 
 interface MenuBarProps {
   selectedItemId: string | null;
@@ -18,42 +19,35 @@ const MenuBar: React.FC<MenuBarProps> = ({
   const { openWindow, focusedWindowId } = useWindowStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const [menuConfig, setMenuConfig] = useState(() =>
-    createMenuConfig({
+  const { openDialog } = useDialog();
+
+  // Update the useState initialization
+  const [menuConfig, setMenuConfig] = useState<any[]>([]);
+
+  // In the useEffect, add a check before setting the state
+  useEffect(() => {
+    const config = createMenuConfig({
       onOpenAbout: () => openWindow('about'),
       selectedItemId,
       onOpenFile,
       onCloseWindow,
-    }),
-  );
+      openDialog,
+    });
 
-  // Update menu config when dependencies change
-  useEffect(() => {
-    setMenuConfig(
-      createMenuConfig({
-        onOpenAbout: () => openWindow('about'),
-        selectedItemId,
-        onOpenFile,
-        onCloseWindow,
-      }),
-    );
-  }, [selectedItemId, onOpenFile, onCloseWindow, openWindow, focusedWindowId]);
-
-  // Refresh menu config periodically to check for unsaved files
-  useEffect(() => {
-    const refreshInterval = setInterval(() => {
-      setMenuConfig(
-        createMenuConfig({
-          onOpenAbout: () => openWindow('about'),
-          selectedItemId,
-          onOpenFile,
-          onCloseWindow,
-        }),
-      );
-    }, 500);
-
-    return () => clearInterval(refreshInterval);
-  }, [selectedItemId, onOpenFile, onCloseWindow, openWindow]);
+    if (Array.isArray(config)) {
+      setMenuConfig(config);
+    } else {
+      console.error('Menu config is not an array:', config);
+      setMenuConfig([]);
+    }
+  }, [
+    selectedItemId,
+    onOpenFile,
+    onCloseWindow,
+    openWindow,
+    focusedWindowId,
+    openDialog,
+  ]);
 
   useEffect(() => {
     // Update time immediately to avoid delay
@@ -109,11 +103,11 @@ const MenuBar: React.FC<MenuBarProps> = ({
                 />
               </div>
             ) : (
-              menu.label
+              (menu as { label: string }).label
             )}
           </div>
           <DropdownMenu
-            items={menu.items}
+            items={(menu as any).items}
             isOpen={activeMenu === index}
             onClose={() => setActiveMenu(null)}
           />
