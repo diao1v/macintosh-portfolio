@@ -35,7 +35,7 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 ## To do
 
 - [x] Add Project details (Grammar Tuner, Mac OS Portfolio, Cheater Encoder, House Shopping Diary)
-- [ ] Add off work projects (wood work, Lego building)
+- [x] Add off work projects (wood work, Lego building)
 - [x] Add "Add new folder" function
 - [x] Add "Open and Close" function from File menu dropdown
 - [x] Add "Add new text file" function
@@ -47,3 +47,4 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 - [x] Add Dialog
 - [x] Add Email api
 - [x] Add personal links (github, linkedin)
+- [ ] PostHog Analytics
