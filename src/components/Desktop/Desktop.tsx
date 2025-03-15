@@ -12,7 +12,6 @@ import useFolderStore from '@/store/useFileStore';
 import { File } from '@/store/useFileStore';
 import MenuBar from '../MenuBar/MenuBar';
 import Dialog from '../Dialog/Dialog';
-import { useDialog } from '@/contexts/DialogContext';
 
 interface IconPosition {
   id: string;
@@ -36,8 +35,6 @@ const Desktop: React.FC = () => {
   const [iconPositions, setIconPositions] = useState<IconPosition[]>([
     { id: rootFolder.id, x: window.innerWidth - 120, y: 20 },
   ]);
-
-  const { isOpen, dialogProps, closeDialog } = useDialog();
 
   const handleCloseWindow = (id: string) => closeWindow(id);
   const handleWindowFocus = (id: string) => focusWindow(id);
@@ -167,10 +164,7 @@ const Desktop: React.FC = () => {
               ),
           )}
         </div>
-
-        {dialogProps && (
-          <Dialog isOpen={isOpen} onClose={closeDialog} {...dialogProps} />
-        )}
+        <Dialog />
       </div>
     </>
   );

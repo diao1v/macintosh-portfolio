@@ -1,7 +1,7 @@
 import useWindowStore from '@/store/useWindowStore';
 import useFileStore, { typeToIcon, File } from '@/store/useFileStore';
 import { FUN_NAMES } from '@/constants';
-import { DialogProps } from '@/contexts/DialogContext';
+import { DialogProps } from '@/store/useDialogStore';
 import { getDialogProps } from '@/config/dialogs';
 
 export interface MenuItem {

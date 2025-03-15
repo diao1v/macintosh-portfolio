@@ -1,33 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Rnd } from 'react-rnd';
+import useDialogStore from '@/store/useDialogStore';
 
-interface DialogProps {
-  title?: string;
-  message: React.ReactNode;
-  icon?: string;
-  buttons?: Array<{
-    label: string;
-    onClick: () => void;
-    primary?: boolean;
-  }>;
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const Dialog: React.FC<DialogProps> = ({
-  title,
-  message,
-  icon = '/icons/info.png',
-  buttons = [{ label: 'OK', onClick: () => {}, primary: true }],
-  isOpen,
-  onClose,
-}) => {
-  if (!isOpen) return null;
+const Dialog: React.FC = () => {
+  const { isOpen, dialogProps, closeDialog } = useDialogStore();
 
   const [position, setPosition] = useState({
     x: window.innerWidth / 2 - 160,
     y: window.innerHeight / 2 - 180,
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      setPosition({
+        x: window.innerWidth / 2 - 160,
+        y: window.innerHeight / 2 - 180,
+      });
+    }
+  }, [isOpen]);
+
+  if (!isOpen || !dialogProps) return null;
+
+  const {
+    title,
+    message,
+    icon = '/icons/info.png',
+    buttons = [{ label: 'OK', onClick: () => {}, primary: true }],
+  } = dialogProps;
 
   const imageAlt = icon.split('/').pop()?.split('.')[0] || 'info';
 
@@ -79,7 +78,7 @@ const Dialog: React.FC<DialogProps> = ({
                 }`}
                 onClick={() => {
                   button.onClick();
-                  onClose();
+                  closeDialog();
                 }}
               >
                 {button.label}
