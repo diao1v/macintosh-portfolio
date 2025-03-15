@@ -17,12 +17,13 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const [isDraggingThumb, setIsDraggingThumb] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const project = content.projects[file.id] || {
-    title: file.name,
-    pages: [],
-    oneLiner: '',
-    links: { github: '', live: '' },
-  };
+  const project = content.projects[file.id] ||
+    content.offWorkProjects[file.id] || {
+      title: file.name,
+      pages: [],
+      oneLiner: '',
+      links: { github: '', live: '' },
+    };
 
   const totalPages = Math.max(1, project.pages.length);
 
@@ -93,28 +94,18 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
     setIsDragging(false);
   };
 
-  const goToNextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-    }
+  const goToPrevPage = () => {
+    setCurrentPage((prev) => Math.max(0, prev - 1));
   };
 
-  const goToPrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
+  const goToNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1));
   };
 
   const handlePosition =
-    totalPages <= 1
-      ? '50%'
-      : `calc(${(currentPage / (totalPages - 1)) * 100}% - ${
-          currentPage === 0
-            ? '0px'
-            : currentPage === totalPages - 1
-              ? '14px'
-              : '7px'
-        })`;
+    currentPage === totalPages - 1
+      ? `${(currentPage / (totalPages - 1)) * 100 - 1.5}%`
+      : `${(currentPage / (totalPages - 1)) * 100}%`;
 
   const handleVerticalTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const track = e.currentTarget;
@@ -198,12 +189,18 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         );
       case 'video':
         return (
-          <div className="flex items-center justify-center h-full">
-            <video
+          <div className="flex items-start justify-start h-full min-h-[600px]">
+            <iframe
+              width="100%"
+              height="100%"
               src={currentPageContent.details}
-              controls
-              className="max-w-full max-h-full"
-            />
+              title={`${project.title} - Video ${currentPage + 1}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              className="w-full h-full min-h-[500px]"
+            ></iframe>
           </div>
         );
       default:
@@ -215,6 +212,17 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   useEffect(() => {
     setIsImageLoading(true);
   }, [currentPage]);
+
+  // compose sub content
+  const subContent = project.subContent?.map((item) => {
+    return `- ${item}`;
+  });
+  const links = project.links?.map((item) => {
+    return `- ${item.name}: [${item.url}](${item.url})`;
+  });
+  const subContentString = subContent?.join('\n');
+  const linksString = links?.join('\n');
+  const allContent = [subContentString, linksString].join('\n\n');
 
   return (
     <div className="flex flex-col h-full pb-4 overflow-hidden">
@@ -305,10 +313,9 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
 
         {/* Info Bar - Fixed Height */}
         <div className=" bg-[#E6E6E6] px-4 py-1">
-          {/* Project info with markdown */}
           <div className="h-28 bg-white border border-[#999999] px-2 py-0.5 overflow-x-auto">
             <div className="leading-tight prose-sm prose max-w-none text-[11px]">
-              <ReactMarkdown>{`${project.oneLiner}`}</ReactMarkdown>
+              <ReactMarkdown>{`${allContent}`}</ReactMarkdown>
             </div>
           </div>
         </div>

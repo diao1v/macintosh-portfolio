@@ -148,6 +148,28 @@ const createFileStructure = () => {
         ],
       },
       {
+        id: 'off-work-projects',
+        name: 'Off Work Projects',
+        type: 'folder',
+        icon: typeToIcon['folder'],
+        window: {
+          width: 600,
+          height: 400,
+        },
+        children: Object.entries(content.offWorkProjects).map(
+          ([id, project]) => ({
+            id,
+            name: project.title,
+            type: 'project',
+            icon: typeToIcon['project'],
+            window: {
+              width: 1000,
+              height: 700,
+            },
+          }),
+        ),
+      },
+      {
         id: 'contact',
         name: 'Eudora Light 3.0.1',
         type: 'contact',

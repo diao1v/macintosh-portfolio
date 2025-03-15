@@ -89,6 +89,12 @@ export const resume = `
 *Sichuan University, China*  
 **2011**
 
+---
+
+## Certifications
+
+### AWS Certified Solutions Architect - Associate
+Issued Aug 2024 · Expires Aug 2027
 `;
 
 export const aboutMe = `\`\`\`java
