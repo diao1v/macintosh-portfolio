@@ -191,14 +191,10 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         return (
           <div className="flex items-start justify-start h-full min-h-[600px]">
             <iframe
-              width="100%"
-              height="100%"
               src={currentPageContent.details}
               title={`${project.title} - Video ${currentPage + 1}`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allow="encrypted-media;"
               referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
               className="w-full h-full min-h-[500px]"
             ></iframe>
           </div>

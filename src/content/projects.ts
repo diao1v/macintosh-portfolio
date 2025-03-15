@@ -127,7 +127,7 @@ The **House Shopping Record WebApp** is a centralized platform designed to simpl
 
 2. Create a \`.env.local\` file in the root directory and add the following environment variables:
 
-   # Neon
+   ### Neon
 
    POSTGRES_URL=
 
@@ -145,11 +145,11 @@ The **House Shopping Record WebApp** is a centralized platform designed to simpl
 
    POSTGRES_PRISMA_URL=
 
-# Clerk
+   ### Clerk
 
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 
-CLERK_SECRET_KEY=
+   CLERK_SECRET_KEY=
 
 3. Run the development server:
 

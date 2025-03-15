@@ -91,9 +91,12 @@ const legoHplcFragmentCollector: Project = {
       pageNumber: 0,
       type: 'description',
       details: `# Lego HPLC Fragment Collector
-This project replicates the concept of using Lego Mindstorms to create an affordable HPLC (High-Performance Liquid Chromatography) fraction collector. Traditional fraction collectors can be expensive, making them inaccessible for smaller labs and educational purposes. This custom-built solution provides a cost-effective alternative while maintaining precise collection capabilities.
-
-I designed and built the frame using my woodworking skills, ensuring a sturdy and customizable structure. To automate the collection process, I implemented a low-code platform to develop the logic, allowing the system to collect fractions accurately into a well plate. This project tried to figure out an innovative approach to accessible lab automation, combining hardware prototyping with software automation.
+- Implemented the concept of using Lego Mindstorms to create an affordable HPLC (High-Performance Liquid Chromatography) fraction collector.  
+- Provides a cost-effective alternative to traditional fraction collectors, making them more accessible for smaller labs and educational purposes.  
+- Designed and built the frame using woodworking skills for a sturdy and customizable structure.  
+- Implemented a low-code platform to develop the collection logic, automating the fraction collection process.  
+- Capable of accurately collecting fractions into a well plate.  
+- Demonstrates an innovative approach to accessible lab automation by combining hardware prototyping with software automation.  
       `,
     },
     {
