@@ -53,13 +53,13 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
               },
               'infinitemac.org',
             ),
-            ' for providing Macintosh emulator for experiencing Macintosh OS 7-8',
+            ' for providing Macintosh emulator to experience Macintosh OS 7-8',
           ]),
           React.createElement('p', { key: 'credit-3' }, [
-            '- Thanks Yuan for spiritual support',
+            '- Thanks Yuan for the spiritual support',
           ]),
           React.createElement('p', { key: 'credit-4' }, [
-            '- Thanks Deepseek for technical support',
+            '- Thanks DeepSeek for the technical support',
           ]),
         ]),
         icon: '/icons/news.png',
