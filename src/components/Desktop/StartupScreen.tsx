@@ -30,6 +30,8 @@ const PRELOAD_IMAGES = [
   '/icons/eudora2.png',
   '/icons/eudora3.png',
   '/icons/eudora4.png',
+  '/icons/text.png',
+  '/icons/text-script.png',
 ];
 
 const StartupScreen: React.FC<StartupScreenProps> = ({
