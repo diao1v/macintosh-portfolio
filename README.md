@@ -22,6 +22,8 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 - Tailwind CSS for styling
 - React-Markdown for rendering Markdown content
 - Zustand for code state management
+- AWS API Gateway/Lambda/SES for email sending
+- Cloudflare for DNS and CDN
 
 ## How to Use
 
