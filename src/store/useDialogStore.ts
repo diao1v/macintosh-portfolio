@@ -27,4 +27,4 @@ const useDialogStore = create<DialogStore>((set) => ({
   closeDialog: () => set({ isOpen: false }),
 }));
 
-export default useDialogStore; 
+export default useDialogStore;

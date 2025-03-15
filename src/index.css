@@ -18,11 +18,6 @@
   src: url('/fonts/Geneva.ttf') format('truetype');
 }
 
-@font-face {
-  font-family: 'Pixel';
-  src: url('/fonts/Minecraftia-Regular.ttf') format('truetype');
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -69,10 +64,4 @@
 /* Show resize handle only when window is focused */
 .window-focused .react-resizable-handle {
   display: block;
-}
-/* Add this to test if font loads */
-@layer utilities {
-  .font-test {
-    font-family: 'Boston', sans-serif;
-  }
 }

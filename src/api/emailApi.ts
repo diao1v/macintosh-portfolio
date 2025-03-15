@@ -77,8 +77,7 @@ export const parseApiResponse = (response: any) => {
           success: true,
           message: bodyData.message,
         };
-      }
-      else {
+      } else {
         return {
           success: false,
           message: bodyData.error || 'An unknown error occurred',

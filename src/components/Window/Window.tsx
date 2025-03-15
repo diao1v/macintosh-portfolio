@@ -40,7 +40,6 @@ const Window: React.FC<WindowProps> = ({
   const type = id === 'about' ? 'about' : file?.type;
   const [size, setSize] = useState<Size>({ width, height });
 
-  // Get minimum dimensions from file if they exist
   const minWidth = file?.window?.minWidth || 300;
   const minHeight = file?.window?.minHeight || 200;
 
@@ -109,14 +108,8 @@ const Window: React.FC<WindowProps> = ({
       }}
       resizeHandleComponent={{
         bottomRight: (
-          <div
-            className="absolute bottom-[11px] right-[11px] w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center"
-          >
-            <img
-              src="/icons/maximize.png"
-              alt="maximize"
-              className="w-4 h-4"
-            />
+          <div className="absolute bottom-[11px] right-[11px] w-4 h-4 bg-[#E6E6E6] border-t border-l border-[#999999] flex items-center justify-center">
+            <img src="/icons/maximize.png" alt="maximize" className="w-4 h-4" />
           </div>
         ),
       }}

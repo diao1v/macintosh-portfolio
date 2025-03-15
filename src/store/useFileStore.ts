@@ -57,7 +57,6 @@ interface FileStore {
   saveFile: (id: string) => void;
 }
 
-// Helper function to create file structure from content
 const createFileStructure = () => {
   const defaultRootFile: File = {
     id: 'root',

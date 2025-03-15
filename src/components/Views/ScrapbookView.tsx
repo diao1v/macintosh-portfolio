@@ -49,7 +49,6 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
     }
   }, [currentPage, project.pages]);
 
-  // Update thumb position on scroll
   useEffect(() => {
     const content = contentRef.current;
     if (content) {

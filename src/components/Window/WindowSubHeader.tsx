@@ -10,7 +10,7 @@ const WindowSubHeader: React.FC<WindowSubHeaderProps> = ({
   diskSpace,
 }) => {
   return (
-    <div className="flex items-center justify-between px-2 h-[22px] bg-white border-b border-[#999999]">
+    <div className="flex items-center justify-between px-2 h-[24px] bg-white border-b border-[#999999]">
       <span className="text-[11px] font-chicago text-black">
         {itemCount} items
       </span>

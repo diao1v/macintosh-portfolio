@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { format } from 'date-fns';
 import DropdownMenu from './DropdownMenu';
 import { createMenuConfig } from '@/config/menus';
 import { File } from '@/store/useFileStore';
 import useWindowStore from '@/store/useWindowStore';
 import useDialogStore from '@/store/useDialogStore';
-
 interface MenuBarProps {
   selectedItemId: string | null;
   onOpenFile: (folderConfig: File) => void;
@@ -58,17 +58,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
   }, []);
 
   const formatTime = (date: Date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-
-    // Convert to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12; // Handle midnight (0)
-
-    const minutesStr = minutes < 10 ? `0${minutes}` : minutes;
-
-    return `${hours}:${minutesStr} ${ampm}`;
+    return format(date, 'h:mm a');
   };
 
   return (
