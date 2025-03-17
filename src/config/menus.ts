@@ -116,7 +116,6 @@ export const createMenuConfig = (handlers: {
     }
   };
 
-  // Function to open Macintosh HD
   const handleOpenMacintoshHD = () => {
     const rootFolder = getFileById('root');
     if (rootFolder) {
