@@ -116,6 +116,14 @@ export const createMenuConfig = (handlers: {
     }
   };
 
+  // Function to open Macintosh HD
+  const handleOpenMacintoshHD = () => {
+    const rootFolder = getFileById('root');
+    if (rootFolder) {
+      onOpenFile(rootFolder);
+    }
+  };
+
   const menus: MenuConfig[] = [
     {
       label: '',
@@ -123,6 +131,11 @@ export const createMenuConfig = (handlers: {
         {
           label: 'About This Portfolio',
           action: handlers.onOpenAbout,
+        },
+        { label: '---' },
+        {
+          label: 'Open Macintosh HD',
+          action: handleOpenMacintoshHD,
         },
         { label: '---' },
         {
