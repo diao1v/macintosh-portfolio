@@ -154,6 +154,10 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
     };
   }, [isDraggingThumb]);
 
+  const CustomLink = (props: any) => {
+    return <a {...props} target="_blank" rel="noopener noreferrer" />;
+  };
+
   const renderContent = () => {
     const currentPageContent = project.pages[currentPage];
     if (!currentPageContent) return null;
@@ -163,7 +167,9 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         return (
           <div className="h-full">
             <div className="prose prose-sm max-w-none font-chicago text-[11px]">
-              <ReactMarkdown>{currentPageContent.details}</ReactMarkdown>
+              <ReactMarkdown components={{ a: CustomLink }}>
+                {currentPageContent.details}
+              </ReactMarkdown>
             </div>
           </div>
         );
@@ -310,7 +316,9 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         <div className=" bg-[#E6E6E6] px-4 py-1">
           <div className="h-28 bg-white border border-[#999999] px-2 py-0.5 overflow-x-auto">
             <div className="leading-tight prose-sm prose max-w-none text-[11px]">
-              <ReactMarkdown>{`${allContent}`}</ReactMarkdown>
+              <ReactMarkdown
+                components={{ a: CustomLink }}
+              >{`${allContent}`}</ReactMarkdown>
             </div>
           </div>
         </div>

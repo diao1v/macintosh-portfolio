@@ -60,6 +60,21 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
         React.createElement('p', { key: 'credit-4' }, [
           '- Thanks DeepSeek for the technical support',
         ]),
+        React.createElement('p', { key: 'credit-5' }, [
+          '- Thanks Darren Hogan (',
+          React.createElement(
+            'a',
+            {
+              key: 'link-5',
+              href: 'https://sketchfab.com/Darren.Hogan',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              className: 'text-blue-600 hover:underline',
+            },
+            '@Darren.Hogan',
+          ),
+          ')  for providing the Macintosh 128K Computer (1984) model',
+        ]),
       ]),
       icon: '/icons/news.png',
       buttons: [{ label: 'OK', onClick: () => {} }],

@@ -101,7 +101,7 @@ const StartupScreen: React.FC<StartupScreenProps> = ({
   }, [loadingTime, onLoadComplete, showBlackScreen]);
 
   if (showBlackScreen) {
-    return <div className="fixed inset-0 bg-black" />;
+    return <div className="fixed inset-0 bg-[#212121]" />;
   }
 
   return (
