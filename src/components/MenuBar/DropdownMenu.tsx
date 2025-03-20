@@ -22,7 +22,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
     <>
       <div className="fixed inset-0" onClick={onClose} />
       <div
-        className="absolute z-50"
+        className="absolute z-[1000]"
         style={{
           left: parentPosition?.left || 0,
           top: parentPosition?.top || '100%',
