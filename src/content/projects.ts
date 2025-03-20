@@ -10,12 +10,10 @@ export interface Project {
   title: string;
   pages: ProjectPage[];
   oneLiner: string;
-  links?: [
-    {
-      name: string;
-      url: string;
-    },
-  ];
+  links?: {
+    name: string;
+    url: string;
+  }[];
   subContent?: string[];
 }
 
@@ -70,6 +68,55 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
     {
       name: 'Github',
       url: 'https://github.com/diao1v/macintosh-portfolio',
+    },
+    {
+      name: 'Demo',
+      url: 'https://os.diao1v.me/',
+    },
+  ],
+};
+
+const macosPortfolioOuterProject: Project = {
+  title: 'Mac OS Portfolio (Outer)',
+  pages: [
+    {
+      pageNumber: 0,
+      type: 'description',
+      details: `# Macintosh 3D Viewer
+
+This project uses [React Three Fiber](https://github.com/pmndrs/react-three-fiber) and [Drei](https://github.com/pmndrs/drei) to create a 3D model of a vintage Macintosh computer. The 3D model acts as an outer shell that embeds a mock Macintosh OS website via an \`<iframe>\`, simulating an interactive vintage computing experience.
+
+## Features
+
+- **3D Vintage Macintosh Model**: Built using Three.js via React Three Fiber.
+- **Embedded Mock Macintosh OS**: Uses an \`<iframe>\` to display an external site that mimics an old Macintosh operating system.
+- **Interactive Camera Controls**: Drei camera controls.
+
+## Usage
+- Rotate the 3D model using mouse or touch gestures.
+- Click on the Macintosh screen area to interact with the embedded mock OS.
+
+
+## Installation
+1. Run \`pnpm install\` to install dependencies.
+2. Run \`pnpm dev\` to start the development server.
+3. Open \`http://localhost:5173\` in your browser.`,
+    },
+    {
+      pageNumber: 2,
+      type: 'description',
+      details: `## Your are on that project already! Are you still looking for the screenshots?`,
+    },
+  ],
+  oneLiner: 'Macintosh 3D Viewer',
+  links: [
+    {
+      name: 'Github',
+      url: 'https://github.com/diao1v/macintosh-portfolio-outer',
+    },
+    {
+      name: 'Demo',
+      url: 'https://diao1v.me/',
     },
   ],
 };
@@ -386,6 +433,7 @@ Currently, the app is only available for Arm MacOS(Apple Silicon). You can downl
 export const projects = {
   'cheater-encoder': cheaterEncoderProject,
   'macos-portfolio': macosPortfolioProject,
+  'macos-portfolio-outer': macosPortfolioOuterProject,
   'grammar-tuner': grammarTunerProject,
   'my-house-shopping-diary': myHouseShoppingDiaryProject,
 };
