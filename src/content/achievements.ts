@@ -27,7 +27,6 @@ const lakeTaupoCycleChallenge: Project = {
       type: 'photo',
       details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${ICON_WIDTH}/v1742463867/macintosh-portfolio/achieve-ltc1_rprvnq.png`,
       makeImageSpin: true,
-
     },
   ],
   oneLiner: 'Lake Taupo Cycle Challenge',
