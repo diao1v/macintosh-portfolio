@@ -1,1 +1,1 @@
-export * from './formatName.utils';
+export * from './format.utils';

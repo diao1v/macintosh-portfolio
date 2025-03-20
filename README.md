@@ -47,4 +47,4 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 - [x] Add Dialog
 - [x] Add Email api
 - [x] Add personal links (github, linkedin)
-- [ ] PostHog Analytics
+- [x] PostHog Analytics
