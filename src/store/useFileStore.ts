@@ -85,7 +85,7 @@ const createFileStructure = () => {
             icon: typeToIcon['pdf'],
             window: {
               width: 600,
-              height: 800,
+              height: 700,
             },
           },
           {
@@ -94,8 +94,8 @@ const createFileStructure = () => {
             type: 'code',
             icon: typeToIcon['code'],
             window: {
-              width: 600,
-              height: 800,
+              width: 700,
+              height: 700,
             },
           },
         ],
