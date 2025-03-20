@@ -15,6 +15,15 @@ export default {
         torrance: ['Torrance', 'sans-serif'],
         geneva: ['Geneva', 'sans-serif'],
       },
+      keyframes: {
+        'spin-y': {
+          '0%': { transform: 'rotateY(0deg)' },
+          '100%': { transform: 'rotateY(360deg)' },
+        },
+      },
+      animation: {
+        'spin-y': 'spin-y 5s cubic-bezier(.8,0,.2,1) infinite',
+      },
     },
   },
   plugins: [

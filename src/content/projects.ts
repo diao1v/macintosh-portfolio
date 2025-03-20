@@ -3,6 +3,7 @@ import { DEFAULT_IMAGE_WIDTH } from '@/constants';
 interface ProjectPage {
   pageNumber: number;
   type: 'description' | 'photo' | 'video';
+  makeImageSpin?: boolean;
   details: string;
 }
 

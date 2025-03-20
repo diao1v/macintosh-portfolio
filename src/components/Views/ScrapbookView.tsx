@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { File } from '@/store/useFileStore';
 import ReactMarkdown from 'react-markdown';
 import { content } from '@/content/';
+import { Project } from '@/content/projects';
 
 interface ScrapbookViewProps {
   file: File;
@@ -17,13 +18,19 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const [isDraggingThumb, setIsDraggingThumb] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const project = content.projects[file.id] ||
-    content.offWorkProjects[file.id] || {
-      title: file.name,
-      pages: [],
-      oneLiner: '',
-      links: { github: '', live: '' },
-    };
+  const project = (Object.values(content).reduce((found, collection) => {
+    if (found) return found;
+    if (typeof collection === 'object' && collection !== null) {
+      return collection[file.id] || found;
+    }
+    return found;
+  }, null) as Project) || {
+    title: file.name,
+    pages: [],
+    oneLiner: '',
+    links: [],
+    subContent: [],
+  };
 
   const totalPages = Math.max(1, project.pages.length);
 
@@ -175,7 +182,7 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         );
       case 'photo':
         return (
-          <div className="relative flex items-start justify-center h-full min-h-[600px]">
+          <div className="relative flex items-start justify-center h-full min-h-[300px]">
             {isImageLoading && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
@@ -186,7 +193,7 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
               alt={`${project.title} screenshot ${currentPage + 1}`}
               className={`object-contain max-w-full max-h-full transition-opacity duration-300 ${
                 isImageLoading ? 'opacity-0' : 'opacity-100'
-              }`}
+              } ${currentPageContent.makeImageSpin ? 'animate-spin-y' : ''}`}
               onLoad={() => setIsImageLoading(false)}
               onError={() => setIsImageLoading(false)}
             />
@@ -218,6 +225,7 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const subContent = project.subContent?.map((item) => {
     return `- ${item}`;
   });
+
   const links = project.links?.map((item) => {
     return `- ${item.name}: [${item.url}](${item.url})`;
   });

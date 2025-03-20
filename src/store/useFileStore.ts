@@ -169,6 +169,28 @@ const createFileStructure = () => {
         ),
       },
       {
+        id: 'recent-achievements',
+        name: 'Recent Achievements',
+        type: 'folder',
+        icon: typeToIcon['folder'],
+        window: {
+          width: 600,
+          height: 400,
+        },
+        children: Object.entries(content.achievements).map(
+          ([id, achievement]) => ({
+            id,
+            name: achievement.title,
+            type: 'project',
+            icon: typeToIcon['project'],
+            window: {
+              width: 600,
+              height: 550,
+            },
+          }),
+        ),
+      },
+      {
         id: 'contact',
         name: 'Eudora Light 3.0.1',
         type: 'contact',

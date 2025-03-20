@@ -1,6 +1,6 @@
 import { DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT } from '@/constants';
 
-import { Project } from './projects';
+import type { Project } from './projects';
 
 const skyWatcherStartAdventureAdapter: Project = {
   title: '3D printed Adapter',

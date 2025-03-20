@@ -1,6 +1,8 @@
 import { aboutMe, resume } from './about-me';
 import { Project, projects } from './projects';
 import { offWorkProjects } from './off-work-projects';
+import { achievements } from './achievements';
+
 interface Content {
   resume: string;
   aboutMe: string;
@@ -10,6 +12,9 @@ interface Content {
   offWorkProjects: {
     [key: string]: Project;
   };
+  achievements: {
+    [key: string]: Project;
+  };
 }
 
 export const content: Content = {
@@ -17,6 +22,7 @@ export const content: Content = {
   aboutMe,
   projects,
   offWorkProjects,
+  achievements,
 };
 
 // Helper to get content for a file

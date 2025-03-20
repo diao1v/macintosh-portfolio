@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Z_INDEX } from '@/constants';
+import { formatName } from '@/utils';
 
 interface DesktopIconProps {
   name: string;
@@ -77,6 +78,9 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
     onDoubleClick?.();
   };
 
+  const formattedName = formatName(name, 13);
+  console.log('formattedName:', formattedName);
+
   return (
     <div
       className="absolute w-[108px] flex flex-col items-center"
@@ -108,14 +112,19 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
           className="w-12 h-12 pointer-events-none"
           draggable={false}
         />
-        <span
-          className={`
-            text-[11px] text-center font-chicago whitespace-nowrap pointer-events-none
-            ${isSelected ? 'text-white' : 'text-black'}
-          `}
-        >
-          {name}
-        </span>
+        <div className="flex flex-col gap-0.5">
+          {formattedName.map((line, index) => (
+            <span
+              key={index}
+              className={`
+              text-[11px] text-center font-chicago whitespace-nowrap pointer-events-none
+              ${isSelected ? 'text-white' : 'text-black'}
+              `}
+            >
+              {line}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
