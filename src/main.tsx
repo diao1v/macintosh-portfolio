@@ -6,6 +6,8 @@ import App from './App.tsx';
 
 const options = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+  capture_pageview: true,
+  capture_pageleave: true,
 };
 
 createRoot(document.getElementById('root')!).render(
