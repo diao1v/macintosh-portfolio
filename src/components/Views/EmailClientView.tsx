@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDialogStore from '@/store/useDialogStore';
 import {
@@ -29,6 +29,8 @@ const EmailClientView: React.FC = () => {
     resolver: zodResolver(emailFormSchema),
     mode: 'onChange',
   });
+
+  const posthog = usePostHog();
 
   const { openDialog } = useDialogStore();
   const sendEmailMutation = useSendEmail();
@@ -79,6 +81,13 @@ const EmailClientView: React.FC = () => {
         setIsSubmitting(false);
       },
       onError: (error) => {
+        posthog.capture('email_submit_error', {
+          email: data.email,
+          subject: data.subject,
+          message: data.message,
+          error:
+            error instanceof Error ? error.message : 'Failed to send email',
+        });
         openDialog(
           getDialogProps('EMAIL_ERROR', {
             message:

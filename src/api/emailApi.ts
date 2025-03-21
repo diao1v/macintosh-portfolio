@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import posthog from 'posthog-js';
 import { z } from 'zod';
 
 export const emailFormSchema = z.object({
@@ -55,9 +54,7 @@ export const useSendEmail = () => {
   return useMutation({
     mutationFn: sendEmail,
     onError: (error) => {
-      posthog.capture('email_submit_error', {
-        error: error instanceof Error ? error.message : 'Failed to send email',
-      });
+      console.error('Failed to send email:', error);
     },
   });
 };
@@ -93,10 +90,6 @@ export const parseApiResponse = (response: any) => {
     };
   } catch (error) {
     console.error('Error parsing API response:', error);
-    posthog.capture('parsing_api_repose_error', {
-      error:
-        error instanceof Error ? error.message : 'Failed to parse response',
-    });
     return {
       success: false,
       message: 'Failed to process server response',
