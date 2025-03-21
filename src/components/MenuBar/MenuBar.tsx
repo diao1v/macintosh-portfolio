@@ -35,7 +35,6 @@ const MenuBar: React.FC<MenuBarProps> = ({
     if (Array.isArray(config)) {
       setMenuConfig(config);
     } else {
-      console.error('Menu config is not an array:', config);
       setMenuConfig([]);
     }
   }, [

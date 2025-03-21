@@ -79,7 +79,6 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
   };
 
   const formattedName = formatName(name, 13);
-  console.log('formattedName:', formattedName);
 
   return (
     <div

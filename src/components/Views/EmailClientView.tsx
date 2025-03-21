@@ -79,10 +79,6 @@ const EmailClientView: React.FC = () => {
         setIsSubmitting(false);
       },
       onError: (error) => {
-        posthog.capture('email_submit_error', {
-          error:
-            error instanceof Error ? error.message : 'Failed to send email',
-        });
         openDialog(
           getDialogProps('EMAIL_ERROR', {
             message:

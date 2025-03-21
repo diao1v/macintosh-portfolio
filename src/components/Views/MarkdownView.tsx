@@ -11,7 +11,6 @@ interface MarkdownViewProps {
 }
 
 const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
-  console.log(file);
   const type = file.type;
   const content = getContentForFile(file.id) as string;
 
