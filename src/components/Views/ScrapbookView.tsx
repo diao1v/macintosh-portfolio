@@ -234,7 +234,7 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const allContent = [subContentString, linksString].join('\n\n');
 
   return (
-    <div className="flex flex-col h-full pb-4 overflow-hidden">
+    <div className="flex flex-col h-full pb-4 overflow-hidden font-torrance text-[12px]">
       {/* Main Content Area */}
       <div className="flex-1 min-h-0 p-4">
         <div className="relative h-full border border-[#999999] bg-white">

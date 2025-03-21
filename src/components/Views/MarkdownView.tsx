@@ -14,9 +14,9 @@ const MarkdownView: React.FC<MarkdownViewProps> = ({ file }) => {
   const type = file.type;
   const content = getContentForFile(file.id) as string;
 
-  const textSize = type === 'code' ? 'text-[16px]' : 'text-[14px]';
+  const textSize = type === 'code' ? 'text-[16px]' : 'text-[16px]';
   const padding = type === 'code' ? 'p-0' : 'p-4';
-  const font = type === 'code' ? 'font-torrance' : 'font-chicago';
+  const font = type === 'code' ? 'font-torrance' : 'font-torrance';
   return (
     <div
       className={`${padding} prose-sm prose rounded-none max-w-none ${font} ${textSize} flex flex-col overflow-hidden scrollbar-hide`}
