@@ -173,7 +173,7 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
       case 'description':
         return (
           <div className="h-full">
-            <div className="prose prose-sm max-w-none font-chicago text-[11px]">
+            <div className="prose prose-sm max-w-none font-torrance text-[11px]">
               <ReactMarkdown components={{ a: CustomLink }}>
                 {currentPageContent.details}
               </ReactMarkdown>
