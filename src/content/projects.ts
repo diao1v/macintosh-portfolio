@@ -176,19 +176,21 @@ The **House Shopping Record WebApp** is a centralized platform designed to simpl
 
 2. Create a \`.env.local\` file in the root directory and add the following environment variables:
 
-   \`### Neon\`
-   \`POSTGRES_URL=\`
-   \`POSTGRES_URL_NON_POOLING=\`
-   \`POSTGRES_USER=\`
-   \`POSTGRES_HOST=\`
-   \`POSTGRES_PASSWORD=\`
-   \`POSTGRES_DATABASE=\`
-   \`POSTGRES_URL_NO_SSL=\`
-   \`POSTGRES_PRISMA_URL=\`
+  \`\`\`shell
+   ### Neon
+   POSTGRES_URL=
+   POSTGRES_URL_NON_POOLING=
+   POSTGRES_USER=
+   POSTGRES_HOST=
+   POSTGRES_PASSWORD=
+   POSTGRES_DATABASE=
+   POSTGRES_URL_NO_SSL=
+   POSTGRES_PRISMA_URL=
 
-   \`### Clerk\`
-   \`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=\`
-   \`CLERK_SECRET_KEY=\`
+   ### Clerk
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+   CLERK_SECRET_KEY=
+   \`\`\`
 
 3. Run the development server:
 
@@ -256,14 +258,15 @@ The **Cheater Encoder** is a tool designed to help video developers test streami
 - Create a \`.env.local\` file in the root directory.
 - Add the following environment variables:
 
-  \`SUPABASE_URL=\`
-  \`SUPABASE_DATABASE_PASSWORD=\`
-  \`SUPABASE_ANON_KEY=\`
-  \`SUPABASE_SERVER_ROLE_KEY=\`
-  \`NEXT_PUBLIC_SUPABASE_URL=\`
-  \`NEXT_PUBLIC_SUPABASE_ANON_KEY=\`
-  \`NEXT_PUBLIC_SITE_URL=\`
-  
+\`\`\`shell
+SUPABASE_URL=
+SUPABASE_DATABASE_PASSWORD=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVER_ROLE_KEY=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SITE_URL=
+\`\`\`
 
 3. Run the development server:
 
