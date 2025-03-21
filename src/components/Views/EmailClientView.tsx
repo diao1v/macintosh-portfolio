@@ -123,7 +123,7 @@ const EmailClientView: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(validateAndSubmit, handleError)}
-      className="flex flex-col flex-1 font-monaco text-[12px] pr-0"
+      className="flex flex-col flex-1 font-torrance text-[12px] pr-0"
     >
       {/* Email client header */}
       <div className="flex items-center justify-between p-2 border-b px-6 border-black bg-[#f3f3f3]">

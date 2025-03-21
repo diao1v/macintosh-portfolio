@@ -54,9 +54,10 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 ## How to Use
 
 1. Clone the repo:
-2. run pnpm install
-3. run pnpm dev
-4. open http://localhost:5173`,
+2. run \`pnpm install\`
+3. run \`pnpm dev\`
+4. open \`http://localhost:5173\` in your browser
+`,
     },
     {
       pageNumber: 2,
@@ -171,37 +172,29 @@ The **House Shopping Record WebApp** is a centralized platform designed to simpl
 
 1. Install dependencies:
 
-   pnpm install
+   \`pnpm install\`
 
 2. Create a \`.env.local\` file in the root directory and add the following environment variables:
 
+  \`\`\`shell
    ### Neon
-
    POSTGRES_URL=
-
    POSTGRES_URL_NON_POOLING=
-
    POSTGRES_USER=
-
    POSTGRES_HOST=
-
    POSTGRES_PASSWORD=
-
    POSTGRES_DATABASE=
-
    POSTGRES_URL_NO_SSL=
-
    POSTGRES_PRISMA_URL=
 
    ### Clerk
-
    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-
    CLERK_SECRET_KEY=
+   \`\`\`
 
 3. Run the development server:
 
-  pnpm dev
+  \`pnpm dev\`
 
 4. Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
 
@@ -258,31 +251,26 @@ The **Cheater Encoder** is a tool designed to help video developers test streami
 
 1. Install dependencies:
 
-   yarn install
+   \`yarn install\`
 
 2.Set up environment variables:
 
-- Create a .env.local file in the root directory.
+- Create a \`.env.local\` file in the root directory.
 - Add the following environment variables:
 
-  SUPABASE_URL=
-
-  SUPABASE_DATABASE_PASSWORD=
-
-  SUPABASE_ANON_KEY=
-
-  SUPABASE_SERVER_ROLE_KEY=
-
-  NEXT_PUBLIC_SUPABASE_URL=
-
-  NEXT_PUBLIC_SUPABASE_ANON_KEY=
-
-  NEXT_PUBLIC_SITE_URL=
-  
+\`\`\`shell
+SUPABASE_URL=
+SUPABASE_DATABASE_PASSWORD=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVER_ROLE_KEY=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SITE_URL=
+\`\`\`
 
 3. Run the development server:
 
-   yarn dev
+   \`yarn dev\`
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
@@ -387,19 +375,19 @@ Grammar Tuner is a desktop application designed to help users correct and refine
 
 1. install dependencies
 
-   pnpm install
+   \`pnpm install\`
 
 2. Frontend Development Mode
 
-   pnpm dev
+   \`pnpm dev\`
 
 3. Full Application Development Mode
 
-   pnpm tauri dev
+   \`pnpm tauri dev\`
 
 4. Build the Application
 
-    pnpm tauri build
+    \`pnpm tauri build\`
 
 ## Release download
 
