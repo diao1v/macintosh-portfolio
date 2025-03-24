@@ -94,7 +94,7 @@ const createFileStructure = () => {
             type: 'code',
             icon: typeToIcon['code'],
             window: {
-              width: 700,
+              width: 800,
               height: 700,
             },
           },

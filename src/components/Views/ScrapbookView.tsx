@@ -236,8 +236,8 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   return (
     <div className="flex flex-col h-full pb-4 overflow-hidden font-torrance text-[12px]">
       {/* Main Content Area */}
-      <div className="flex-1 min-h-0 p-4">
-        <div className="relative h-full border border-[#999999] bg-white">
+      <div className="flex-1 min-h-0 p-4 ">
+        <div className="relative h-full border border-[#999999] bg-white shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)]">
           <div ref={contentRef} className="absolute inset-0 overflow-y-auto">
             <div className="p-4">{renderContent()}</div>
           </div>
