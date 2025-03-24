@@ -99,55 +99,55 @@ Issued Aug 2024 · Expires Aug 2027
 
 export const aboutMe = `\`\`\`java
 public class AboutMe {
-            static Person i = new Person("Yiwei");
-            static List<Skill> currentSkills = Arrays.asList(
-                    Java, HTML, CSS, JavaScript, Node.js,            
-                    TypeScript, React.js, Next.js, styled-components, 
-                    Tailwind CSS, GraphQL, Jest, Playwright, PostgreSQL, 
-                    MongoDB, REST APIs, Aws, Azure
-            );
-            
-            public static void main(String args[]) {
-                    LifelongThread lifelong = new LifelongThread();
-                    lifelong.start();
-                    
-                    SkillThread currentThread1 = new SkillThread(targetLevel);
-                    currentThread1.start();
-            }
-            
-            class LifelongThread extends Thread {	
-                    public void run() {
-                            while(i.isAlive()) {
-                                    int currentAchievement = i.getAchieved();
-                                    int currentExpectation = i.getExpected();
-                                    if(currentAchievement >= currentExpectation) {
-                                            int newExpectation = currentExpectation + currentExpectation * 0.618;
-                                            i.setExpected(newExpectation);
-                                    } else {
-                                            int currenAnxiety = i.getAnxiety();
-                                            int newAnxiety = currenAnxiety + currenAnxiety * 0.618;
-                                            i.setAnxiety(newAnxiety);
-                                    }
-                            }
-                    }
-            }
-            
-            class SkillThread extends Thread {
-                    public void run() {
-                            while(!(i.getCurrentLevel() instanceof Expert)) {
-                                    Skill newSkill = Learn.getNextSkill();
-                                    Learn.learn(newSkill);
-                                    try {					
-                                            Learn.applySkillInProject(newSkill);
-                                    } catch (PracticeFailException e) {
-                                            System.out.print("Caught PracticeFailException: " + e.getMessage());
-                                            System.out.print("Need to continue learning");
-                                            Learn.learn(newSkill);
-                                            Learn.applySkillInProject(newSkill);
-                                    }
-                                    currentSkills.add(newSkill);
-                            }		
-                    }
-            }
+        static Person i = new Person("Yiwei");
+        static List<Skill> currentSkills = Arrays.asList(
+                Java, HTML, CSS, JavaScript, Node.js,            
+                TypeScript, React.js, Next.js, styled-components, 
+                Tailwind CSS, GraphQL, Jest, Playwright, PostgreSQL, 
+                MongoDB, REST APIs, Aws, Azure
+        );
+        
+        public static void main(String args[]) {
+                LifelongThread lifelong = new LifelongThread();
+                lifelong.start();
+                
+                SkillThread currentThread1 = new SkillThread(targetLevel);
+                currentThread1.start();
+        }
+        
+        class LifelongThread extends Thread {	
+                public void run() {
+                while(i.isAlive()) {
+                        int currentAchievement = i.getAchieved();
+                        int currentExpectation = i.getExpected();
+                        if(currentAchievement >= currentExpectation) {
+                                int newExpectation = currentExpectation + currentExpectation * 0.618;
+                                i.setExpected(newExpectation);
+                        } else {
+                                int currenAnxiety = i.getAnxiety();
+                                int newAnxiety = currenAnxiety + currenAnxiety * 0.618;
+                                i.setAnxiety(newAnxiety);
+                        }
+                        }
+                }
+        }
+
+        class SkillThread extends Thread {
+                public void run() {
+                        while(!(i.getCurrentLevel() instanceof Expert)) {
+                                Skill newSkill = Learn.getNextSkill();
+                                Learn.learn(newSkill);
+                                try {					
+                                        Learn.applySkillInProject(newSkill);
+                                } catch (PracticeFailException e) {
+                                        System.out.print("Caught PracticeFailException: " + e.getMessage());
+                                        System.out.print("Need to continue learning");
+                                        Learn.learn(newSkill);
+                                        Learn.applySkillInProject(newSkill);
+                                }
+                                currentSkills.add(newSkill);
+                        }		
+                }
+        }
         }
 \`\`\``;
