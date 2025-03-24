@@ -5,7 +5,8 @@ export type DialogType =
   | 'CREDITS'
   | 'EMAIL_SUCCESS'
   | 'EMAIL_ERROR'
-  | 'VALIDATION_ERROR';
+  | 'VALIDATION_ERROR'
+  | 'UNSAVED_CHANGES';
 
 export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
   const dialogMap: Record<DialogType, (data?: any) => DialogProps> = {
@@ -104,6 +105,25 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
       message: data?.message || 'Please check your input and try again.',
       icon: '/icons/alert.png',
       buttons: [{ label: 'OK', onClick: () => {} }],
+    }),
+
+    UNSAVED_CHANGES: (props) => ({
+      title: 'Unsaved Changes',
+      message: 'This document has unsaved changes. What would you like to do?',
+      type: 'UNSAVED_CHANGES',
+      icon: '/icons/alert.png',
+      buttons: [
+        {
+          label: 'Save',
+          onClick: () => props?.onSave?.(),
+          primary: true,
+        },
+        {
+          label: 'Close',
+          onClick: () => props?.onClose?.(),
+        },
+      ],
+      data: props,
     }),
   };
 

@@ -1,8 +1,8 @@
 import useWindowStore from '@/store/useWindowStore';
 import useFileStore, { typeToIcon, File } from '@/store/useFileStore';
-import { FUN_NAMES } from '@/constants';
 import { DialogProps } from '@/store/useDialogStore';
 import { getDialogProps } from '@/config/dialogs';
+import { handleWindowClose } from '@/utils';
 
 export interface MenuItem {
   label: string;
@@ -33,11 +33,26 @@ export const createMenuConfig = (handlers: {
 
     if (!focusedFile || focusedFile.type !== 'folder') return;
 
-    const randomName = FUN_NAMES[Math.floor(Math.random() * FUN_NAMES.length)];
+    const baseFolderName = 'New Folder';
+    const existingFiles = focusedFile.children || [];
+    const similarFolderNames = existingFiles
+      .filter(
+        (file) =>
+          file.type === 'folder' && file.name.startsWith(baseFolderName),
+      )
+      .map((file) => file.name);
+
+    let newFolderName = baseFolderName;
+    let counter = 2;
+
+    while (similarFolderNames.includes(newFolderName)) {
+      newFolderName = `${baseFolderName} ${counter}`;
+      counter++;
+    }
 
     const newFolder: File = {
       id: `folder-${Date.now()}`,
-      name: randomName,
+      name: newFolderName,
       type: 'folder',
       icon: typeToIcon['folder'],
       children: [],
@@ -46,7 +61,6 @@ export const createMenuConfig = (handlers: {
         height: 400,
       },
     };
-
     addItem(focusedFile.id, newFolder);
   };
 
@@ -55,8 +69,23 @@ export const createMenuConfig = (handlers: {
 
     if (!focusedFile || focusedFile.type !== 'folder') return;
 
+    const baseFileName = 'New File';
     const fileExtension = '.txt';
-    const newFileName = `New File${fileExtension}`;
+
+    const existingFiles = focusedFile.children || [];
+    const similarFileNames = existingFiles
+      .filter(
+        (file) => file.type === type && file.name.startsWith(baseFileName),
+      )
+      .map((file) => file.name);
+
+    let newFileName = `${baseFileName}${fileExtension}`;
+    let counter = 2;
+
+    while (similarFileNames.includes(newFileName)) {
+      newFileName = `${baseFileName} ${counter}${fileExtension}`;
+      counter++;
+    }
 
     const newFile: File = {
       id: `file-${Date.now()}`,
@@ -121,6 +150,11 @@ export const createMenuConfig = (handlers: {
     if (rootFolder) {
       onOpenFile(rootFolder);
     }
+  };
+
+  const handleCloseWindow = () => {
+    if (!focusedWindowId) return;
+    handleWindowClose(focusedWindowId, onCloseWindow || (() => {}), openDialog);
   };
 
   const menus: MenuConfig[] = [
@@ -192,7 +226,7 @@ export const createMenuConfig = (handlers: {
         { label: '---' },
         {
           label: 'Close Window',
-          action: onCloseWindow,
+          action: handleCloseWindow,
           disabled: !focusedWindowId,
         },
       ],
