@@ -255,7 +255,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
       <div className="absolute inset-0 overflow-hidden">
         <div
           ref={contentRef}
-          className={`absolute inset-0 overflow-hidden ${
+          className={`absolute inset-0 overflow-auto ${
             isFocused ? 'bg-white' : 'bg-[#E6E6E6]'
           }`}
           style={{ zIndex: 1 }}
@@ -266,7 +266,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
 
         {/* Vertical Scrollbar */}
         <div
-          className="absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]"
+          className='absolute right-0 top-0 bottom-0 w-4 bg-[url("/icons/scrollbg.png")] bg-repeat border-l border-[#999999]'
           style={{ zIndex: 2 }}
           onMouseDown={(e) => {
             setIsDraggingThumb(true);
@@ -306,13 +306,13 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
               style={{
                 top: Math.min(
                   scrollInfo.verticalThumbPosition,
-                  trackDimensions.height - 16,
+                  trackDimensions.height - 32,
                 ),
                 zIndex: 3,
               }}
             >
               <img
-                src="/icons/slider-vert-left.png"
+                src="/icons/handle-vert.png"
                 alt="Slider"
                 className="w-3.5 h-3.5"
               />
@@ -336,7 +336,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         {/* Horizontal Scrollbar */}
         {!hideHorizontal ? (
           <div
-            className="absolute left-0 bottom-0 right-4 h-4 bg-[#E6E6E6] border-t border-[#999999]"
+            className='absolute left-0 bottom-0 right-4 h-4 bg-[url("/icons/scrollbg.png")] bg-repeat border-t border-[#999999]'
             style={{ zIndex: 2 }}
             onMouseDown={(e) => {
               setIsDraggingThumb(true);
@@ -382,7 +382,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
                 }}
               >
                 <img
-                  src="/icons/slider-horiz-top.png"
+                  src="/icons/handle-horiz.png"
                   alt="Slider"
                   className="w-3.5 h-3.5"
                 />
