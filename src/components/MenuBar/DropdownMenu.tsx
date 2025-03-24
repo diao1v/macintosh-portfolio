@@ -18,6 +18,15 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   if (!isOpen) return null;
 
+  const handleMenuItemClick = (item: MenuItem) => {
+    console.log('Menu item clicked:', item.label);
+    if (!item.disabled && item.action && !item.submenu) {
+      console.log('Executing action for:', item.label);
+      item.action();
+      onClose();
+    }
+  };
+
   return (
     <>
       <div className="fixed inset-0" onClick={onClose} />
@@ -49,12 +58,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                         : 'hover:bg-black hover:text-white'
                     }
                   `}
-                  onClick={() => {
-                    if (!item.disabled && item.action && !item.submenu) {
-                      item.action();
-                      onClose();
-                    }
-                  }}
+                  onClick={() => handleMenuItemClick(item)}
                   disabled={item.disabled}
                 >
                   <span>{item.label}</span>
