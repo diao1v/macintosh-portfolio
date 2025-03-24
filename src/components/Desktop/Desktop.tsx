@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   MENU_BAR_HEIGHT,
   ICON_WIDTH,
@@ -35,6 +35,35 @@ const Desktop: React.FC = () => {
   const [iconPositions, setIconPositions] = useState<IconPosition[]>([
     { id: rootFolder.id, x: window.innerWidth - 120, y: 20 },
   ]);
+
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    const rootWindowExists = windows.some((w) => w.id === rootFolder.id);
+
+    if (!rootWindowExists) {
+      addWindow({
+        id: rootFolder.id,
+        title: rootFolder.name,
+        type: rootFolder.type,
+        isOpen: true,
+        position: {
+          x: 60,
+          y: 45,
+        },
+        width: rootFolder.window?.width || 600,
+        height: rootFolder.window?.height || 400,
+        zIndex: 1,
+        diskSpace: '128.5',
+        children: rootFolder.children,
+      });
+
+      focusWindow(rootFolder.id);
+    }
+  }, [addWindow, focusWindow, rootFolder, windows]);
 
   const handleCloseWindow = (id: string) => closeWindow(id);
   const handleWindowFocus = (id: string) => focusWindow(id);
