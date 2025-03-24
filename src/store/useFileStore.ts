@@ -192,7 +192,7 @@ const createFileStructure = () => {
       },
       {
         id: 'contact',
-        name: 'Eudora Light 3.0.1',
+        name: 'Email - Eudora Light 3.0.1',
         type: 'contact',
         icon: typeToIcon['contact'],
         window: {
