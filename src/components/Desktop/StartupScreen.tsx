@@ -5,7 +5,7 @@ interface StartupScreenProps {
   loadingTime?: number;
 }
 
-export const BLACK_SCREEN_TIME = 4000;
+export const BLACK_SCREEN_TIME = 3000;
 export const STARTUP_LOADING_TIME = 2000;
 
 const PRELOAD_IMAGES = [
