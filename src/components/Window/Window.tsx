@@ -11,6 +11,8 @@ import ScrapbookView from '../Views/ScrapbookView';
 import AboutPortfolio from '../AboutPortfolio/AboutPortfolio';
 import EditableTextView from '../Views/EditableTextView';
 import EmailClientView from '../Views/EmailClientView';
+import { handleWindowClose } from '@/utils';
+import useDialogStore from '@/store/useDialogStore';
 
 interface Size {
   width: number;
@@ -39,6 +41,7 @@ const Window: React.FC<WindowProps> = ({
   const file = id !== 'about' ? getFileById(id) : null;
   const type = id === 'about' ? 'about' : file?.type;
   const [size, setSize] = useState<Size>({ width, height });
+  const { openDialog } = useDialogStore();
 
   const minWidth = file?.window?.minWidth || 300;
   const minHeight = file?.window?.minHeight || 200;
@@ -77,6 +80,10 @@ const Window: React.FC<WindowProps> = ({
       default:
         return <div>Unknown file type</div>;
     }
+  };
+
+  const handleClose = () => {
+    handleWindowClose(id, onClose, openDialog);
   };
 
   return (
@@ -131,7 +138,7 @@ const Window: React.FC<WindowProps> = ({
       >
         <WindowHeader
           title={title}
-          onClose={onClose}
+          onClose={handleClose}
           onZoom={onZoom}
           isFocused={isFocused}
         />

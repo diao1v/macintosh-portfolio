@@ -3,6 +3,7 @@ import useFileStore, { typeToIcon, File } from '@/store/useFileStore';
 import { FUN_NAMES } from '@/constants';
 import { DialogProps } from '@/store/useDialogStore';
 import { getDialogProps } from '@/config/dialogs';
+import { handleWindowClose } from '@/utils';
 
 export interface MenuItem {
   label: string;
@@ -55,8 +56,23 @@ export const createMenuConfig = (handlers: {
 
     if (!focusedFile || focusedFile.type !== 'folder') return;
 
+    const baseFileName = 'New File';
     const fileExtension = '.txt';
-    const newFileName = `New File${fileExtension}`;
+
+    const existingFiles = focusedFile.children || [];
+    const similarFileNames = existingFiles
+      .filter(
+        (file) => file.type === type && file.name.startsWith(baseFileName),
+      )
+      .map((file) => file.name);
+
+    let newFileName = `${baseFileName}${fileExtension}`;
+    let counter = 2;
+
+    while (similarFileNames.includes(newFileName)) {
+      newFileName = `${baseFileName} ${counter}${fileExtension}`;
+      counter++;
+    }
 
     const newFile: File = {
       id: `file-${Date.now()}`,
@@ -121,6 +137,11 @@ export const createMenuConfig = (handlers: {
     if (rootFolder) {
       onOpenFile(rootFolder);
     }
+  };
+
+  const handleCloseWindow = () => {
+    if (!focusedWindowId) return;
+    handleWindowClose(focusedWindowId, onCloseWindow || (() => {}), openDialog);
   };
 
   const menus: MenuConfig[] = [
@@ -192,7 +213,7 @@ export const createMenuConfig = (handlers: {
         { label: '---' },
         {
           label: 'Close Window',
-          action: onCloseWindow,
+          action: handleCloseWindow,
           disabled: !focusedWindowId,
         },
       ],
