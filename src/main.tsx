@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { PostHogProvider } from 'posthog-js/react';
 import './index.css';
 import App from './App.tsx';
-import './eventCommunication';
 
 const options = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
