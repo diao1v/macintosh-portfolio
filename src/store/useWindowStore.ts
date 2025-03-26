@@ -114,8 +114,8 @@ const useWindowStore = create<WindowStore>((set) => ({
                 width: originalWidth,
                 height: originalHeight,
               },
-              width: Math.min(originalWidth * 2, maxWidth),
-              height: Math.min(originalHeight * 2, maxHeight),
+              width: Math.min(originalWidth * 1.5, maxWidth),
+              height: Math.min(originalHeight * 1.5, maxHeight),
               className: 'transition-all duration-200 ease-in-out',
             };
           } else {
