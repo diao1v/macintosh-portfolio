@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MenuItem } from '@/config/menus';
 
 interface DropdownMenuProps {
@@ -6,6 +6,7 @@ interface DropdownMenuProps {
   isOpen: boolean;
   onClose: () => void;
   parentPosition?: { left: number | string; top: number };
+  level?: number; // Track nesting level
 }
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({
@@ -13,15 +14,40 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   isOpen,
   onClose,
   parentPosition,
+  level = 0,
 }) => {
-  const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setHoveredIndex(null);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !menuRef.current) return;
+
+    const handleMouseLeave = () => {
+      if (level === 0) {
+        setHoveredIndex(null);
+      }
+    };
+
+    const menuElement = menuRef.current;
+    menuElement.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      menuElement.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isOpen, level]);
 
   if (!isOpen) return null;
 
-  const handleMenuItemClick = (item: MenuItem) => {
-    console.log('Menu item clicked:', item.label);
-    if (!item.disabled && item.action && !item.submenu) {
-      console.log('Executing action for:', item.label);
+  const handleItemClick = (item: MenuItem) => {
+    if (item.disabled) return;
+
+    if (item.action && !item.submenu) {
       item.action();
       onClose();
     }
@@ -29,13 +55,16 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0" onClick={onClose} />
+      {level === 0 && <div className="fixed inset-0 z-40" onClick={onClose} />}
+
       <div
-        className="absolute z-[1000]"
+        ref={menuRef}
+        className="absolute"
         style={{
           left: parentPosition?.left || 0,
           top: parentPosition?.top || '100%',
           minWidth: '200px',
+          zIndex: 50 + level,
         }}
       >
         <div className="bg-white border border-black shadow-md">
@@ -46,8 +75,12 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
               <div
                 key={index}
                 className="relative"
-                onMouseEnter={() => item.submenu && setActiveSubmenu(index)}
-                onMouseLeave={() => setActiveSubmenu(null)}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onClick={(e) => {
+                  if (!item.submenu) {
+                    e.stopPropagation();
+                  }
+                }}
               >
                 <button
                   className={`
@@ -55,22 +88,25 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
                     ${
                       item.disabled
                         ? 'text-gray-400'
-                        : 'hover:bg-black hover:text-white'
+                        : hoveredIndex === index
+                          ? 'bg-black text-white'
+                          : 'hover:bg-black hover:text-white'
                     }
                   `}
-                  onClick={() => handleMenuItemClick(item)}
+                  onClick={() => handleItemClick(item)}
                   disabled={item.disabled}
                 >
                   <span>{item.label}</span>
                   {item.submenu && <span>▶</span>}
                 </button>
 
-                {item.submenu && activeSubmenu === index && (
+                {item.submenu && hoveredIndex === index && (
                   <DropdownMenu
                     items={item.submenu}
                     isOpen={true}
                     onClose={onClose}
-                    parentPosition={{ left: '100%', top: -3 }}
+                    parentPosition={{ left: '100%', top: -2 }}
+                    level={level + 1}
                   />
                 )}
               </div>
