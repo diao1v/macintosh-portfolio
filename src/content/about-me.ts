@@ -15,8 +15,13 @@ export const resume = `
 *Spark, Auckland, New Zealand*  
 **Feb 2023 - Present**
 
-- Next.js
-- GraphQL BFF
+- Modernized the MySpark billing portal with Next.js and GraphQL, delivering a streamlined and user-friendly bill management experience for all Spark users.
+- Led the Universal Login Application (ULA) integration for MySpark Business, enhancing security with MFA and achieving DIA compliance.
+- Maintained and enhanced ULA for Spark, Skinny, and XtraMail, ensuring consistent and reliable cross-brand login experiences.
+- Designed REST APIs for MySpark Business notification systems and ULA integration, including new endpoints and updates to existing services.
+- Expanded the Spark Design System by creating reusable React components with Storybook, enhancing UI consistency across projects.
+- Upgraded the legacy MySpark Business portal with Web Components, enhancing usability while maintaining security protocols.
+- Integrated Adobe Analytics into key user journeys to enable actionable insights and improve feature adoption.
 
 ---
 
@@ -24,10 +29,13 @@ export const resume = `
 *Spark Sport, Auckland, New Zealand*  
 **Jul 2022 - Feb 2023**
 
-- Develop features with ReactJS/Redux/TypeScript for web streaming app
-- Maintain and develop features for Chromecast receiver app
-- Develop home landing page with Next.js and TypeScript
-- Involve in streaming experience improvements (CMAF migration, DVR window shifting, etc.)
+- Solved a long-standing problem in the streaming platform using scientific methodology. Create own platform to reproduce the issue and narrow down the potential causes.
+- Developed features with React, Redux and TypeScript for web streaming app.
+- Maintained and developed features, monitor and handle error for Chromecast receiver app.
+- Involved in new home page development with Next.js and TypeScript. Performance and SEO improvement.
+- Involved in the improvement of the streaming experience (CMAF migration, DVR window shifting, etc.).
+- Involved in API design using serverless functions (AWS Lambda).
+- Actively involved in agile development practices, reporting and tracking the sprint progress.
 
 ---
 
@@ -35,10 +43,10 @@ export const resume = `
 *MediaWorks, Auckland, New Zealand*  
 **Oct 2021 - Jun 2022**
 
-- Create new components for Adobe Experience Manager for radio website enhancement
-- Develop and implement radio stations voting and countdown services widgets with HTML, CSS, JavaScript and Node.js
-- Write REST API for web services
-- Create and deploy two internal tools to make the end-to-end creation of the website widgets automated. Reduce 90% of the Business-as-usual time
+- Developed radio website enhancements by creating Adobe Experience Manager components with Java and JavaScript. 
+- Built and deployed over 10 radio station widgets (voting, countdowns) using HTML, CSS, JavaScript, and Node.js. 
+- Authored REST APIs for web services, improving integration and performance.
+- Created and deployed two internal tools with React, TypeScript, and Node.js to automate website widget creation, reducing BAU time by 90%.
 
 ---
 
@@ -95,6 +103,9 @@ export const resume = `
 
 ### AWS Certified Solutions Architect - Associate
 Issued Aug 2024 · Expires Aug 2027
+
+
+![MyPhoto](https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_150/v1743731940/macintosh-portfolio/B6F3C5AB-8607-4DF7-AE63-C2CE97020DD1_jznefq.jpg) 
 `;
 
 export const aboutMe = `\`\`\`java
