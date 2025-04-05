@@ -105,7 +105,7 @@ export const resume = `
 Issued Aug 2024 · Expires Aug 2027
 
 
-![MyPhoto](https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_150/v1743731940/macintosh-portfolio/B6F3C5AB-8607-4DF7-AE63-C2CE97020DD1_jznefq.jpg) 
+![MyPhoto](https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_200/v1743816910/macintosh-portfolio/B6F3C5AB-8607-4DF7-AE63-C2CE97020DD1-modified_orrmal.png) 
 `;
 
 export const aboutMe = `\`\`\`java
