@@ -39,9 +39,10 @@ const skyWatcherStartAdventureAdapter: Project = {
   ],
   oneLiner: '3D printed adapter for SkyWatcher Start Adventure',
   subContent: [
-    'Page 1: The 3d printed adapter.',
-    'Page 2: The adapter on the SkyWatcher Start Adventure.',
-    'Page 3: Photo of M31 - Andromeda Galaxy',
+    'Page 1: The 3d screenshot of the adapter.',
+    'Page 2: The 3d printed adapter.',
+    'Page 3: The adapter on the SkyWatcher Start Adventure.',
+    'Page 4: Photo of M31 - Andromeda Galaxy',
   ],
 };
 
