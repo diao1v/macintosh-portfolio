@@ -19,15 +19,20 @@ const skyWatcherStartAdventureAdapter: Project = {
     {
       pageNumber: 1,
       type: 'photo',
-      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1742007049/macintosh-portfolio/adapter-1_z2gbo5.png`,
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1744014090/macintosh-portfolio/adapter-0_egt1en.png`,
     },
     {
       pageNumber: 2,
       type: 'photo',
-      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1742007048/macintosh-portfolio/adapte-2_ztac4r.png`,
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1742007049/macintosh-portfolio/adapter-1_z2gbo5.png`,
     },
     {
       pageNumber: 3,
+      type: 'photo',
+      details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1742007048/macintosh-portfolio/adapte-2_ztac4r.png`,
+    },
+    {
+      pageNumber: 4,
       type: 'photo',
       details: `https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,${DEFAULT_IMAGE_WIDTH}/v1742007049/macintosh-portfolio/adapter-3_qobfn3.jpg`,
     },
