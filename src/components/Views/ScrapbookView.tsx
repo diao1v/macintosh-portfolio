@@ -2,11 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { File } from '@/store/useFileStore';
 import ReactMarkdown from 'react-markdown';
 import { content } from '@/content/';
-import { Project } from '@/content/projects';
+import { Project, MediaItem } from '@/content/loadCollection';
+import { resolveAssetUrl } from '@/utils';
 
 interface ScrapbookViewProps {
   file: File;
 }
+
+type Page = { kind: 'description' } | (MediaItem & { kind: 'media' });
 
 const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -18,112 +21,89 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const [isDraggingThumb, setIsDraggingThumb] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const project = (Object.values(content).reduce((found, collection) => {
-    if (found) return found;
-    if (typeof collection === 'object' && collection !== null) {
-      return collection[file.id] || found;
-    }
-    return found;
-  }, null) as Project) || {
+  const collections: Record<string, Project>[] = [
+    content.projects,
+    content.offWorkProjects,
+    content.achievements,
+  ];
+  const project: Project = collections.reduce<Project | null>(
+    (found, c) => found ?? c[file.id] ?? null,
+    null,
+  ) ?? {
     title: file.name,
-    pages: [],
     oneLiner: '',
     links: [],
-    subContent: [],
+    body: '',
+    media: [],
+    notes: [],
   };
 
-  const totalPages = Math.max(1, project.pages.length);
+  // Page 1 = intro markdown (omitted if body is empty); then one page per media item.
+  const pages: Page[] = [
+    ...(project.body.trim() ? [{ kind: 'description' as const }] : []),
+    ...project.media.map((m) => ({ kind: 'media' as const, ...m })),
+  ];
+  const totalPages = Math.max(1, pages.length);
+  const page = pages[currentPage];
 
   // Check if content is scrollable
   useEffect(() => {
-    const content = contentRef.current;
-    if (content) {
-      const checkScrollable = () => {
-        setShowVerticalScrollbar(content.scrollHeight > content.clientHeight);
-      };
-
+    const el = contentRef.current;
+    if (el) {
+      const checkScrollable = () =>
+        setShowVerticalScrollbar(el.scrollHeight > el.clientHeight);
       checkScrollable();
-
       window.addEventListener('resize', checkScrollable);
-
       const resizeObserver = new ResizeObserver(checkScrollable);
-      resizeObserver.observe(content);
-
+      resizeObserver.observe(el);
       return () => {
         window.removeEventListener('resize', checkScrollable);
         resizeObserver.disconnect();
       };
     }
-  }, [currentPage, project.pages]);
+  }, [currentPage, pages.length]);
 
   useEffect(() => {
-    const content = contentRef.current;
-    if (content) {
+    const el = contentRef.current;
+    if (el) {
       const handleScroll = () => {
-        const scrollRatio =
-          content.scrollTop / (content.scrollHeight - content.clientHeight);
-        setVerticalThumbPosition(scrollRatio);
+        const ratio = el.scrollTop / (el.scrollHeight - el.clientHeight);
+        setVerticalThumbPosition(ratio);
       };
-
-      content.addEventListener('scroll', handleScroll);
-      return () => content.removeEventListener('scroll', handleScroll);
+      el.addEventListener('scroll', handleScroll);
+      return () => el.removeEventListener('scroll', handleScroll);
     }
   }, []);
 
   const handleTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const track = trackRef.current;
     if (!track) return;
-
     const rect = track.getBoundingClientRect();
-    const clickPosition = e.clientX - rect.left;
-    const trackWidth = rect.width;
-    const newPage = Math.round((clickPosition / trackWidth) * (totalPages - 1));
+    const newPage = Math.round(
+      ((e.clientX - rect.left) / rect.width) * (totalPages - 1),
+    );
     setCurrentPage(Math.max(0, Math.min(newPage, totalPages - 1)));
   };
 
-  const handleDragStart = () => {
-    setIsDragging(true);
-  };
-
+  const handleDragStart = () => setIsDragging(true);
   const handleDrag = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging || !trackRef.current) return;
-
-    const track = trackRef.current;
-    const rect = track.getBoundingClientRect();
-    const position = e.clientX - rect.left;
-    const trackWidth = rect.width;
-    const newPage = Math.round((position / trackWidth) * (totalPages - 1));
+    const rect = trackRef.current.getBoundingClientRect();
+    const newPage = Math.round(
+      ((e.clientX - rect.left) / rect.width) * (totalPages - 1),
+    );
     setCurrentPage(Math.max(0, Math.min(newPage, totalPages - 1)));
   };
+  const handleDragEnd = () => setIsDragging(false);
 
-  const handleDragEnd = () => {
-    setIsDragging(false);
-  };
-
-  const goToPrevPage = () => {
-    setCurrentPage((prev) => Math.max(0, prev - 1));
-  };
-
-  const goToNextPage = () => {
-    setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1));
-  };
+  const goToPrevPage = () => setCurrentPage((p) => Math.max(0, p - 1));
+  const goToNextPage = () =>
+    setCurrentPage((p) => Math.min(totalPages - 1, p + 1));
 
   const handlePosition =
     currentPage === totalPages - 1
       ? `${(currentPage / (totalPages - 1)) * 100 - 1.5}%`
       : `${(currentPage / (totalPages - 1)) * 100}%`;
-
-  const handleVerticalTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const track = e.currentTarget;
-    const trackRect = track.getBoundingClientRect();
-    const clickPosition = e.clientY - trackRect.top;
-    const content = contentRef.current;
-    if (!content) return;
-
-    const scrollRatio = clickPosition / trackRect.height;
-    content.scrollTop =
-      scrollRatio * (content.scrollHeight - content.clientHeight);
-  };
 
   const handleVerticalThumbMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -133,105 +113,98 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDraggingThumb || !contentRef.current) return;
-
-      const content = contentRef.current;
-      const track = content.parentElement?.querySelector('.vertical-track');
+      const el = contentRef.current;
+      const track = el.parentElement?.querySelector('.vertical-track');
       if (!track) return;
-
       const trackRect = track.getBoundingClientRect();
-      const ratio = (e.clientY - trackRect.top) / trackRect.height;
-      const boundedRatio = Math.max(0, Math.min(1, ratio));
-
-      content.scrollTop =
-        boundedRatio * (content.scrollHeight - content.clientHeight);
+      const ratio = Math.max(
+        0,
+        Math.min(1, (e.clientY - trackRect.top) / trackRect.height),
+      );
+      el.scrollTop = ratio * (el.scrollHeight - el.clientHeight);
     };
-
-    const handleMouseUp = () => {
-      setIsDraggingThumb(false);
-    };
-
+    const handleMouseUp = () => setIsDraggingThumb(false);
     if (isDraggingThumb) {
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
     }
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDraggingThumb]);
 
-  const CustomLink = (props: any) => {
-    return <a {...props} target="_blank" rel="noopener noreferrer" />;
-  };
-
-  const renderContent = () => {
-    const currentPageContent = project.pages[currentPage];
-    if (!currentPageContent) return null;
-
-    switch (currentPageContent.type) {
-      case 'description':
-        return (
-          <div className="h-full">
-            <div className="prose prose-sm max-w-none font-torrance text-[11px]">
-              <ReactMarkdown components={{ a: CustomLink }}>
-                {currentPageContent.details}
-              </ReactMarkdown>
-            </div>
-          </div>
-        );
-      case 'photo':
-        return (
-          <div className="relative flex items-start justify-center h-full min-h-[300px]">
-            {isImageLoading && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
-              </div>
-            )}
-            <img
-              src={currentPageContent.details}
-              alt={`${project.title} screenshot ${currentPage + 1}`}
-              className={`object-contain max-w-full max-h-full transition-opacity duration-300 ${
-                isImageLoading ? 'opacity-0' : 'opacity-100'
-              } ${currentPageContent.makeImageSpin ? 'animate-spin-y' : ''}`}
-              onLoad={() => setIsImageLoading(false)}
-              onError={() => setIsImageLoading(false)}
-            />
-          </div>
-        );
-      case 'video':
-        return (
-          <div className="flex items-start justify-start h-full min-h-[600px]">
-            <iframe
-              src={currentPageContent.details}
-              title={`${project.title} - Video ${currentPage + 1}`}
-              allow="encrypted-media;"
-              referrerPolicy="strict-origin-when-cross-origin"
-              className="w-full h-full min-h-[500px]"
-            ></iframe>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
-  // Reset loading state when page changes
+  // Reset image loading state when page changes
   useEffect(() => {
     setIsImageLoading(true);
   }, [currentPage]);
 
-  // compose sub content
-  const subContent = project.subContent?.map((item) => {
-    return `- ${item}`;
-  });
+  const CustomLink = (props: any) => (
+    <a {...props} target="_blank" rel="noopener noreferrer" />
+  );
+  const CustomImg = (props: any) => (
+    <img {...props} src={resolveAssetUrl(props.src ?? '')} />
+  );
 
-  const links = project.links?.map((item) => {
-    return `- ${item.name}: [${item.url}](${item.url})`;
-  });
-  const subContentString = subContent?.join('\n');
-  const linksString = links?.join('\n');
-  const allContent = [subContentString, linksString].join('\n\n');
+  const renderContent = () => {
+    if (!page) return null;
+    if (page.kind === 'description') {
+      return (
+        <div className="h-full">
+          <div className="prose prose-sm max-w-none font-torrance text-[11px]">
+            <ReactMarkdown components={{ a: CustomLink, img: CustomImg }}>
+              {project.body}
+            </ReactMarkdown>
+          </div>
+        </div>
+      );
+    }
+    if (page.type === 'photo') {
+      return (
+        <div className="relative flex items-start justify-center h-full min-h-[300px]">
+          {isImageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
+            </div>
+          )}
+          <img
+            src={resolveAssetUrl(page.src)}
+            alt={page.caption || `${project.title} screenshot`}
+            className={`object-contain max-w-full max-h-full transition-opacity duration-300 ${
+              isImageLoading ? 'opacity-0' : 'opacity-100'
+            } ${page.makeImageSpin ? 'animate-spin-y' : ''}`}
+            onLoad={() => setIsImageLoading(false)}
+            onError={() => setIsImageLoading(false)}
+          />
+        </div>
+      );
+    }
+    // video
+    return (
+      <div className="flex items-start justify-start h-full min-h-[600px]">
+        <iframe
+          src={resolveAssetUrl(page.src)}
+          title={page.caption || `${project.title} video`}
+          allow="encrypted-media;"
+          referrerPolicy="strict-origin-when-cross-origin"
+          className="w-full h-full min-h-[500px]"
+        ></iframe>
+      </div>
+    );
+  };
+
+  // Info bar: current page caption + project notes + links.
+  const caption = page?.kind === 'media' ? page.caption : project.oneLiner;
+  const infoLines = [
+    ...(caption ? [caption] : []),
+    ...(project.notes ?? []),
+  ].map((line) => `- ${line}`);
+  const linkLines = (project.links ?? []).map(
+    (l) => `- ${l.name}: [${l.url}](${l.url})`,
+  );
+  const infoMarkdown = [infoLines.join('\n'), linkLines.join('\n')]
+    .filter(Boolean)
+    .join('\n\n');
 
   return (
     <div className="flex flex-col h-full pb-4 overflow-hidden font-torrance text-[12px]">
@@ -246,7 +219,14 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
           {showVerticalScrollbar && (
             <div
               className="vertical-track absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]"
-              onClick={handleVerticalTrackClick}
+              onClick={(e) => {
+                const track = e.currentTarget;
+                const trackRect = track.getBoundingClientRect();
+                const el = contentRef.current;
+                if (!el) return;
+                const ratio = (e.clientY - trackRect.top) / trackRect.height;
+                el.scrollTop = ratio * (el.scrollHeight - el.clientHeight);
+              }}
             >
               <div
                 className="absolute w-4 h-4 bg-[#E6E6E6] border border-[#999999] cursor-pointer"
@@ -293,9 +273,7 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
           >
             <div
               className="absolute top-0 left-0 h-4 cursor-pointer"
-              style={{
-                left: handlePosition,
-              }}
+              style={{ left: handlePosition }}
               onMouseDown={handleDragStart}
             >
               <img
@@ -324,9 +302,9 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
         <div className=" bg-[#E6E6E6] px-4 py-1">
           <div className="h-28 bg-white border border-[#999999] px-2 py-0.5 overflow-x-auto">
             <div className="leading-tight prose-sm prose max-w-none text-[11px]">
-              <ReactMarkdown
-                components={{ a: CustomLink }}
-              >{`${allContent}`}</ReactMarkdown>
+              <ReactMarkdown components={{ a: CustomLink }}>
+                {infoMarkdown}
+              </ReactMarkdown>
             </div>
           </div>
         </div>
