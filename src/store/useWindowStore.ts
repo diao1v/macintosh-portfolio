@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Z_INDEX } from '@/constants';
-import { File } from './useFileStore';
+import { FileType } from './useFileStore';
 
 interface Position {
   x: number;
@@ -10,16 +10,7 @@ interface Position {
 interface WindowState {
   id: string;
   title: string;
-  type:
-    | 'about'
-    | 'folder'
-    | 'project'
-    | 'text'
-    | 'contact'
-    | 'link'
-    | 'scrapbook'
-    | 'code'
-    | 'pdf';
+  type: FileType | 'about';
   isOpen: boolean;
   position: Position;
   zIndex: number;
@@ -32,8 +23,6 @@ interface WindowState {
     width: number;
     height: number;
   };
-  children?: File[];
-  content?: string;
 }
 
 interface WindowStore {

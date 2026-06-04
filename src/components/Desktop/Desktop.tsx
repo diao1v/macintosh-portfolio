@@ -59,7 +59,6 @@ const Desktop: React.FC = () => {
         height: rootFolder.window?.height || 400,
         zIndex: 1,
         diskSpace: '128.5',
-        children: rootFolder.children,
       });
 
       focusWindow(rootFolder.id);
@@ -117,8 +116,6 @@ const Desktop: React.FC = () => {
       height: file.window?.height || 300,
       zIndex: 1,
       diskSpace,
-      children: file.children,
-      content: file.content,
     });
     focusWindow(file.id);
   };

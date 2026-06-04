@@ -1,17 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ScrollInfo, TrackDimensions } from './types';
+import { FileType } from '@/store/useFileStore';
 
 interface ScrollableContainerProps {
   children: React.ReactNode;
-  type?:
-    | 'about'
-    | 'folder'
-    | 'text'
-    | 'contact'
-    | 'link'
-    | 'scrapbook'
-    | 'code'
-    | 'pdf';
+  type?: FileType | 'about';
   isFocused?: boolean;
   hideHorizontal?: boolean;
 }
