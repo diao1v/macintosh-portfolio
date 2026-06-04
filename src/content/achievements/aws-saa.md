@@ -6,5 +6,5 @@ media:
     makeImageSpin: true
 notes:
   - "AWS Solutions Architect Associate: Certified"
-  - Achievement Date: 27 Aug, 2024
+  - "Achievement Date: 27 Aug, 2024"
 ---

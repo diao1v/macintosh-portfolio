@@ -6,5 +6,5 @@ media:
     makeImageSpin: true
 notes:
   - "Lake Taupo Cycle Challenge: 160km in 7:30:17"
-  - Achievement Date: 30 Nov, 2024 @ 13:56:09
+  - "Achievement Date: 30 Nov, 2024 @ 13:56:09"
 ---

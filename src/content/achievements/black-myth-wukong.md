@@ -6,5 +6,5 @@ media:
     makeImageSpin: true
 notes:
   - "BLACK MYTH: WUKONG: Final Fulfillment (81 of 81)"
-  - Achievement Date: 16 Nov, 2024 @ 3:03am
+  - "Achievement Date: 16 Nov, 2024 @ 3:03am"
 ---
