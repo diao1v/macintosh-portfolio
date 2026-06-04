@@ -171,7 +171,7 @@ at load time. zod is already a dependency.
 ## Dependencies & ops
 
 - Add `js-yaml` + `@types/js-yaml`.
-- Add `VITE_ASSET_BASE` (e.g. `https://assets.os.diao1v.me`) to the env. Document the R2
+- Add `VITE_ASSET_BASE=https://assets.os.diaoev.com` to the env. Document the R2
   bucket + Cloudflare custom-domain setup, and the "drop image in R2 under `<id>/<file>`"
   workflow, in the README.
 
