@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
 import DropdownMenu from './DropdownMenu';
-import { createMenuConfig } from '@/config/menus';
-import { File } from '@/store/useFileStore';
+import { createMenuConfig, MenuConfig } from '@/config/menus';
+import useFileStore, { File } from '@/store/useFileStore';
 import useWindowStore from '@/store/useWindowStore';
 import useDialogStore from '@/store/useDialogStore';
 interface MenuBarProps {
@@ -16,35 +16,39 @@ const MenuBar: React.FC<MenuBarProps> = ({
   onOpenFile,
   onCloseWindow,
 }) => {
-  const { openWindow, focusedWindowId } = useWindowStore();
+  const openWindow = useWindowStore((s) => s.openWindow);
+  // Subscribe to the slices the menu's enabled/disabled state depends on so it
+  // recomputes reactively (e.g. Save enables the moment a file becomes dirty).
+  const focusedWindowId = useWindowStore((s) => s.focusedWindowId);
+  const rootFolder = useFileStore((s) => s.rootFolder);
+  const unsavedChanges = useFileStore((s) => s.unsavedChanges);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const { openDialog } = useDialogStore();
 
-  const [menuConfig, setMenuConfig] = useState<any[]>([]);
-
-  useEffect(() => {
-    const config = createMenuConfig({
-      onOpenAbout: () => openWindow('about'),
+  const menuConfig = useMemo<MenuConfig[]>(
+    () =>
+      createMenuConfig({
+        onOpenAbout: () => openWindow('about'),
+        selectedItemId,
+        onOpenFile,
+        onCloseWindow,
+        openDialog,
+      }),
+    // rootFolder/unsavedChanges identities change on every mutation, driving
+    // recompute; createMenuConfig reads the freshest store state internally.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
       selectedItemId,
+      focusedWindowId,
+      rootFolder,
+      unsavedChanges,
       onOpenFile,
       onCloseWindow,
+      openWindow,
       openDialog,
-    });
-
-    if (Array.isArray(config)) {
-      setMenuConfig(config);
-    } else {
-      setMenuConfig([]);
-    }
-  }, [
-    selectedItemId,
-    onOpenFile,
-    onCloseWindow,
-    openWindow,
-    focusedWindowId,
-    openDialog,
-  ]);
+    ],
+  );
 
   useEffect(() => {
     setCurrentTime(new Date());
@@ -86,11 +90,11 @@ const MenuBar: React.FC<MenuBarProps> = ({
                 />
               </div>
             ) : (
-              (menu as { label: string }).label
+              menu.label
             )}
           </div>
           <DropdownMenu
-            items={(menu as any).items}
+            items={menu.items}
             isOpen={activeMenu === index}
             onClose={() => setActiveMenu(null)}
           />
