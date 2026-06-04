@@ -33,6 +33,7 @@ interface WindowStore {
   closeWindow: (id: string) => void;
   focusWindow: (id: string) => void;
   setWindowPosition: (id: string, position: Position) => void;
+  setWindowSize: (id: string, size: { width: number; height: number }) => void;
   toggleWindowZoom: (id: string) => void;
   openWindow: (id: string) => void;
 }
@@ -57,13 +58,25 @@ const useWindowStore = create<WindowStore>((set) => ({
     })),
 
   closeWindow: (id) =>
-    set((state) => ({
-      windows: state.windows.map((win) =>
+    set((state) => {
+      const windows = state.windows.map((win) =>
         win.id === id ? { ...win, isOpen: false } : win,
-      ),
-      focusedWindowId:
-        state.focusedWindowId === id ? '' : state.focusedWindowId,
-    })),
+      );
+
+      // When the focused window closes, refocus the topmost remaining one
+      // so focus-dependent menu items stay usable.
+      let focusedWindowId = state.focusedWindowId;
+      if (focusedWindowId === id) {
+        const openWindows = windows.filter((win) => win.isOpen);
+        focusedWindowId = openWindows.length
+          ? openWindows.reduce((top, win) =>
+              win.zIndex > top.zIndex ? win : top,
+            ).id
+          : '';
+      }
+
+      return { windows, focusedWindowId };
+    }),
 
   focusWindow: (id) =>
     set((state) => {
@@ -83,6 +96,13 @@ const useWindowStore = create<WindowStore>((set) => ({
     set((state) => ({
       windows: state.windows.map((win) =>
         win.id === id ? { ...win, position } : win,
+      ),
+    })),
+
+  setWindowSize: (id, size) =>
+    set((state) => ({
+      windows: state.windows.map((win) =>
+        win.id === id ? { ...win, ...size } : win,
       ),
     })),
 

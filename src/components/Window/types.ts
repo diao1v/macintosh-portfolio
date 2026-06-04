@@ -20,6 +20,7 @@ export interface WindowProps {
   width?: number;
   height?: number;
   onPositionChange?: (x: number, y: number) => void;
+  onSizeChange?: (width: number, height: number) => void;
   onOpenFolder?: (file: File) => void;
   onItemClick?: (id: string) => void;
   selectedItemId?: string | null;

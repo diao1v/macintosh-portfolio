@@ -32,6 +32,7 @@ const Window: React.FC<WindowProps> = ({
   width = 400,
   height = 300,
   onPositionChange,
+  onSizeChange,
   onOpenFolder,
   onItemClick,
   selectedItemId,
@@ -94,10 +95,10 @@ const Window: React.FC<WindowProps> = ({
         }
       }}
       onResizeStop={(_e, _direction, ref, _delta, _position) => {
-        setSize({
-          width: parseInt(ref.style.width),
-          height: parseInt(ref.style.height),
-        });
+        const width = parseInt(ref.style.width);
+        const height = parseInt(ref.style.height);
+        setSize({ width, height });
+        onSizeChange?.(width, height);
       }}
       minWidth={minWidth}
       minHeight={minHeight}

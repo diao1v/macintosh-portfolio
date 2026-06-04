@@ -17,6 +17,7 @@ const Desktop: React.FC = () => {
     closeWindow,
     focusWindow,
     setWindowPosition,
+    setWindowSize,
     toggleWindowZoom,
     openWindow,
     addWindow,
@@ -146,6 +147,9 @@ const Desktop: React.FC = () => {
                   height={window.height}
                   onPositionChange={(x, y) =>
                     setWindowPosition(window.id, { x, y })
+                  }
+                  onSizeChange={(w, h) =>
+                    setWindowSize(window.id, { width: w, height: h })
                   }
                   onOpenFolder={handleFileOpen}
                   onItemClick={handleItemClick}

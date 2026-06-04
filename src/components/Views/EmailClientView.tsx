@@ -36,18 +36,16 @@ const EmailClientView: React.FC = () => {
 
   const handleEmailSubmit = (data: EmailFormData) => {
     posthog.capture('email_submit_attempt', {
-      email: data.email,
-      subject: data.subject,
-      message: data.message,
+      subjectLength: data.subject.length,
+      messageLength: data.message.length,
     });
     setIsSubmitting(true);
 
     sendEmailMutation.mutate(data, {
       onSuccess: (response) => {
         posthog.capture('email_submit_success', {
-          email: data.email,
-          subject: data.subject,
-          message: data.message,
+          subjectLength: data.subject.length,
+          messageLength: data.message.length,
         });
         const result = parseApiResponse(response);
 
@@ -69,9 +67,8 @@ const EmailClientView: React.FC = () => {
       },
       onError: (error) => {
         posthog.capture('email_submit_error', {
-          email: data.email,
-          subject: data.subject,
-          message: data.message,
+          subjectLength: data.subject.length,
+          messageLength: data.message.length,
           error:
             error instanceof Error ? error.message : 'Failed to send email',
         });
