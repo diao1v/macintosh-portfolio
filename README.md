@@ -32,6 +32,45 @@ This project is a fun and nostalgic recreation of the Classic Macintosh System 7
 3. run `pnpm dev`
 4. open `http://localhost:5173`
 
+## Adding a project
+
+Projects, off-work projects, and achievements are markdown files:
+
+- `src/content/projects/<id>.md`
+- `src/content/off-work-projects/<id>.md`
+- `src/content/achievements/<id>.md`
+
+Each file has YAML frontmatter (`title`, `oneLiner`, optional `links`, `media`, `notes`)
+and a markdown body that becomes the intro page. Each `media` item becomes its own page
+with its caption. Files are auto-discovered — no registration needed.
+
+```markdown
+---
+title: My Project
+oneLiner: One-line summary
+links:
+  - { name: GitHub, url: https://github.com/you/my-project }
+media:
+  - src: my-project/shot-1.png
+    caption: Dashboard
+  - src: https://www.youtube.com/embed/abc
+    caption: Demo
+notes:
+  - Any extra info-bar line
+---
+
+# My Project
+
+Markdown body becomes the intro page…
+```
+
+Images live in a Cloudflare R2 bucket served via a custom domain
+(`VITE_ASSET_BASE`, e.g. `https://assets.os.diaoev.com`). Reference an image by its bucket
+key (`media: [{ src: <id>/shot-1.png }]`); absolute URLs (existing Cloudinary images,
+YouTube embeds) are used as-is. Upload new images to R2 under `<id>/<file>`. `media` `type`
+is inferred (`video` for YouTube/Vimeo/embed URLs, otherwise `photo`) and can be set
+explicitly with `type:`.
+
 ## To do
 
 - [x] Add Project details (Grammar Tuner, Mac OS Portfolio, Cheater Encoder, House Shopping Diary)

@@ -475,16 +475,28 @@ Replace the whole file with:
 import { aboutMe, resume } from './about-me';
 import { loadCollection, Project } from './loadCollection';
 
-const RAW = { query: '?raw', eager: true, import: 'default' } as const;
-
+// NOTE: import.meta.glob options MUST be an inline object literal — Vite
+// statically analyses the call, so they cannot be hoisted into a shared const.
 const projects = loadCollection(
-  import.meta.glob('./projects/*.md', RAW) as Record<string, string>,
+  import.meta.glob('./projects/*.md', {
+    query: '?raw',
+    eager: true,
+    import: 'default',
+  }) as Record<string, string>,
 );
 const offWorkProjects = loadCollection(
-  import.meta.glob('./off-work-projects/*.md', RAW) as Record<string, string>,
+  import.meta.glob('./off-work-projects/*.md', {
+    query: '?raw',
+    eager: true,
+    import: 'default',
+  }) as Record<string, string>,
 );
 const achievements = loadCollection(
-  import.meta.glob('./achievements/*.md', RAW) as Record<string, string>,
+  import.meta.glob('./achievements/*.md', {
+    query: '?raw',
+    eager: true,
+    import: 'default',
+  }) as Record<string, string>,
 );
 
 interface Content {
