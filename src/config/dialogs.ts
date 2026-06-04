@@ -131,7 +131,7 @@ export const getDialogProps = (type: DialogType, data?: any): DialogProps => {
     dialogMap[type]?.(data) || {
       title: 'Information',
       message: 'No additional information available.',
-      icon: '/icons/info.png',
+      icon: '/icons/about_macintosh.png',
       buttons: [{ label: 'OK', onClick: () => {} }],
     }
   );

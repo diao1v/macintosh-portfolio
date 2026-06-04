@@ -12,6 +12,7 @@ import DesktopIcon from '@/components/DesktopIcon/DesktopIcon';
 import Window from '@/components/Window/Window';
 import MenuBar from '@/components/MenuBar/MenuBar';
 import Dialog from '@/components/Dialog/Dialog';
+import { getDiskSpace } from '@/utils';
 
 interface IconPosition {
   id: string;
@@ -101,10 +102,7 @@ const Desktop: React.FC = () => {
       initializeIconPositions(file.children);
     }
 
-    const diskSpace = (
-      (file.children?.length || 0) *
-      (Math.random() * 2 + 0.5)
-    ).toFixed(2);
+    const diskSpace = getDiskSpace(file.id, file.children?.length ?? 0);
 
     addWindow({
       id: file.id,

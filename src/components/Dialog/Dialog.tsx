@@ -24,7 +24,7 @@ const Dialog: React.FC = () => {
   const {
     title,
     message,
-    icon = '/icons/info.png',
+    icon = '/icons/about_macintosh.png',
     buttons = [{ label: 'OK', onClick: () => {}, primary: true }],
   } = dialogProps;
 

@@ -366,7 +366,7 @@ const useFileStore = create<FileStore>((set, get) => ({
   saveFile: (id) => {
     const { pendingContent, markFileAsClean, updateFileContent } = get();
 
-    if (pendingContent[id]) {
+    if (id in pendingContent) {
       updateFileContent(id, pendingContent[id]);
       markFileAsClean(id);
 

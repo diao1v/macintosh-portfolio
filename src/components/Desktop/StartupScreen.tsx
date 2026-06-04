@@ -22,7 +22,6 @@ const PRELOAD_IMAGES = [
   '/icons/titlebar.png',
   '/icons/about_macintosh.png',
   '/icons/news.png',
-  '/icons/info.png',
   '/icons/alert.png',
   '/icons/success.png',
   '/icons/apple.png',
