@@ -34,7 +34,6 @@ const Window: React.FC<WindowProps> = ({
   onPositionChange,
   onOpenFolder,
   onItemClick,
-  onIconDrag,
   selectedItemId,
 }) => {
   const { getFileById } = useFileStore();
@@ -64,7 +63,6 @@ const Window: React.FC<WindowProps> = ({
             file={file}
             onOpenFolder={onOpenFolder}
             onItemClick={onItemClick}
-            onIconDrag={onIconDrag}
             selectedItemId={selectedItemId}
           />
         );

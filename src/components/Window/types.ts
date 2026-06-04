@@ -22,8 +22,6 @@ export interface WindowProps {
   onPositionChange?: (x: number, y: number) => void;
   onOpenFolder?: (file: File) => void;
   onItemClick?: (id: string) => void;
-  onIconDrag?: (id: string, x: number, y: number) => void;
-  getIconPosition?: (id: string) => Position;
   selectedItemId?: string | null;
   children?: React.ReactNode;
 }
