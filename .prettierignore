@@ -22,6 +22,9 @@ schema.graphql
 *.svg
 *.png
 
+# Project content is authored markdown — keep its formatting verbatim
+src/content/**/*.md
+
 # Ignore config files
 .gitignore
 .gitattributes
