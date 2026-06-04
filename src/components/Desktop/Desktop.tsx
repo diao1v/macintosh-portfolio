@@ -1,23 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  MENU_BAR_HEIGHT,
-  ICON_WIDTH,
-  ICON_SPACING,
-  FOLDER_PADDING,
-} from '@/constants';
+import { MENU_BAR_HEIGHT } from '@/constants';
 import useWindowStore from '@/store/useWindowStore';
 import useFolderStore from '@/store/useFileStore';
 import { File } from '@/store/useFileStore';
+import useIconStore from '@/store/useIconStore';
 import DesktopIcon from '@/components/DesktopIcon/DesktopIcon';
 import Window from '@/components/Window/Window';
 import MenuBar from '@/components/MenuBar/MenuBar';
 import Dialog from '@/components/Dialog/Dialog';
-
-interface IconPosition {
-  id: string;
-  x: number;
-  y: number;
-}
+import { getDiskSpace } from '@/utils';
 
 const Desktop: React.FC = () => {
   const {
@@ -26,15 +17,22 @@ const Desktop: React.FC = () => {
     closeWindow,
     focusWindow,
     setWindowPosition,
+    setWindowSize,
     toggleWindowZoom,
     openWindow,
     addWindow,
   } = useWindowStore();
   const { rootFolder } = useFolderStore();
+  const { positions, setPosition, ensurePositions } = useIconStore();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const [iconPositions, setIconPositions] = useState<IconPosition[]>([
-    { id: rootFolder.id, x: window.innerWidth - 120, y: 20 },
-  ]);
+
+  const rootDefaultPosition = { x: window.innerWidth - 120, y: 20 };
+
+  // Seed the Macintosh HD icon position once.
+  useEffect(() => {
+    ensurePositions([{ id: rootFolder.id, pos: rootDefaultPosition }]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ensurePositions, rootFolder.id]);
 
   const initializedRef = useRef(false);
 
@@ -58,7 +56,6 @@ const Desktop: React.FC = () => {
         height: rootFolder.window?.height || 400,
         zIndex: 1,
         diskSpace: '128.5',
-        children: rootFolder.children,
       });
 
       focusWindow(rootFolder.id);
@@ -68,20 +65,6 @@ const Desktop: React.FC = () => {
   const handleCloseWindow = (id: string) => closeWindow(id);
   const handleWindowFocus = (id: string) => focusWindow(id);
   const handleWindowZoom = (id: string) => toggleWindowZoom(id);
-
-  const initializeIconPositions = (items: File[]) => {
-    const newPositions = items.map((item, index) => ({
-      id: item.id,
-      x: FOLDER_PADDING + (ICON_WIDTH + ICON_SPACING) * index,
-      y: FOLDER_PADDING,
-    }));
-
-    setIconPositions((prev) => {
-      const existingIds = prev.map((p) => p.id);
-      const newItems = newPositions.filter((p) => !existingIds.includes(p.id));
-      return [...prev, ...newItems];
-    });
-  };
 
   const handleFileOpen = (file: File) => {
     if (file.type === 'link' && file.content) {
@@ -97,14 +80,7 @@ const Desktop: React.FC = () => {
       return;
     }
 
-    if (file.children) {
-      initializeIconPositions(file.children);
-    }
-
-    const diskSpace = (
-      (file.children?.length || 0) *
-      (Math.random() * 2 + 0.5)
-    ).toFixed(2);
+    const diskSpace = getDiskSpace(file.id, file.children?.length ?? 0);
 
     addWindow({
       id: file.id,
@@ -119,8 +95,6 @@ const Desktop: React.FC = () => {
       height: file.window?.height || 300,
       zIndex: 1,
       diskSpace,
-      children: file.children,
-      content: file.content,
     });
     focusWindow(file.id);
   };
@@ -130,16 +104,6 @@ const Desktop: React.FC = () => {
     if (e.currentTarget === e.target) {
       setSelectedItemId(null);
     }
-  };
-
-  const handleIconDrag = (id: string, x: number, y: number) => {
-    setIconPositions((prev) =>
-      prev.map((pos) => (pos.id === id ? { ...pos, x, y } : pos)),
-    );
-  };
-
-  const getIconPosition = (id: string) => {
-    return iconPositions.find((pos) => pos.id === id) || { x: 0, y: 0 };
   };
 
   return (
@@ -158,8 +122,8 @@ const Desktop: React.FC = () => {
             onDoubleClick={() => handleFileOpen(rootFolder)}
             isSelected={selectedItemId === rootFolder.id}
             onClick={() => handleItemClick(rootFolder.id)}
-            position={getIconPosition(rootFolder.id)}
-            onDrag={(x, y) => handleIconDrag(rootFolder.id, x, y)}
+            position={positions[rootFolder.id] || rootDefaultPosition}
+            onDrag={(x, y) => setPosition(rootFolder.id, { x, y })}
           />
         </div>
 
@@ -184,10 +148,11 @@ const Desktop: React.FC = () => {
                   onPositionChange={(x, y) =>
                     setWindowPosition(window.id, { x, y })
                   }
+                  onSizeChange={(w, h) =>
+                    setWindowSize(window.id, { width: w, height: h })
+                  }
                   onOpenFolder={handleFileOpen}
                   onItemClick={handleItemClick}
-                  onIconDrag={handleIconDrag}
-                  getIconPosition={getIconPosition}
                   selectedItemId={selectedItemId}
                 />
               ),

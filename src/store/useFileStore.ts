@@ -1,16 +1,29 @@
 import { create } from 'zustand';
 import { content } from '@/content';
 
-export const typeToIcon = {
-  harddisk: '/icons/drive-harddisk.png',
+export type FileType =
+  | 'folder'
+  | 'project'
+  | 'text'
+  | 'pdf'
+  | 'contact'
+  | 'link'
+  | 'code';
+
+// Icon for each concrete file type.
+export const fileTypeIcons: Record<FileType, string> = {
   folder: '/icons/folder.png',
   project: '/icons/scrapbook.png',
   text: '/icons/simple-text.png',
+  pdf: '/icons/text.png',
   contact: '/icons/gmail.png',
   link: '/icons/unknown.png',
-  photo: '/icons/media.png',
   code: '/icons/text-script.png',
-  pdf: '/icons/text.png',
+};
+
+// Standalone icons that are not tied to a file type.
+export const icons = {
+  harddisk: '/icons/drive-harddisk.png',
   github: '/icons/github.png',
   linkedin: '/icons/linkedin.png',
 };
@@ -18,15 +31,7 @@ export const typeToIcon = {
 export interface File {
   id: string;
   name: string;
-  type:
-    | 'folder'
-    | 'project'
-    | 'text'
-    | 'pdf'
-    | 'contact'
-    | 'link'
-    | 'scrapbook'
-    | 'code';
+  type: FileType;
   icon: string;
   children?: File[];
   content?: string;
@@ -62,7 +67,7 @@ const createFileStructure = () => {
     id: 'root',
     name: 'Macintosh HD',
     type: 'folder',
-    icon: typeToIcon['harddisk'],
+    icon: icons.harddisk,
     window: {
       width: 600,
       height: 400,
@@ -72,7 +77,7 @@ const createFileStructure = () => {
         id: 'about-me',
         name: 'About Me',
         type: 'folder',
-        icon: typeToIcon['folder'],
+        icon: fileTypeIcons.folder,
         window: {
           width: 600,
           height: 400,
@@ -82,7 +87,7 @@ const createFileStructure = () => {
             id: 'resume',
             name: 'Resume.pdf',
             type: 'pdf',
-            icon: typeToIcon['pdf'],
+            icon: fileTypeIcons.pdf,
             window: {
               width: 600,
               height: 700,
@@ -92,7 +97,7 @@ const createFileStructure = () => {
             id: 'about-me-java',
             name: 'About Me.java',
             type: 'code',
-            icon: typeToIcon['code'],
+            icon: fileTypeIcons.code,
             window: {
               width: 800,
               height: 700,
@@ -104,7 +109,7 @@ const createFileStructure = () => {
         id: 'projects',
         name: 'Projects',
         type: 'folder',
-        icon: typeToIcon['folder'],
+        icon: fileTypeIcons.folder,
         window: {
           width: 600,
           height: 400,
@@ -113,7 +118,7 @@ const createFileStructure = () => {
           id,
           name: project.title,
           type: 'project',
-          icon: typeToIcon['project'],
+          icon: fileTypeIcons.project,
           window: {
             width: 1000,
             height: 700,
@@ -124,7 +129,7 @@ const createFileStructure = () => {
         id: 'socials',
         name: 'Socials',
         type: 'folder',
-        icon: typeToIcon['folder'],
+        icon: fileTypeIcons.folder,
         window: {
           width: 600,
           height: 400,
@@ -134,14 +139,14 @@ const createFileStructure = () => {
             id: 'github',
             name: 'GitHub',
             type: 'link',
-            icon: typeToIcon['github'],
+            icon: icons.github,
             content: 'https://github.com/diao1v',
           },
           {
             id: 'linkedin',
             name: 'LinkedIn',
             type: 'link',
-            icon: typeToIcon['linkedin'],
+            icon: icons.linkedin,
             content: 'https://www.linkedin.com/in/yiwei-diao/',
           },
         ],
@@ -150,7 +155,7 @@ const createFileStructure = () => {
         id: 'off-work-projects',
         name: 'Off Work Projects',
         type: 'folder',
-        icon: typeToIcon['folder'],
+        icon: fileTypeIcons.folder,
         window: {
           width: 600,
           height: 400,
@@ -160,7 +165,7 @@ const createFileStructure = () => {
             id,
             name: project.title,
             type: 'project',
-            icon: typeToIcon['project'],
+            icon: fileTypeIcons.project,
             window: {
               width: 1000,
               height: 700,
@@ -172,7 +177,7 @@ const createFileStructure = () => {
         id: 'recent-achievements',
         name: 'Recent Achievements',
         type: 'folder',
-        icon: typeToIcon['folder'],
+        icon: fileTypeIcons.folder,
         window: {
           width: 600,
           height: 400,
@@ -182,7 +187,7 @@ const createFileStructure = () => {
             id,
             name: achievement.title,
             type: 'project',
-            icon: typeToIcon['project'],
+            icon: fileTypeIcons.project,
             window: {
               width: 600,
               height: 550,
@@ -194,7 +199,7 @@ const createFileStructure = () => {
         id: 'contact',
         name: 'Email - Eudora Light 3.0.1',
         type: 'contact',
-        icon: typeToIcon['contact'],
+        icon: fileTypeIcons.contact,
         window: {
           width: 600,
           height: 430,
@@ -366,7 +371,7 @@ const useFileStore = create<FileStore>((set, get) => ({
   saveFile: (id) => {
     const { pendingContent, markFileAsClean, updateFileContent } = get();
 
-    if (pendingContent[id]) {
+    if (id in pendingContent) {
       updateFileContent(id, pendingContent[id]);
       markFileAsClean(id);
 

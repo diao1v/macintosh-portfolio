@@ -1,18 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ScrollInfo, TrackDimensions } from './types';
+import { FileType } from '@/store/useFileStore';
 
 interface ScrollableContainerProps {
   children: React.ReactNode;
-  type?:
-    | 'about'
-    | 'folder'
-    | 'project'
-    | 'text'
-    | 'contact'
-    | 'link'
-    | 'scrapbook'
-    | 'code'
-    | 'pdf';
+  type?: FileType | 'about';
   isFocused?: boolean;
   hideHorizontal?: boolean;
 }
@@ -25,25 +17,6 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   isFocused = false,
   hideHorizontal = false,
 }) => {
-  if (type === 'project') {
-    return (
-      <div className="relative h-full">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-white">{children}</div>
-
-          {/* Corner Drag Button */}
-          <div className="absolute right-0 bottom-0 w-4 h-4 bg-[#E6E6E6] border-l border-t border-[#999999] flex items-center justify-center z-[999]">
-            <img
-              src="/icons/maximize.png"
-              alt="resize"
-              className="w-3.5 h-3.5 z-50"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const contentRef = useRef<HTMLDivElement>(null);
   const horizontalTrackRef = useRef<HTMLDivElement>(null);
   const verticalTrackRef = useRef<HTMLDivElement>(null);

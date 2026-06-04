@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { Controller, useForm, type FieldErrors } from 'react-hook-form';
 import { usePostHog } from 'posthog-js/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDialogStore from '@/store/useDialogStore';
@@ -19,12 +19,7 @@ const EmailClientView: React.FC = () => {
     recipient: '',
   };
 
-  const {
-    control,
-    reset,
-    handleSubmit,
-    formState: { errors, isSubmitted },
-  } = useForm<EmailFormData>({
+  const { control, reset, handleSubmit } = useForm<EmailFormData>({
     defaultValues: formDefaultValues,
     resolver: zodResolver(emailFormSchema),
     mode: 'onChange',
@@ -39,28 +34,18 @@ const EmailClientView: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const validateAndSubmit = (data: EmailFormData) => {
-    if (data.recipient) {
-      return;
-    }
-
-    handleEmailSubmit(data);
-  };
-
   const handleEmailSubmit = (data: EmailFormData) => {
     posthog.capture('email_submit_attempt', {
-      email: data.email,
-      subject: data.subject,
-      message: data.message,
+      subjectLength: data.subject.length,
+      messageLength: data.message.length,
     });
     setIsSubmitting(true);
 
     sendEmailMutation.mutate(data, {
       onSuccess: (response) => {
         posthog.capture('email_submit_success', {
-          email: data.email,
-          subject: data.subject,
-          message: data.message,
+          subjectLength: data.subject.length,
+          messageLength: data.message.length,
         });
         const result = parseApiResponse(response);
 
@@ -82,9 +67,8 @@ const EmailClientView: React.FC = () => {
       },
       onError: (error) => {
         posthog.capture('email_submit_error', {
-          email: data.email,
-          subject: data.subject,
-          message: data.message,
+          subjectLength: data.subject.length,
+          messageLength: data.message.length,
           error:
             error instanceof Error ? error.message : 'Failed to send email',
         });
@@ -99,8 +83,12 @@ const EmailClientView: React.FC = () => {
     });
   };
 
-  const handleError = () => {
-    const errorMessages = Object.values(errors)
+  // react-hook-form passes the freshly-computed errors to the invalid
+  // callback. We must read from this argument rather than the `errors`
+  // captured in render state, which is stale on the first submit (the
+  // component has not re-rendered with the new errors yet).
+  const handleError = (formErrors: FieldErrors<EmailFormData>) => {
+    const errorMessages = Object.values(formErrors)
       .map((error) => error?.message)
       .filter(Boolean)
       .join('; ');
@@ -114,15 +102,9 @@ const EmailClientView: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (isSubmitted && Object.keys(errors).length > 0) {
-      handleError();
-    }
-  }, [isSubmitted, errors]);
-
   return (
     <form
-      onSubmit={handleSubmit(validateAndSubmit, handleError)}
+      onSubmit={handleSubmit(handleEmailSubmit, handleError)}
       className="flex flex-col flex-1 font-torrance text-[12px] pr-0"
     >
       {/* Email client header */}

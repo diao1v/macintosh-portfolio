@@ -1,5 +1,5 @@
 import useWindowStore from '@/store/useWindowStore';
-import useFileStore, { typeToIcon, File } from '@/store/useFileStore';
+import useFileStore, { fileTypeIcons, File } from '@/store/useFileStore';
 import { DialogProps } from '@/store/useDialogStore';
 import { getDialogProps } from '@/config/dialogs';
 import { handleWindowClose } from '@/utils';
@@ -54,7 +54,7 @@ export const createMenuConfig = (handlers: {
       id: `folder-${Date.now()}`,
       name: newFolderName,
       type: 'folder',
-      icon: typeToIcon['folder'],
+      icon: fileTypeIcons.folder,
       children: [],
       window: {
         width: 600,
@@ -91,7 +91,7 @@ export const createMenuConfig = (handlers: {
       id: `file-${Date.now()}`,
       name: newFileName,
       type: type,
-      icon: typeToIcon[type],
+      icon: fileTypeIcons[type],
       content: '',
       window: {
         width: 600,
