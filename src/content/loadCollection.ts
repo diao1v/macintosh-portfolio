@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import { parse as parseToml } from 'smol-toml';
 import { z } from 'zod';
 
 export interface MediaItem {
@@ -37,9 +37,9 @@ const frontmatterSchema = z.object({
 const VIDEO_HINT = /(youtube|youtu\.be|vimeo|embed)/i;
 
 const splitFrontmatter = (raw: string): { data: unknown; body: string } => {
-  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  const match = raw.match(/^\+\+\+\r?\n([\s\S]*?)\r?\n\+\+\+\r?\n?([\s\S]*)$/);
   if (!match) throw new Error('missing or malformed frontmatter block');
-  return { data: yaml.load(match[1]), body: match[2].trim() };
+  return { data: parseToml(match[1]), body: match[2].trim() };
 };
 
 const idFromPath = (path: string): string =>

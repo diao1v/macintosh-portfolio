@@ -1,12 +1,16 @@
----
-title: Mac OS Portfolio
-oneLiner: A Mac OS portfolio website
-links:
-  - { name: Github, url: https://github.com/diao1v/macintosh-portfolio }
-  - { name: Demo, url: https://os.diao1v.me/ }
-notes:
-  - You're on this project already! Still looking for the screenshots?
----
++++
+title = "Mac OS Portfolio"
+oneLiner = "A Mac OS portfolio website"
+notes = ["You're on this project already! Still looking for the screenshots?"]
+
+[[links]]
+name = "Github"
+url = "https://github.com/diao1v/macintosh-portfolio"
+
+[[links]]
+name = "Demo"
+url = "https://os.diao1v.me/"
++++
 
 # My Portfolio: Classic Macintosh System 7.6/8 Interface
 

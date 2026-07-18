@@ -1,9 +1,8 @@
----
-title: House Shopping Diary
-oneLiner: Still under construction
-notes:
-  - App is still under construction
----
++++
+title = "House Shopping Diary"
+oneLiner = "Still under construction"
+notes = ["App is still under construction"]
++++
 
 # My house shopping diary
 

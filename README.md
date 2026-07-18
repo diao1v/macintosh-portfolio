@@ -40,24 +40,32 @@ Projects, off-work projects, and achievements are markdown files:
 - `src/content/off-work-projects/<id>.md`
 - `src/content/achievements/<id>.md`
 
-Each file has YAML frontmatter (`title`, `oneLiner`, optional `links`, `media`, `notes`)
-and a markdown body that becomes the intro page. Each `media` item becomes its own page
-with its caption. Files are auto-discovered — no registration needed.
+Each file has TOML frontmatter (delimited by `+++`) with `title`, `oneLiner`, optional
+`links`, `media`, `notes`, and a markdown body that becomes the intro page. Each `media`
+item becomes its own page with its caption. Files are auto-discovered — no registration
+needed.
+
+Because TOML binds keys to the most recent table, put the scalar/array fields (`title`,
+`oneLiner`, `notes`) **before** the `[[links]]`/`[[media]]` table-arrays.
 
 ```markdown
----
-title: My Project
-oneLiner: One-line summary
-links:
-  - { name: GitHub, url: https://github.com/you/my-project }
-media:
-  - src: my-project/shot-1.png
-    caption: Dashboard
-  - src: https://www.youtube.com/embed/abc
-    caption: Demo
-notes:
-  - Any extra info-bar line
----
++++
+title = "My Project"
+oneLiner = "One-line summary"
+notes = ["Any extra info-bar line"]
+
+[[links]]
+name = "GitHub"
+url = "https://github.com/you/my-project"
+
+[[media]]
+src = "my-project/shot-1.png"
+caption = "Dashboard"
+
+[[media]]
+src = "https://www.youtube.com/embed/abc"
+caption = "Demo"
++++
 
 # My Project
 

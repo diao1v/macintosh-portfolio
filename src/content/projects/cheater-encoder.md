@@ -1,17 +1,32 @@
----
-title: Cheater Encoder
-oneLiner: A Mac OS portfolio website
-links:
-  - { name: Github, url: https://github.com/diao1v/cheater-encoder }
-media:
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-1_xha0k0.png'
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-2_r0uypo.png'
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-2.5_tpj6lk.png'
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-3_pjeydc.png'
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-4_mrcgxs.png'
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-5_wqlead.png'
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-6_rbkd1p.png'
----
++++
+title = "Cheater Encoder"
+oneLiner = "A Mac OS portfolio website"
+
+[[links]]
+name = "Github"
+url = "https://github.com/diao1v/cheater-encoder"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-1_xha0k0.png"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-2_r0uypo.png"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-2.5_tpj6lk.png"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-3_pjeydc.png"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-4_mrcgxs.png"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-5_wqlead.png"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/cheater-encoder-6_rbkd1p.png"
++++
 
 # Cheater Encoder
 

@@ -1,12 +1,16 @@
----
-title: Mac OS Portfolio (Outer)
-oneLiner: Macintosh 3D Viewer
-links:
-  - { name: Github, url: https://github.com/diao1v/macintosh-portfolio-outer }
-  - { name: Demo, url: https://diao1v.me/ }
-notes:
-  - You're on this project already! Still looking for the screenshots?
----
++++
+title = "Mac OS Portfolio (Outer)"
+oneLiner = "Macintosh 3D Viewer"
+notes = ["You're on this project already! Still looking for the screenshots?"]
+
+[[links]]
+name = "Github"
+url = "https://github.com/diao1v/macintosh-portfolio-outer"
+
+[[links]]
+name = "Demo"
+url = "https://diao1v.me/"
++++
 
 # Macintosh 3D Viewer
 

@@ -1,16 +1,23 @@
----
-title: 3D printed Adapter
-oneLiner: 3D printed adapter for SkyWatcher Start Adventure
-media:
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1744014090/macintosh-portfolio/adapter-0_egt1en.png'
-    caption: The 3d screenshot of the adapter.
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742007049/macintosh-portfolio/adapter-1_z2gbo5.png'
-    caption: The 3d printed adapter.
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742007048/macintosh-portfolio/adapte-2_ztac4r.png'
-    caption: The adapter on the SkyWatcher Start Adventure.
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742007049/macintosh-portfolio/adapter-3_qobfn3.jpg'
-    caption: Photo of M31 - Andromeda Galaxy
----
++++
+title = "3D printed Adapter"
+oneLiner = "3D printed adapter for SkyWatcher Start Adventure"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1744014090/macintosh-portfolio/adapter-0_egt1en.png"
+caption = "The 3d screenshot of the adapter."
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742007049/macintosh-portfolio/adapter-1_z2gbo5.png"
+caption = "The 3d printed adapter."
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742007048/macintosh-portfolio/adapte-2_ztac4r.png"
+caption = "The adapter on the SkyWatcher Start Adventure."
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742007049/macintosh-portfolio/adapter-3_qobfn3.jpg"
+caption = "Photo of M31 - Andromeda Galaxy"
++++
 
 # SkyWatcher Start Adventure 3D printed Adapter
 

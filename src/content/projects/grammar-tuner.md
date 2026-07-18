@@ -1,12 +1,17 @@
----
-title: Grammar Tuner
-oneLiner: A desktop application for grammar tuning
-links:
-  - { name: Github, url: https://github.com/diao1v/grammar-tuner }
-media:
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741120267/macintosh-portfolio/grammar-tuner-1_gfpd1z.png'
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/grammar-tuner-2_o2kxzm.png'
----
++++
+title = "Grammar Tuner"
+oneLiner = "A desktop application for grammar tuning"
+
+[[links]]
+name = "Github"
+url = "https://github.com/diao1v/grammar-tuner"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741120267/macintosh-portfolio/grammar-tuner-1_gfpd1z.png"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1741161031/macintosh-portfolio/grammar-tuner-2_o2kxzm.png"
++++
 
 # Grammar Tuner
 

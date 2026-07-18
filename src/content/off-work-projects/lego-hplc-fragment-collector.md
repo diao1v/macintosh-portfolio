@@ -1,14 +1,19 @@
----
-title: Lego HPLC Fragment Collector
-oneLiner: Lego HPLC Fragment Collector
-media:
-  - src: 'https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742011209/macintosh-portfolio/Lego-1_jkkyvg.jpg'
-    caption: Lego HPLC Fragment Collector Photo
-  - src: 'https://www.youtube.com/embed/y1GQ3aLV3M4?si=7ah9HKEEDvCMxG7X'
-    caption: Demo Video
-  - src: 'https://www.youtube.com/embed/9etXPa5y8S4?si=_yrT1BJ5ZiPrxpA7'
-    caption: Demo Video
----
++++
+title = "Lego HPLC Fragment Collector"
+oneLiner = "Lego HPLC Fragment Collector"
+
+[[media]]
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_910/v1742011209/macintosh-portfolio/Lego-1_jkkyvg.jpg"
+caption = "Lego HPLC Fragment Collector Photo"
+
+[[media]]
+src = "https://www.youtube.com/embed/y1GQ3aLV3M4?si=7ah9HKEEDvCMxG7X"
+caption = "Demo Video"
+
+[[media]]
+src = "https://www.youtube.com/embed/9etXPa5y8S4?si=_yrT1BJ5ZiPrxpA7"
+caption = "Demo Video"
++++
 
 # Lego HPLC Fragment Collector
 
