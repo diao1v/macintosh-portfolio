@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import { content } from '@/content/';
 import { Project, MediaItem } from '@/content/loadCollection';
 import { resolveAssetUrl } from '@/utils';
+import MacScrollArea from '../Window/MacScrollArea';
 
 interface ScrapbookViewProps {
   file: File;
@@ -15,10 +16,6 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [showVerticalScrollbar, setShowVerticalScrollbar] = useState(false);
-  const [verticalThumbPosition, setVerticalThumbPosition] = useState(0);
-  const [isDraggingThumb, setIsDraggingThumb] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
 
   const collections: Record<string, Project>[] = [
@@ -45,35 +42,6 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
   ];
   const totalPages = Math.max(1, pages.length);
   const page = pages[currentPage];
-
-  // Check if content is scrollable
-  useEffect(() => {
-    const el = contentRef.current;
-    if (el) {
-      const checkScrollable = () =>
-        setShowVerticalScrollbar(el.scrollHeight > el.clientHeight);
-      checkScrollable();
-      window.addEventListener('resize', checkScrollable);
-      const resizeObserver = new ResizeObserver(checkScrollable);
-      resizeObserver.observe(el);
-      return () => {
-        window.removeEventListener('resize', checkScrollable);
-        resizeObserver.disconnect();
-      };
-    }
-  }, [currentPage, pages.length]);
-
-  useEffect(() => {
-    const el = contentRef.current;
-    if (el) {
-      const handleScroll = () => {
-        const ratio = el.scrollTop / (el.scrollHeight - el.clientHeight);
-        setVerticalThumbPosition(ratio);
-      };
-      el.addEventListener('scroll', handleScroll);
-      return () => el.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
 
   const handleTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const track = trackRef.current;
@@ -104,35 +72,6 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
     currentPage === totalPages - 1
       ? `${(currentPage / (totalPages - 1)) * 100 - 1.5}%`
       : `${(currentPage / (totalPages - 1)) * 100}%`;
-
-  const handleVerticalThumbMouseDown = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsDraggingThumb(true);
-  };
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDraggingThumb || !contentRef.current) return;
-      const el = contentRef.current;
-      const track = el.parentElement?.querySelector('.vertical-track');
-      if (!track) return;
-      const trackRect = track.getBoundingClientRect();
-      const ratio = Math.max(
-        0,
-        Math.min(1, (e.clientY - trackRect.top) / trackRect.height),
-      );
-      el.scrollTop = ratio * (el.scrollHeight - el.clientHeight);
-    };
-    const handleMouseUp = () => setIsDraggingThumb(false);
-    if (isDraggingThumb) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDraggingThumb]);
 
   // Reset image loading state when page changes
   useEffect(() => {
@@ -210,43 +149,12 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
     <div className="flex flex-col h-full pb-4 overflow-hidden font-torrance text-[12px]">
       {/* Main Content Area */}
       <div className="flex-1 min-h-0 p-4 ">
-        <div className="relative h-full border border-[#999999] bg-white shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)]">
-          <div ref={contentRef} className="absolute inset-0 overflow-y-auto">
-            <div className="p-4">{renderContent()}</div>
-          </div>
-
-          {/* Vertical Scrollbar */}
-          {showVerticalScrollbar && (
-            <div
-              className="vertical-track absolute right-0 top-0 bottom-0 w-4 bg-[#E6E6E6] border-l border-[#999999]"
-              onClick={(e) => {
-                const track = e.currentTarget;
-                const trackRect = track.getBoundingClientRect();
-                const el = contentRef.current;
-                if (!el) return;
-                const ratio = (e.clientY - trackRect.top) / trackRect.height;
-                el.scrollTop = ratio * (el.scrollHeight - el.clientHeight);
-              }}
-            >
-              <div
-                className="absolute w-4 h-4 bg-[#E6E6E6] border border-[#999999] cursor-pointer"
-                style={{
-                  top: `calc(${verticalThumbPosition * 100}% - ${
-                    verticalThumbPosition * 16
-                  }px)`,
-                }}
-                onMouseDown={handleVerticalThumbMouseDown}
-              >
-                <img
-                  src="/icons/handle-vert.png"
-                  alt="Scroll"
-                  className="w-3.5 h-3.5"
-                  draggable={false}
-                />
-              </div>
-            </div>
-          )}
-        </div>
+        <MacScrollArea
+          className="h-full border border-[#999999] bg-white shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)]"
+          contentClassName="p-4"
+        >
+          {renderContent()}
+        </MacScrollArea>
       </div>
 
       {/* Navigation Controls */}
@@ -300,13 +208,16 @@ const ScrapbookView: React.FC<ScrapbookViewProps> = ({ file }) => {
 
         {/* Info Bar - Fixed Height */}
         <div className=" bg-[#E6E6E6] px-4 py-1">
-          <div className="h-28 bg-white border border-[#999999] px-2 py-0.5 overflow-x-auto">
+          <MacScrollArea
+            className="h-28 bg-white border border-[#999999]"
+            contentClassName="px-2 py-0.5"
+          >
             <div className="leading-tight prose-sm prose max-w-none text-[11px]">
               <ReactMarkdown components={{ a: CustomLink }}>
                 {infoMarkdown}
               </ReactMarkdown>
             </div>
-          </div>
+          </MacScrollArea>
         </div>
       </div>
     </div>
