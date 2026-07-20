@@ -11,9 +11,21 @@ export const resume = `
 
 ## Professional Experience
 
+### Software Developer
+*PageProof, Auckland, New Zealand*  
+**Jun 2025 - Present**
+
+- Deliver features end-to-end across a 25+ microservice platform (TypeScript, Node.js, C#, React, AngularJS, Azure, Kubernetes, Azure DevOps) — partnering closely with Product, QA, Customer Success, and fellow engineers to clarify requirements, align on technical design, and ship reliably to production.
+- Re-architected search and data loading on the app's main landing view onto Azure AI Search, moving indexing off the request path into a dedicated indexer service — cutting load times 50–70% on large datasets.
+- Leading a full-stack, phased re-architecture to introduce a hierarchical, folder-like organization structure for content collections — spanning the database, .NET API, GraphQL gateway, SDK, and React/legacy frontends — with a fully backward-compatible rollout and an idempotent production backfill, at zero downtime.
+- Architected the platform's first automated-testing foundation — a BDD end-to-end framework built from scratch (Playwright, Cucumber, TypeScript) with a Page Object Model, reusable step library, multi-tier coverage, and tagged/parallel CI execution with Allure reporting.
+- Designed and built a multi-agent AI platform that takes a Jira ticket to a human-reviewed PR — a deterministic state-machine orchestrator over a durable Postgres job queue coordinating specialized LLM agents (plan-readiness gate, coding agent in an isolated git worktree, read-only security reviewer). TypeScript, Hono, PostgreSQL/Drizzle; provider-agnostic (Claude/OpenAI).
+
+---
+
 ### Web Developer
 *Spark, Auckland, New Zealand*  
-**Feb 2023 - Present**
+**Feb 2023 - Jun 2025**
 
 - Modernized the MySpark billing portal with Next.js and GraphQL, delivering a streamlined and user-friendly bill management experience for all Spark users.
 - Led the Universal Login Application (ULA) integration for MySpark Business, enhancing security with MFA and achieving DIA compliance.
@@ -115,7 +127,8 @@ public class AboutMe {
                 Java, HTML, CSS, JavaScript, Node.js,            
                 TypeScript, React.js, Next.js, styled-components, 
                 Tailwind CSS, GraphQL, Jest, Playwright, PostgreSQL, 
-                MongoDB, REST APIs, Aws, Azure
+                MongoDB, REST APIs, Aws, Azure,
+                C#/.NET, Kubernetes, Cucumber, Drizzle
         );
         
         public static void main(String args[]) {

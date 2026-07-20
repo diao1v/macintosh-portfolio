@@ -14,6 +14,3 @@ export const Z_INDEX = {
   DRAGGING_ICON: number;
   WINDOW_MIN: number;
 };
-
-export const DEFAULT_IMAGE_WIDTH = 'w_910';
-export const DEFAULT_IMAGE_HEIGHT = 'h_540';
