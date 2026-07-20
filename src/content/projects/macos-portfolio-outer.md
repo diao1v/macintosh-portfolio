@@ -9,7 +9,7 @@ url = "https://github.com/diao1v/macintosh-portfolio-outer"
 
 [[links]]
 name = "Demo"
-url = "https://diao1v.me/"
+url = "https://diaoev.com/"
 +++
 
 # Macintosh 3D Viewer

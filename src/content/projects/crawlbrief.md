@@ -28,6 +28,12 @@ It's built as three cooperating services: **CrawlBrief** (the orchestrator), a *
 
 ---
 
+## Why built this
+
+Keeping tabs on what competitors ship. This will prevent any surprises in the market, and help me stay on top of trends. I also wanted to explore how to combine a self-hosted scraper with LLMs for automated summarization.
+
+---
+
 ## Features
 
 - **Scheduled monitoring** — per-monitor cron jobs watch listing pages (blog indexes, changelog pages).

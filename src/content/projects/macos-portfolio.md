@@ -9,7 +9,7 @@ url = "https://github.com/diao1v/macintosh-portfolio"
 
 [[links]]
 name = "Demo"
-url = "https://os.diao1v.me/"
+url = "https://os.diaoev.com/"
 +++
 
 # My Portfolio: Classic Macintosh System 7.6/8 Interface
