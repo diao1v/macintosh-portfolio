@@ -5,7 +5,10 @@ import './index.css';
 import App from './App.tsx';
 
 const options = {
+  // Reverse proxy on our own domain; ui_host must stay the real PostHog app
+  // so the toolbar and session replay links resolve.
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+  ui_host: 'https://eu.posthog.com',
   capture_pageview: true,
   capture_pageleave: true,
 };
