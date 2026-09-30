@@ -5,7 +5,7 @@ export const resume = `
 - Auckland, New Zealand
 - ev@diaoev.com
 
-> Daily life enthusiast and fullstack developer passionate about creating stuffs (Webapp, Woodwork, Photos, LEGO, PC, etc.).
+> Daily life enthusiast, full stack developer and AI engineer, passionate about creating things (web apps, AI agents, woodwork, 3D modelling and printing, photos, LEGO, PCs, etc.).
 
 ---
 
@@ -19,7 +19,10 @@ export const resume = `
 - Re-architected search and data loading on the app's main landing view onto Azure AI Search, moving indexing off the request path into a dedicated indexer service — cutting load times 50–70% on large datasets.
 - Leading a full-stack, phased re-architecture to introduce a hierarchical, folder-like organization structure for content collections — spanning the database, .NET API, GraphQL gateway, SDK, and React/legacy frontends — with a fully backward-compatible rollout and an idempotent production backfill, at zero downtime.
 - Architected the platform's first automated-testing foundation — a BDD end-to-end framework built from scratch (Playwright, Cucumber, TypeScript) with a Page Object Model, reusable step library, multi-tier coverage, and tagged/parallel CI execution with Allure reporting.
-- Designed and built a multi-agent AI platform that takes a Jira ticket to a human-reviewed PR — a deterministic state-machine orchestrator over a durable Postgres job queue coordinating specialized LLM agents (plan-readiness gate, coding agent in an isolated git worktree, read-only security reviewer). TypeScript, Hono, PostgreSQL/Drizzle; provider-agnostic (Claude/OpenAI).
+- Designed and built a multi-agent AI platform that takes a Jira ticket to a human-reviewed PR — a deterministic state-machine orchestrator over a durable Postgres job queue coordinating specialized LLM agents (plan-readiness gate, coding agent in an isolated git worktree, read-only security reviewer). TypeScript, Hono, PostgreSQL/Drizzle; provider-agnostic (Claude/OpenAI). Adopted by Product and QA, 100+ pull requests opened.
+- Built the document-intelligence layer behind PageProof Intelligence, the customer-facing AI proof review: Azure AI Document Intelligence extracts page geometry, words, tables and figures so the review agent's findings land as pin-accurate comments on posters, packaging and artwork.
+- Designed and built PageProof's remote MCP server from scratch — OAuth 2.1 with PKCE against the existing identity provider, JWT access tokens verified against JWKS, impersonation through the internal authorization service — so customers can connect Claude, ChatGPT or Cursor to their PageProof data. Kubernetes on Azure behind a Cloudflare tunnel, 157 tests.
+- Built end-to-end RAG Slack bots over the company wiki on the Azure stack: Confluence → Azure Blob → Azure AI Search with integrated vectorization and hybrid retrieval → Azure AI Foundry agents, one per team with knowledge separation enforced by the search service. In daily use by Dev and Customer Success.
 
 ---
 
