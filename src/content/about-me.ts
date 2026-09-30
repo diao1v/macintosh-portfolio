@@ -3,7 +3,7 @@ export const resume = `
 
 ## Personal Details
 - Auckland, New Zealand
-- tuicaodanad@gmail.com
+- ev@diaoev.com
 
 > Daily life enthusiast and fullstack developer passionate about creating stuffs (Webapp, Woodwork, Photos, LEGO, PC, etc.).
 
@@ -113,8 +113,14 @@ export const resume = `
 
 ## Certifications
 
+### Microsoft Certified: Azure AI Apps & Agents Developer Associate (AI-103)
+Issued Sep 2026
+
 ### AWS Certified Solutions Architect - Associate
 Issued Aug 2024 · Expires Aug 2027
+
+### Microsoft Certified: Azure Fundamentals
+Issued 2022
 
 
 ![MyPhoto](https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_200/v1743816910/macintosh-portfolio/B6F3C5AB-8607-4DF7-AE63-C2CE97020DD1-modified_orrmal.png) 
@@ -124,11 +130,23 @@ export const aboutMe = `\`\`\`java
 public class AboutMe {
         static Person i = new Person("Yiwei");
         static List<Skill> currentSkills = Arrays.asList(
-                Java, HTML, CSS, JavaScript, Node.js,            
-                TypeScript, React.js, Next.js, styled-components, 
-                Tailwind CSS, GraphQL, Jest, Playwright, PostgreSQL, 
-                MongoDB, REST APIs, Aws, Azure,
-                C#/.NET, Kubernetes, Cucumber, Drizzle
+                // languages & runtimes
+                TypeScript, JavaScript, Node.js, C#/.NET, Java, Python,
+                // front-end
+                React, Next.js, AngularJS, Tailwind CSS, Three.js/R3F,
+                // APIs & data
+                REST, GraphQL, tRPC, Hono, PostgreSQL, SQL/NoSQL, MongoDB, Drizzle,
+                // AI engineering
+                LLM agents, Multi-agent orchestration, Tool use/function calling,
+                MCP servers, RAG & hybrid retrieval, Prompt engineering,
+                Human-in-the-loop review, LangChain, Claude Code/Codex/Copilot,
+                // Azure AI & cloud
+                Azure AI Foundry, Azure AI Search, Azure OpenAI, Azure Document Intelligence,
+                Azure, AWS, Cloudflare Workers, Kubernetes, Docker, Azure DevOps, CI/CD, Serverless,
+                // security
+                OAuth2/OIDC, JWT/JWKS, MFA,
+                // testing
+                Playwright, Cucumber (BDD), Vitest, Jest
         );
         
         public static void main(String args[]) {
