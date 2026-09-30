@@ -5,7 +5,7 @@ export const resume = `
 - Auckland, New Zealand
 - ev@diaoev.com
 
-> Daily life enthusiast, full stack developer and AI engineer, passionate about creating things (web apps, AI agents, woodwork, 3D modelling and printing, photos, LEGO, PCs, etc.).
+> Daily life enthusiast, full stack developer and AI engineer, passionate about creating things (web apps, AI agents, homelab servers, woodwork, 3D modelling and printing, photos, LEGO, PCs, etc.).
 
 ---
 
