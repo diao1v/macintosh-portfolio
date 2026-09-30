@@ -7,6 +7,6 @@ notes = [
 ]
 
 [[media]]
-src = "https://static.diaoev.com/portfolio-assets/scrapbook-image/azure-ai-103.png"
+src = "https://res.cloudinary.com/dx7mr3wnr/image/upload/c_scale,w_300/v1790742000/macintosh-portfolio/ai-103_wb15vs.png"
 makeImageSpin = true
 +++
